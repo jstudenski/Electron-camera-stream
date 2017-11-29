@@ -1,5 +1,92 @@
 <head>
+  <style>
+    button {
+      width: 34px;
+      height: 34px;
+      padding: 5px;
+      border: none;
+      position: fixed;
+      top: 5px;
+      outline: none; 
+      border-radius: 3px;
+      color:#fff;
+    }
+    #refresh {right: 44px;
+      background-color: #9c9c9c;
+    }
+    #devTools {right: 5px;
+      background-color: #d4d4d4;
+    }
+    #addTask {left: 5px;
+      background-color: #2ecc71;
+    }
+    #clear {left: 44px;
+      background-color: #e74c3c;
+    }
+    #mkdir {left: 83px;
+      background-color: salmon;
+    }
+    #startcam {left: 122px;
+      background-color: blue;
+    }
+    
+
+    
+
+
+    button img {
+      width: 24px;
+    }
+
+  </style>
 </head>
 <body>
-<h1>Title</h1>
+  <br>
+	<h2>My Todos</h2>
+  <ul>
+  </ul>
+
+  <button id="refresh" onclick="sendSignal('refresh:btn')"><img src="images/refresh.png"></button>
+  <button id="devTools" onclick="sendSignal('devTools:btn')"><img src="images/wrench.png"></button>
+  <button id="addTask" onclick="sendSignal('addTask:btn')"><img src="images/plus.png"></button>
+  <button id="clear" onclick="clearTodos()"><img src="images/eraser.png"></button>
+  <button id="mkdir" onclick="sendSignal('mkdir:btn')">dir</button>
+
+  <button id="startcam" onclick="sendSignal('startcam:btn')">cam</button>
+
+
+  <script>
+    // require electron and ipcRenderer
+    const electron = require('electron');
+    const {ipcRenderer } = electron;
+    const list = document.querySelector('ul');
+    // listen for todo:add from Electron App
+    ipcRenderer.on('todo:add', (event, todo) => {
+      const li = document.createElement('li');
+      const text = document.createTextNode(todo);
+      li.appendChild(text);
+      list.appendChild(li);
+    });
+
+    // listen for todo:clear from Electron App
+    ipcRenderer.on('todo:clear', (event, todo) => {
+      clearTodos();
+    });
+
+    document.getElementById('clear').addEventListener ('click', (event) => {
+      clearTodos();
+    });
+
+
+    function clearTodos() {
+      list.innerHTML = '';
+    }
+
+    function sendSignal(signal) {
+      ipcRenderer.send(signal)
+    }
+
+
+
+  </script>
 </body>
