@@ -23,26 +23,21 @@
     #clear {left: 44px;
       background-color: #e74c3c;
     }
-    #mkdir {left: 83px;
+    #showfiles {left: 83px;
       background-color: salmon;
     }
     #startcam {left: 122px;
       background-color: blue;
     }
-    
-
-    
-
-
     button img {
       width: 24px;
     }
-
   </style>
 </head>
+
 <body>
   <br>
-	<h2>My Todos</h2>
+	<h2></h2>
   <ul>
   </ul>
 
@@ -50,7 +45,7 @@
   <button id="devTools" onclick="sendSignal('devTools:btn')"><img src="images/wrench.png"></button>
   <button id="addTask" onclick="sendSignal('addTask:btn')"><img src="images/plus.png"></button>
   <button id="clear" onclick="clearTodos()"><img src="images/eraser.png"></button>
-  <button id="mkdir" onclick="sendSignal('mkdir:btn')">dir</button>
+  <button id="showfiles" onclick="sendSignal('showfiles:btn')">files</button>
 
   <button id="startcam" onclick="sendSignal('startcam:btn')">cam</button>
 
@@ -72,6 +67,23 @@
     ipcRenderer.on('todo:clear', (event, todo) => {
       clearTodos();
     });
+
+
+    var files = []
+    // listen for showfiles:btn from Electron App
+    ipcRenderer.on('showfiles:btn', (event, array) => {
+      files = array;
+
+      clearTodos();
+      for (var i in array) {
+        const li = document.createElement('li');
+        const text = document.createTextNode(files[i].filename);
+        li.appendChild(text);
+        list.appendChild(li);
+      }
+      
+    });
+
 
     document.getElementById('clear').addEventListener ('click', (event) => {
       clearTodos();

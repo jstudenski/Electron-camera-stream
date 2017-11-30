@@ -9,34 +9,79 @@ let addWindow;
 
 
 
-
-
-
 var Client = require('ssh2').Client;
- 
+var connection = new Client();
+// connection settings
+var connSettings = {
+     host: 'NEXTcamera1.local',
+     port: 22, // Normal is 22 port
+     username: 'pi',
+     
+     // You can use a key file too, read the ssh2 documentation
+};
+
+var remotePathToList = '/home/pi';
+
+let myfile;
+
 var conn = new Client();
 conn.on('ready', function() {
-  console.log('Client :: ready');
-  conn.exec('uptime', function(err, stream) {
-    if (err) throw err;
-    stream.on('close', function(code, signal) {
-      console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-      conn.end();
-    }).on('data', function(data) {
-      console.log('STDOUT: ' + data);
-    }).stderr.on('data', function(data) {
-      console.log('STDERR: ' + data);
+    conn.sftp(function(err, sftp) {
+         if (err) throw err;
+
+         // you'll be able to use sftp here
+         // Use sftp to execute tasks like .unlink or chmod etc
+
+         sftp.readdir(remotePathToList, function(err, list) {
+                if (err) throw err;
+                // List the directory in the console
+                console.dir(list);
+                myfile = list;
+                // Do not forget to close the connection, otherwise you'll get troubles
+                conn.end();
+         });
+
+
     });
-  });
-}).connect({
-  host: 'NEXTcamera1.local',
-  port: 22,
-  username: 'pi',
-  password:''
-  // privateKey: require('fs').readFileSync('/here/is/my/key')
+}).connect(connSettings);
+
+
+ipcMain.on('showfiles:btn', (event, todo) => {
+
+  conn.end();
+  // send to mainWindow
+  mainWindow.webContents.send('showfiles:btn', myfile);
+
+
+   // var fs = require('fs');
+   //  fs.mkdir('/Users/jeffstud/Desktop/testfolder');
+   //  fs.writeFile('/Users/jeffstud/Desktop/testfolder/helloworld.txt', 'Hello World!', function (err) {
+   //  if (err) return console.log(err);
+   //    console.log('Hello World > helloworld.txt');
+   //  });
 });
 
-
+// var conn = new Client();
+// conn.on('ready', function() {
+//   console.log('Client :: ready');
+//   conn.exec('uptime', function(err, stream) {
+//     if (err) throw err;
+//     stream.on('close', function(code, signal) {
+//       console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+//       conn.end();
+//     }).on('data', function(data) {
+//       console.log('STDOUT: ' + data);
+//     }).stderr.on('data', function(data) {
+//       console.log('STDERR: ' + data);
+//     });
+//   });
+// }).connect({
+//   host: 'NEXTcamera1.local',
+//   port: 22,
+//   username: 'pi',
+//   password:''
+//   // privateKey: require('fs').readFileSync('/here/is/my/key')
+// });
 
 
 
@@ -93,14 +138,7 @@ ipcMain.on('addTask:btn', (event, todo) => {
   createAddWindow();
 });
 
-ipcMain.on('mkdir:btn', (event, todo) => {
-   var fs = require('fs');
-    fs.mkdir('/Users/jeffstud/Desktop/testfolder');
-    fs.writeFile('/Users/jeffstud/Desktop/testfolder/helloworld.txt', 'Hello World!', function (err) {
-    if (err) return console.log(err);
-      console.log('Hello World > helloworld.txt');
-    });
-});
+
 
 
 
