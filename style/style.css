@@ -1,0 +1,87 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+div {
+  display: inline-block;
+  padding: 8px;
+  border: none;
+  outline: none; 
+  border-radius: 3px;
+  color:#fff;
+}
+
+div img {
+  width: 24px;
+}
+
+button p {
+  width: 24px;
+}
+
+#refresh {
+  background-color: #9c9c9c;
+}
+#devTools {
+  background-color: #d4d4d4;
+}
+#addTask {
+  background-color: #2ecc71;
+}
+#clear {
+  background-color: #e74c3c;
+}
+#showfiles {
+  background-color: salmon;
+}
+#capture {
+  background-color: blue;
+}
+
+
+
+
+
+/* add.html */
+/*
+input {
+  float: left;
+  height: 24px;
+  margin-right: 4px;
+  border-radius: 3px;
+  border: 1px solid #d4d4d4;
+
+}
+
+label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+#submit {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border: none;
+  bottom: 5px;
+  outline: none; 
+  border-radius: 3px;
+  right: 5px;
+  background-color: #2ecc71;
+}
+
+button img {
+  width: 16px;
+}
+
+.center {
+  width: 160px;
+  margin: 20px auto;
+}*/
+
+
+
+
+
+
