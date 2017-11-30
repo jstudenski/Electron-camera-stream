@@ -91,30 +91,76 @@ conn.on('ready', function() {
             conn.end(); // close the connection
          });
 
+
+
     });
 
 }).connect(connSettings);
 
 
+
+
+
+
+
+
+// // wait function
+// function wait(ms){
+//    var start = new Date().getTime();
+//    var end = start;
+//    while(end < start + ms) {
+//      end = new Date().getTime();
+//   }
+// }
+
+
 var exec = require('node-ssh-exec');
-
+// when button is pressed
 ipcMain.on('capture:btn', (event, todo) => {
-  // execute 
+   // execute 
+  console.log("Taking picture..");
+    // 
+    exec(connSettings, 'python3 TestTakePhoto.py', function (err, response) {
+      if (err) throw err
+      // once photo is taken
+      console.log("picture complete");
 
-  // // log 'ls'
-  // exec(connSettings, 'ls -alh', function (err, response) {
-  //     if (err) throw err;
-  //     console.log(response);
-  // });
-console.log("Taking picture..");
-  // 
-  exec(connSettings, 'python3 TestTakePhoto.py', function (err, response) {
-    
-  if (err) throw err;
-    console.log("picture complete");
-  });
+    });
+});
+
+
+// require package
+// var client = require('scp2');
+
+// transfer image
+var start = "/home/pi/testimg.jpg";
+var to = "./bbb.jpg";
+
+// when button is pressed
+ipcMain.on('transfer:btn', (event, todo) => {
+
+  var conn = new Client();
+  conn.on('ready', function() {
+      conn.sftp(function(err, sftp) {
+           if (err) throw err;
+
+              // test copy photo
+              var moveFrom = "/home/pi/testimg.jpg";
+              var moveTo = "./fff.jpg";
+
+              sftp.fastGet(moveFrom, moveTo, {}, function(downloadError){
+                  if(downloadError) throw downloadError;
+                  console.log("transfer complete");
+              });
+      });
+
+  }).connect(connSettings);
+
 
 });
+
+
+
 
 
 // move files
