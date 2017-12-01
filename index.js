@@ -67,74 +67,61 @@ var Client = require('ssh2').Client;
 var connection = new Client();
 // connection settings
 var connSettings = {
-   host: 'NEXTcamera50.local',
+   host: 'NEXTcamera50.local', // 169.254.126.55  NEXTcamera50.local
    port: 22, // Normal is 22 port
    username: 'pi',
    password: 'ahc6674762'
 };
+
 
 var remotePathToList = '/home/pi';
 let myfile;
 
 var conn = new Client();
 conn.on('ready', function() {
-    conn.sftp(function(err, sftp) {
-         if (err) throw err;
+  conn.sftp(function(err, sftp) {
+  if (err) throw err;
 
-         // try .unlink or chmod
-         sftp.readdir(remotePathToList, function(err, list) {
-            if (err) throw err;
-            // List the directory in the console
-            // console.dir(list);
-            myfile = list;
+    // try .unlink or chmod
+    sftp.readdir(remotePathToList, function(err, list) {
+      if (err) throw err;
+      // List the directory in the console
+      // console.dir(list);
+      myfile = list;
 
-            conn.end(); // close the connection
-         });
-
-
-
+      conn.end(); // close the connection
     });
+
+  });
 
 }).connect(connSettings);
 
 
 
 
-
-
-
-
-// // wait function
-// function wait(ms){
-//    var start = new Date().getTime();
-//    var end = start;
-//    while(end < start + ms) {
-//      end = new Date().getTime();
-//   }
-// }
-
-
 var exec = require('node-ssh-exec');
+
 // when button is pressed
 ipcMain.on('capture:btn', (event, todo) => {
    // execute 
-  console.log("Taking picture..");
-    // 
+    console.log("Taking picture..");
+    var start = new Date().getTime(); // Timer
+
     exec(connSettings, 'python3 TestTakePhoto.py', function (err, response) {
       if (err) throw err
+      var end = new Date().getTime(); // Timer
       // once photo is taken
-      console.log("picture complete");
-
+      var time = end - start; // Timer
+      console.log('Picture Taken! Execution time: ' + time); // Timer
     });
+
 });
 
 
-// require package
-// var client = require('scp2');
 
-// transfer image
-var start = "/home/pi/testimg.jpg";
-var to = "./bbb.jpg";
+var moveFrom = "/home/pi/testimg.jpg";
+var moveTo = "./test.jpg";
+
 
 // when button is pressed
 ipcMain.on('transfer:btn', (event, todo) => {
@@ -144,22 +131,24 @@ ipcMain.on('transfer:btn', (event, todo) => {
       conn.sftp(function(err, sftp) {
            if (err) throw err;
 
-              // test copy photo
-              var moveFrom = "/home/pi/testimg.jpg";
-              var moveTo = "./fff.jpg";
+              var start = new Date().getTime(); // Timer
 
               sftp.fastGet(moveFrom, moveTo, {}, function(downloadError){
+
                   if(downloadError) throw downloadError;
-                  console.log("transfer complete");
+
+                  var end = new Date().getTime(); // Timer
+                  var time = end - start; // Timer
+                  console.log("transfer complete! Execution time: " + time); // Timer
+                  mainWindow.reload();
+                  
+
               });
       });
 
   }).connect(connSettings);
 
-
 });
-
-
 
 
 
@@ -193,10 +182,6 @@ ipcMain.on('transfer:btn', (event, todo) => {
 
 
 
-
-
-
-
 ipcMain.on('showfiles:btn', (event, todo) => {
   conn.end();
   // send to mainWindow
@@ -208,22 +193,6 @@ ipcMain.on('showfiles:btn', (event, todo) => {
    //    console.log('Hello World > helloworld.txt');
    //  });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

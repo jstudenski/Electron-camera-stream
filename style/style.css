@@ -42,9 +42,15 @@ button p {
   background-color: orange;
 }
 
+#test {
+  background-color: pink;
+  color: #666;
+}
 
 
-
+#myimg img {
+  width: 400px;
+}
 
 
 
