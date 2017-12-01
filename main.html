@@ -56,7 +56,31 @@
     });
 
 
-        // listen for todo:clear from Electron App
+
+    ipcRenderer.on('test:test', (event, todo) => {
+      // console.log("yolo");
+      // console.log(todo);
+      
+      // var img = document.createElement("img");
+      // img.src = "test.jpg";
+      // document.getElementById("myimg").innerHTML(img);
+      // document.getElementById("myimg").src="test.jpg";
+    });
+
+
+
+
+
+
+    ipcRenderer.on('transfer:btn', (event, todo) => {
+      var img = document.createElement("img");
+      img.src = "test.jpg";
+      document.getElementById("myimg").innerHTML(img);
+      document.getElementById("myimg").src="test.jpg";
+    });
+
+
+        // listen for transfer:btn from Electron App
     ipcRenderer.on('transfer:btn', (event, todo) => {
 
       var img = document.createElement("img");

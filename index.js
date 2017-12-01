@@ -48,6 +48,84 @@ ipcMain.on('todo:add', (event, todo) => {
 });
 
 
+
+
+// listen for button clicks (from main.html): 
+var exec = require('ssh-exec')
+
+ipcMain.on('test:btn', (event, todo) => {
+  console.log("test:btn clicked");
+
+
+  exec('ls -lh', {
+    user: 'pi',
+    host: 'NEXTcamera50.local',
+    password: 'ahc6674762'
+  }).pipe(process.stdout)
+
+
+
+var me = {
+  user: 'pi',
+  host: 'NEXTcamera50.local',
+  // key: myKeyFileOrBuffer,
+  password: 'ahc6674762'
+};
+console.log(typeof(me));
+
+
+// {
+//    host: 'NEXTcamera50.local', // 169.254.126.55  NEXTcamera50.local
+//    port: 22, // Normal is 22 port
+//    username: 'pi',
+//    password: 'ahc6674762'
+// };
+
+
+  // // Start an interactive shell session
+  // var conn = new Client();
+  // conn.on('ready', function() {
+  //   console.log('Client :: ready');
+  //   conn.shell(function(err, stream) {
+  //     if (err) throw err;
+
+
+  //     stream.on('close', function() {
+  //       console.log('1 :: close');
+  //       conn.end();
+  //     }).on('data', function(data) {
+  //       console.log('2: ' + data);
+  //     }).stderr.on('data', function(data) {
+  //       console.log('3: ' + data);
+  //     });
+
+  //     console.log('---- A ----');
+  //     stream.end('ls -l\nexit\n');
+
+
+  //   });
+  // }).connect(connSettings);
+
+
+  // createSettingsWindow();
+});
+
+// function to be called by 'New Todo' menu button
+function createSettingsWindow() {
+  // create new widow
+  addWindow = new BrowserWindow({
+    width: 400,
+    height: 300,
+    title: 'Camera Settings'
+  });
+  // populate window with add.html
+  addWindow.loadURL(`file://${__dirname}/settings.html`);
+  // garbage collect
+  addWindow.on('closed', () => addWindow = null);
+}
+
+
+
 // listen for button clicks (from main.html): 
 ipcMain.on('refresh:btn', (event, todo) => {
   mainWindow.reload();
@@ -60,8 +138,8 @@ ipcMain.on('addTask:btn', (event, todo) => {
 });
 
 
-
-var cmd = require('node-cmd');
+// Trash?
+// var cmd = require('node-cmd');
 
 var Client = require('ssh2').Client;
 var connection = new Client();
@@ -119,34 +197,42 @@ ipcMain.on('capture:btn', (event, todo) => {
 
 
 
+
+
+
+
+
+
 var moveFrom = "/home/pi/testimg.jpg";
 var moveTo = "./test.jpg";
-
 
 // when button is pressed
 ipcMain.on('transfer:btn', (event, todo) => {
 
-  var conn = new Client();
-  conn.on('ready', function() {
-      conn.sftp(function(err, sftp) {
-           if (err) throw err;
+    var conn = new Client();
+    conn.on('ready', function() {
 
-              var start = new Date().getTime(); // Timer
+        console.log('Client :: ready');
 
-              sftp.fastGet(moveFrom, moveTo, {}, function(downloadError){
+        conn.sftp(function(err, sftp) {
+            if (err) throw err;
 
-                  if(downloadError) throw downloadError;
+            var moveFrom = "/home/pi/testimg.jpg";
+            var moveTo = "./test.jpg";
 
-                  var end = new Date().getTime(); // Timer
-                  var time = end - start; // Timer
-                  console.log("transfer complete! Execution time: " + time); // Timer
-                  mainWindow.reload();
-                  
+            sftp.fastGet(moveFrom, moveTo, {}, function(downloadError) {
+                if (downloadError) throw downloadError;
 
-              });
-      });
+                // var end = new Date().getTime(); // Timer
+                // var time = end - start; // Timer
+                // console.log("transfer complete! Execution time: " + time); // Timer
+                mainWindow.reload();
+                console.log("worked");
+            });
 
-  }).connect(connSettings);
+        });
+
+    }).connect(connSettings);
 
 });
 
