@@ -50,28 +50,162 @@ ipcMain.on('todo:add', (event, todo) => {
 
 
 
-// listen for button clicks (from main.html): 
-var exec = require('ssh-exec')
-
-ipcMain.on('test:btn', (event, todo) => {
-  console.log("test:btn clicked");
 
 
-  exec('ls -lh', {
-    user: 'pi',
-    host: 'NEXTcamera50.local',
-    password: 'ahc6674762'
-  }).pipe(process.stdout)
+var path, node_ssh, ssh, fs
+ 
+fs = require('fs')
+path = require('path')
+node_ssh = require('node-ssh')
+ssh = new node_ssh()
+ 
 
 
 
-var me = {
-  user: 'pi',
+
+    
+ssh.connect({
   host: 'NEXTcamera50.local',
-  // key: myKeyFileOrBuffer,
+  username: 'pi',
   password: 'ahc6674762'
-};
-console.log(typeof(me));
+}).then(function() {
+
+  ipcMain.on('download:btn', (event, todo) => { 
+    ssh.getFile('./temp/TestTakePhoto.py', '/home/pi/TestTakePhoto.py').then(function() {
+      console.log("The File TestTakePhoto.py downloaded")
+    }, function(error) {
+      console.log("Something's wrong")
+      console.log(error)
+    })
+  });
+
+  ipcMain.on('upload:btn', (event, todo) => { 
+    ssh.putFiles([{ local: './temp/TestTakePhoto.py', remote: '/home/pi/TestTakePhoto.py'}]).then(function() {
+      console.log("The File TestTakePhoto.py uploaded")
+    }, function(error) {
+      console.log("Something's wrong")
+      console.log(error)
+    })
+  });
+
+})
+
+
+
+
+
+
+
+
+
+// // fs = require('fs')
+// // path = require('path')
+// // node_ssh = require('node-ssh')
+// // ssh = new node_ssh()
+ 
+// // ssh.connect({
+// //   host: 'localhost',
+// //   username: 'steel',
+// //   privateKey: '/home/steel/.ssh/id_rsa'
+// // })
+// /*
+//  Or
+//  ssh.connect({
+//    host: 'localhost',
+//    username: 'steel',
+//    privateKey: fs.readFileSync('/home/steel/.ssh/id_rsa')
+//  })
+//  if you want to use the raw string as private key
+//  */
+// .then(function() {
+//   // Local, Remote
+//   ssh.putFile('/home/steel/Lab/localPath', '/home/steel/Lab/remotePath').then(function() {
+//     console.log("The File thing is done")
+//   }, function(error) {
+//     console.log("Something's wrong")
+//     console.log(error)
+//   })
+//   // Array<Shape('local' => string, 'remote' => string)>
+//   ssh.putFiles([{ local: '/home/steel/Lab/localPath', remote: '/home/steel/Lab/remotePath' }]).then(function() {
+//     console.log("The File thing is done")
+//   }, function(error) {
+//     console.log("Something's wrong")
+//     console.log(error)
+//   })
+//   // Local, Remote
+//   ssh.getFile('/home/steel/Lab/localPath', '/home/steel/Lab/remotePath').then(function(Contents) {
+//     console.log("The File's contents were successfully downloaded")
+//   }, function(error) {
+//     console.log("Something's wrong")
+//     console.log(error)
+//   })
+//   // Putting entire directories
+//   const failed = []
+//   const successful = []
+//   ssh.putDirectory('/home/steel/Lab', '/home/steel/Lab', {
+//     recursive: true,
+//     concurrency: 10,
+//     validate: function(itemPath) {
+//       const baseName = path.basename(itemPath)
+//       return baseName.substr(0, 1) !== '.' && // do not allow dot files
+//              baseName !== 'node_modules' // do not allow node_modules
+//     },
+//     tick: function(localPath, remotePath, error) {
+//       if (error) {
+//         failed.push(localPath)
+//       } else {
+//         successful.push(localPath)
+//       }
+//     }
+//   }).then(function(status) {
+//     console.log('the directory transfer was', status ? 'successful' : 'unsuccessful')
+//     console.log('failed transfers', failed.join(', '))
+//     console.log('successful transfers', successful.join(', '))
+//   })
+//   // Command
+//   ssh.execCommand('hh_client --json', { cwd:'/var/www' }).then(function(result) {
+//     console.log('STDOUT: ' + result.stdout)
+//     console.log('STDERR: ' + result.stderr)
+//   })
+//   // Command with escaped params
+//   ssh.exec('hh_client', ['--json'], { cwd: '/var/www', stream: 'stdout', options: { pty: true } }).then(function(result) {
+//     console.log('STDOUT: ' + result)
+//   })
+//   // With streaming stdout/stderr callbacks
+//   ssh.exec('hh_client', ['--json'], {
+//     cwd: '/var/www',
+//     onStdout(chunk) {
+//       console.log('stdoutChunk', chunk.toString('utf8'))
+//     },
+//     onStderr(chunk) {
+//       console.log('stderrChunk', chunk.toString('utf8'))
+//     },
+//   })
+// })
+
+
+
+
+
+
+
+
+
+// listen for button clicks (from main.html): 
+// var exec = require('ssh-exec')
+
+// ipcMain.on('test:btn', (event, todo) => {
+//   console.log("test:btn clicked");
+
+
+//   exec('ls -lh', {
+//     user: 'pi',
+//     host: 'NEXTcamera50.local',
+//     key: '',
+//     password: 'ahc6674762'
+//   }).pipe(process.stdout)
+
+
 
 
 // {
@@ -108,7 +242,7 @@ console.log(typeof(me));
 
 
   // createSettingsWindow();
-});
+// });
 
 // function to be called by 'New Todo' menu button
 function createSettingsWindow() {
@@ -197,14 +331,8 @@ ipcMain.on('capture:btn', (event, todo) => {
 
 
 
-
-
-
-
-
-
-var moveFrom = "/home/pi/testimg.jpg";
-var moveTo = "./test.jpg";
+var moveFrom;
+var moveTo;
 
 // when button is pressed
 ipcMain.on('transfer:btn', (event, todo) => {
@@ -222,12 +350,7 @@ ipcMain.on('transfer:btn', (event, todo) => {
 
             sftp.fastGet(moveFrom, moveTo, {}, function(downloadError) {
                 if (downloadError) throw downloadError;
-
-                // var end = new Date().getTime(); // Timer
-                // var time = end - start; // Timer
-                // console.log("transfer complete! Execution time: " + time); // Timer
-                mainWindow.reload();
-                console.log("worked");
+                mainWindow.reload(); // refresh
             });
 
         });
@@ -236,20 +359,51 @@ ipcMain.on('transfer:btn', (event, todo) => {
 
 });
 
+ipcMain.on('download:btn', (event, todo) => {
+  var conn = new Client();
+    conn.on('ready', function() {
+
+        console.log('Client :: ready');
+
+        conn.sftp(function(err, sftp) {
+            if (err) throw err;
+
+            var moveFrom = "/home/pi/TestTakePhoto.py";
+            var moveTo = "temp/TestTakePhoto.py";
+
+            sftp.fastGet(moveFrom, moveTo, {}, function(downloadError) {
+                if (downloadError) throw downloadError;
+                mainWindow.reload(); // refresh
+            });
+
+        });
+
+    }).connect(connSettings);
+});
 
 
-// move files
 
-// var moveFrom = "/home/pi/TakePhoto.py";
-// var moveTo = "./TakePhoto.py";
+ipcMain.on('upload:btn', (event, todo) => {
+  var conn = new Client();
+    conn.on('ready', function() {
 
-// sftp.fastGet(moveFrom, moveTo, {}, function(downloadError){
+        console.log('Client :: ready');
 
-//     if(downloadError) throw downloadError;
-//     console.log("Succesfully uploaded");
+        conn.sftp(function(err, sftp) {
+            if (err) throw err;
 
-// });
+            var moveFrom = "/home/pi/TestTakePhoto.py";
+            var moveTo = "temp/TestTakePhoto.py";
 
+            sftp.fastGet(moveFrom, moveTo, {}, function(downloadError) {
+                if (downloadError) throw downloadError;
+                mainWindow.reload(); // refresh
+            });
+
+        });
+
+    }).connect(connSettings);
+});
 
 
 // c.on('ready', function() {

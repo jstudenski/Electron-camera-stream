@@ -47,6 +47,15 @@ button p {
   color: #666;
 }
 
+#download {
+  background-color: tomato;
+}
+#upload {
+  background-color: rebeccapurple;
+}
+
+
+
 
 #myimg img {
   width: 400px;
