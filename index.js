@@ -52,10 +52,6 @@ ipcMain.on('todo:add', (event, todo) => {
 });
 
 
-
-
-
-
 var path, node_ssh, ssh, fs
  
 fs = require('fs')
@@ -63,10 +59,6 @@ path = require('path')
 node_ssh = require('node-ssh')
 ssh = new node_ssh()
  
-
-
-
-
     
 ssh.connect({
   host: process.env.host,
@@ -97,9 +89,8 @@ ssh.connect({
 
 // listen for button clicks (from main.html): 
 ipcMain.on('sendText:btn', (event, todo) => {
-  console.log('Sent');
-    // Twilio Credentials 
 
+  // Twilio Credentials 
   var accountSid = process.env.accountSid;
   var authToken = process.env.authToken;
   var myNumber = process.env.myNumber;
@@ -110,19 +101,26 @@ ipcMain.on('sendText:btn', (event, todo) => {
   console.log(myNumber);
   console.log(destination);
 
-  // var accountSid = ''; 
-  // var authToken = ''; 
    
-  // //require the Twilio module and create a REST client 
-  // var client = require('twilio')(accountSid, authToken); 
+ // require the Twilio module and create a REST client 
+  var client = require('twilio')(accountSid, authToken); 
    
-  // client.messages.create({ 
-  //     to: "+15558675309", 
-  //     from: "+15017250604", 
-  //     body: "This is the ship that made the Kessel Run in fourteen parsecs?", 
-  // }, function(err, message) { 
-  //     console.log(message.sid); 
-  // });
+  client.messages.create({ 
+    to: destination,
+    from: myNumber,
+    body: "Initial Test",
+    mediaUrl: 'http://test.jpg',
+  }, function(err, message) { 
+
+      if(err){
+        console.log(err);
+      } else {
+        console.log(message.sid);
+      }
+
+      // console.log(message);
+      // console.log(message.sid); 
+  });
 
 });
 
