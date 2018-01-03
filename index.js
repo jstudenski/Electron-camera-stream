@@ -1,5 +1,9 @@
-// start up app:
+// --start up app--
 // npm run electron
+// --update env variables--
+// source app-env
+
+
 const electron = require('electron');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
@@ -65,9 +69,9 @@ ssh = new node_ssh()
 
     
 ssh.connect({
-  host: 'NEXTcamera50.local',
-  username: 'pi',
-  password: 'ahc6674762'
+  host: process.env.host,
+  username: process.env.username,
+  password: process.env.password
 }).then(function() {
 
   ipcMain.on('download:btn', (event, todo) => { 
@@ -89,6 +93,38 @@ ssh.connect({
   });
 
 })
+
+
+// listen for button clicks (from main.html): 
+ipcMain.on('sendText:btn', (event, todo) => {
+  console.log('Sent');
+    // Twilio Credentials 
+
+  var accountSid = process.env.accountSid;
+  var authToken = process.env.authToken;
+  var myNumber = process.env.myNumber;
+  var destination = process.env.destination;
+
+  console.log(accountSid);
+  console.log(authToken);
+  console.log(myNumber);
+  console.log(destination);
+
+  // var accountSid = ''; 
+  // var authToken = ''; 
+   
+  // //require the Twilio module and create a REST client 
+  // var client = require('twilio')(accountSid, authToken); 
+   
+  // client.messages.create({ 
+  //     to: "+15558675309", 
+  //     from: "+15017250604", 
+  //     body: "This is the ship that made the Kessel Run in fourteen parsecs?", 
+  // }, function(err, message) { 
+  //     console.log(message.sid); 
+  // });
+
+});
 
 
 

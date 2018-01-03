@@ -41,6 +41,9 @@ button p {
 #transfer {
   background-color: orange;
 }
+#sendText {
+  background-color: #FF5733;
+}
 
 #test {
   background-color: pink;
