@@ -13,6 +13,8 @@
   <div id="test" onclick="sendSignal('test:btn')">TEST!</div>
   <div id="download" onclick="sendSignal('download:btn')">download</div>
   <div id="upload" onclick="sendSignal('upload:btn')">upload</div>
+
+
   <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div>
 
 <br>
@@ -24,7 +26,30 @@
   <img src="test.jpg">
 </div>
 
+
+
+
+  <form class="center">
+    <label>Enter Phone</label><br>
+    <input class="phone_us" autofocus />
+    <button id="submit" type="submit">Submit</button>
+  </form>
+
+  <!-- <input type="text" name="field-name" data-mask="00/00/0000" /> -->
+
+    <input class="your-field">
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
+
   <script>
+    $('body').css('background-color', 'red')
+    $('.phone_us').mask('(000) 000-0000');
+
+    $('.your-field').mask('00/00/0000', {'translation': {0: {pattern: /[0-9*]/}}});
+
+
     // require electron and ipcRenderer
     const electron = require('electron');
     const {ipcRenderer } = electron;
@@ -60,15 +85,24 @@
 
 
 
-    ipcRenderer.on('test:test', (event, todo) => {
-      // console.log("yolo");
-      // console.log(todo);
+    document.querySelector('form').addEventListener ('submit', (event) => {
+      event.preventDefault();
+      // get input
+      const { value } = document.querySelector('input');
+      // send input to Electron App
+      ipcRenderer.send('phone:add', value)
+    });
+
+
+    // ipcRenderer.on('test:test', (event, todo) => {
+    //   // console.log("yolo");
+    //   // console.log(todo);
       
-      // var img = document.createElement("img");
-      // img.src = "test.jpg";
-      // document.getElementById("myimg").innerHTML(img);
-      // document.getElementById("myimg").src="test.jpg";
-    });
+    //   // var img = document.createElement("img");
+    //   // img.src = "test.jpg";
+    //   // document.getElementById("myimg").innerHTML(img);
+    //   // document.getElementById("myimg").src="test.jpg";
+    // });
 
 
 
@@ -83,7 +117,7 @@
     });
 
 
-        // listen for transfer:btn from Electron App
+    // listen for transfer:btn from Electron App
     ipcRenderer.on('transfer:btn', (event, todo) => {
 
       var img = document.createElement("img");
@@ -92,11 +126,7 @@
       document.getElementById("myimg").innerHTML(img);
       document.getElementById("myimg").src="test.jpg";
 
-      //.innerHTML = 'yolo';
     });
-
-
-
 
 
     document.getElementById('clear').addEventListener ('click', (event) => {
