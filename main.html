@@ -28,26 +28,53 @@
 
 
 
-
+<!-- 
   <form class="center">
     <label>Enter Phone</label><br>
     <input class="phone_us" autofocus />
     <button id="submit" type="submit">Submit</button>
-  </form>
+  </form> -->
 
   <!-- <input type="text" name="field-name" data-mask="00/00/0000" /> -->
 
-    <input class="your-field">
+  <!-- <input class="your-field"> -->
+
+  <form class="center">
+  <label>Phone Number Example
+    <input id="phone-number" type="text"/>
+  </label>
+  <button id="submit" type="submit">Submit</button>
+  </form>
 
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
-  <script>
-    $('body').css('background-color', 'red')
-    $('.phone_us').mask('(000) 000-0000');
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
-    $('.your-field').mask('00/00/0000', {'translation': {0: {pattern: /[0-9*]/}}});
+
+  <script>
+    // $('body').css('background-color', 'red')
+    // $('.phone_us').mask('(000) 000-0000');
+    // $('.your-field').mask('00/00/0000', {'translation': {0: {pattern: /[0-9*]/}}});
+
+    $('#phone-number').mask('(000) 000-0000');
+
+    $('form').submit(function(event) {
+      event.preventDefault();
+      const { value } = document.querySelector('input');
+      ipcRenderer.send('phone:add', value)
+    });
+
+
+    // document.querySelector('form').addEventListener ('submit', (event) => {
+    //   event.preventDefault();
+    //   // get input
+    //   const { value } = document.querySelector('input');
+    //   // send input to Electron App
+    //   ipcRenderer.send('phone:add', value)
+    // });
+
 
 
     // require electron and ipcRenderer
@@ -85,13 +112,7 @@
 
 
 
-    document.querySelector('form').addEventListener ('submit', (event) => {
-      event.preventDefault();
-      // get input
-      const { value } = document.querySelector('input');
-      // send input to Electron App
-      ipcRenderer.send('phone:add', value)
-    });
+
 
 
     // ipcRenderer.on('test:test', (event, todo) => {
@@ -103,9 +124,6 @@
     //   // document.getElementById("myimg").innerHTML(img);
     //   // document.getElementById("myimg").src="test.jpg";
     // });
-
-
-
 
 
 

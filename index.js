@@ -150,37 +150,37 @@ ipcMain.on('phone:add', (event, phoneNumber) => {
   console.log(phoneNumber);
 
 
-  // Twilio Credentials 
-  var accountSid = process.env.accountSid;
-  var authToken = process.env.authToken;
-  var myNumber = process.env.myNumber;
-  var destination = process.env.destination;
+ //  // Twilio Credentials 
+ //  var accountSid = process.env.accountSid;
+ //  var authToken = process.env.authToken;
+ //  var myNumber = process.env.myNumber;
+ //  var destination = process.env.destination;
 
-  console.log(accountSid);
-  console.log(authToken);
-  console.log(myNumber);
-  console.log(destination);
+ //  console.log(accountSid);
+ //  console.log(authToken);
+ //  console.log(myNumber);
+ //  console.log(destination);
 
    
- // require the Twilio module and create a REST client 
-  var client = require('twilio')(accountSid, authToken); 
+ // // require the Twilio module and create a REST client 
+ //  var client = require('twilio')(accountSid, authToken); 
    
-  client.messages.create({ 
-    to: phoneNumber,
-    from: myNumber,
-    body: "Test Image",
-    mediaUrl: imgurl,
-  }, function(err, message) { 
+ //  client.messages.create({ 
+ //    to: phoneNumber,
+ //    from: myNumber,
+ //    body: "Test Image",
+ //    mediaUrl: imgurl,
+ //  }, function(err, message) { 
 
-      if(err){
-        console.log(err);
-      } else {
-        console.log(message.sid);
-      }
+ //      if(err){
+ //        console.log(err);
+ //      } else {
+ //        console.log(message.sid);
+ //      }
 
-      // console.log(message);
-      // console.log(message.sid); 
-  });
+ //      // console.log(message);
+ //      // console.log(message.sid); 
+ //  });
 
 
 
