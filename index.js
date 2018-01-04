@@ -94,25 +94,52 @@ ssh.connect({
 
 
 
-var http = require('http');
+// var http = require('http');
+
+// http.createServer(function (req, res) {
+
+//   fs.readFile('demofile1.html', function(err, data) {
+//     res.writeHead(200, {'Content-Type': 'text/html'});
+//     res.write(data);
+//     res.end();
+//   });
+
+
+//   res.write('Hello World!');
+//   res.end();
+// }).listen(8080);
+
+var http = require('http'),
+    fs = require('fs'),
+    url = require('url');
 
 http.createServer(function (req, res) {
-  res.write('Hello World!');
-  res.end();
+  fs.readFile('test.jpg', function (err, content) {
+      if (err) {
+        res.writeHead(400, {'Content-type':'text/html'})
+        console.log(err);
+        res.end("No such image");    
+      } else {
+        res.writeHead(200,{'Content-type':'image/jpg'});
+        res.end(content);
+      }
+  });
 }).listen(8080);
+console.log("Server running at http://localhost:8080/");
+
 
 
 var ngrok = require('ngrok');
 
+var imgurl = '';
 ngrok.connect(8080, function (err, url) {
   if(err){
     console.log(err);
   } else {
     console.log(url);
+    imgurl = url;
   }
 });
-
-
 
 
 
@@ -139,7 +166,7 @@ ipcMain.on('sendText:btn', (event, todo) => {
     to: destination,
     from: myNumber,
     body: "Initial Test",
-    // mediaUrl: 'http://test.jpg',
+    mediaUrl: imgurl,
   }, function(err, message) { 
 
       if(err){
