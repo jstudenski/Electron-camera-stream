@@ -29,6 +29,8 @@ app.on('ready', () => {
   Menu.setApplicationMenu(mainMenu);
 });
 
+
+
 // function to be called by 'New Todo' menu button
 function createAddWindow() {
   // create new widow
@@ -87,6 +89,34 @@ ssh.connect({
 })
 
 
+
+
+
+
+
+var http = require('http');
+
+http.createServer(function (req, res) {
+  res.write('Hello World!');
+  res.end();
+}).listen(8080);
+
+
+var ngrok = require('ngrok');
+
+ngrok.connect(8080, function (err, url) {
+  if(err){
+    console.log(err);
+  } else {
+    console.log(url);
+  }
+});
+
+
+
+
+
+
 // listen for button clicks (from main.html): 
 ipcMain.on('sendText:btn', (event, todo) => {
 
@@ -109,7 +139,7 @@ ipcMain.on('sendText:btn', (event, todo) => {
     to: destination,
     from: myNumber,
     body: "Initial Test",
-    mediaUrl: 'http://test.jpg',
+    // mediaUrl: 'http://test.jpg',
   }, function(err, message) { 
 
       if(err){

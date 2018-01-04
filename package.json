@@ -18,6 +18,8 @@
   "homepage": "https://github.com/jstudenski/Electron-camera-stream#readme",
   "dependencies": {
     "electron": "^1.7.9",
+    "http": "0.0.0",
+    "ngrok": "^2.2.24",
     "node-ssh": "^5.0.0",
     "node-ssh-exec": "^0.1.1",
     "ssh-exec": "^2.0.0",
