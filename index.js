@@ -284,7 +284,6 @@ var connSettings = {
    password: 'ahc6674762'
 };
 
-
 var remotePathToList = '/home/pi';
 let myfile;
 
