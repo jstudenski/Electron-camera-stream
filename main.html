@@ -47,33 +47,23 @@
   </form>
 
 
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
 
   <script>
-    // $('body').css('background-color', 'red')
-    // $('.phone_us').mask('(000) 000-0000');
-    // $('.your-field').mask('00/00/0000', {'translation': {0: {pattern: /[0-9*]/}}});
 
     $('#phone-number').mask('(000) 000-0000');
 
     $('form').submit(function(event) {
       event.preventDefault();
       const { value } = document.querySelector('input');
+      console.log($('input').cleanVal());
+      // const { value } = document.querySelector('input');
       ipcRenderer.send('phone:add', value)
     });
 
-
-    // document.querySelector('form').addEventListener ('submit', (event) => {
-    //   event.preventDefault();
-    //   // get input
-    //   const { value } = document.querySelector('input');
-    //   // send input to Electron App
-    //   ipcRenderer.send('phone:add', value)
-    // });
 
 
 

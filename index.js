@@ -54,6 +54,7 @@ ipcMain.on('todo:add', (event, todo) => {
 });
 
 
+
 var path, node_ssh, ssh, fs
  
 fs = require('fs')
@@ -61,12 +62,16 @@ path = require('path')
 node_ssh = require('node-ssh')
 ssh = new node_ssh()
  
-    
+    // node-ssh Error: getadderinfo ENOTFOUND
+
 ssh.connect({
   host: process.env.host,
   username: process.env.username,
   password: process.env.password
 }).then(function() {
+
+      // console.log("Something's wrong")
+      // console.log(error)
 
   ipcMain.on('download:btn', (event, todo) => { 
     ssh.getFile('./temp/TestTakePhoto.py', '/home/pi/TestTakePhoto.py').then(function() {
@@ -86,7 +91,8 @@ ssh.connect({
     })
   });
 
-})
+});
+
 
 
 
@@ -150,10 +156,10 @@ ipcMain.on('phone:add', (event, phoneNumber) => {
   console.log(phoneNumber);
 
 
- //  // Twilio Credentials 
- //  var accountSid = process.env.accountSid;
- //  var authToken = process.env.authToken;
- //  var myNumber = process.env.myNumber;
+  // Twilio Credentials 
+  var accountSid = process.env.accountSid;
+  var authToken = process.env.authToken;
+  var myNumber = process.env.myNumber;
  //  var destination = process.env.destination;
 
  //  console.log(accountSid);
@@ -237,151 +243,7 @@ ipcMain.on('sendText:btn', (event, todo) => {
 
 
 
-// // fs = require('fs')
-// // path = require('path')
-// // node_ssh = require('node-ssh')
-// // ssh = new node_ssh()
- 
-// // ssh.connect({
-// //   host: 'localhost',
-// //   username: 'steel',
-// //   privateKey: '/home/steel/.ssh/id_rsa'
-// // })
-// /*
-//  Or
-//  ssh.connect({
-//    host: 'localhost',
-//    username: 'steel',
-//    privateKey: fs.readFileSync('/home/steel/.ssh/id_rsa')
-//  })
-//  if you want to use the raw string as private key
-//  */
-// .then(function() {
-//   // Local, Remote
-//   ssh.putFile('/home/steel/Lab/localPath', '/home/steel/Lab/remotePath').then(function() {
-//     console.log("The File thing is done")
-//   }, function(error) {
-//     console.log("Something's wrong")
-//     console.log(error)
-//   })
-//   // Array<Shape('local' => string, 'remote' => string)>
-//   ssh.putFiles([{ local: '/home/steel/Lab/localPath', remote: '/home/steel/Lab/remotePath' }]).then(function() {
-//     console.log("The File thing is done")
-//   }, function(error) {
-//     console.log("Something's wrong")
-//     console.log(error)
-//   })
-//   // Local, Remote
-//   ssh.getFile('/home/steel/Lab/localPath', '/home/steel/Lab/remotePath').then(function(Contents) {
-//     console.log("The File's contents were successfully downloaded")
-//   }, function(error) {
-//     console.log("Something's wrong")
-//     console.log(error)
-//   })
-//   // Putting entire directories
-//   const failed = []
-//   const successful = []
-//   ssh.putDirectory('/home/steel/Lab', '/home/steel/Lab', {
-//     recursive: true,
-//     concurrency: 10,
-//     validate: function(itemPath) {
-//       const baseName = path.basename(itemPath)
-//       return baseName.substr(0, 1) !== '.' && // do not allow dot files
-//              baseName !== 'node_modules' // do not allow node_modules
-//     },
-//     tick: function(localPath, remotePath, error) {
-//       if (error) {
-//         failed.push(localPath)
-//       } else {
-//         successful.push(localPath)
-//       }
-//     }
-//   }).then(function(status) {
-//     console.log('the directory transfer was', status ? 'successful' : 'unsuccessful')
-//     console.log('failed transfers', failed.join(', '))
-//     console.log('successful transfers', successful.join(', '))
-//   })
-//   // Command
-//   ssh.execCommand('hh_client --json', { cwd:'/var/www' }).then(function(result) {
-//     console.log('STDOUT: ' + result.stdout)
-//     console.log('STDERR: ' + result.stderr)
-//   })
-//   // Command with escaped params
-//   ssh.exec('hh_client', ['--json'], { cwd: '/var/www', stream: 'stdout', options: { pty: true } }).then(function(result) {
-//     console.log('STDOUT: ' + result)
-//   })
-//   // With streaming stdout/stderr callbacks
-//   ssh.exec('hh_client', ['--json'], {
-//     cwd: '/var/www',
-//     onStdout(chunk) {
-//       console.log('stdoutChunk', chunk.toString('utf8'))
-//     },
-//     onStderr(chunk) {
-//       console.log('stderrChunk', chunk.toString('utf8'))
-//     },
-//   })
-// })
 
-
-
-
-
-
-
-
-
-// listen for button clicks (from main.html): 
-// var exec = require('ssh-exec')
-
-// ipcMain.on('test:btn', (event, todo) => {
-//   console.log("test:btn clicked");
-
-
-//   exec('ls -lh', {
-//     user: 'pi',
-//     host: 'NEXTcamera50.local',
-//     key: '',
-//     password: 'ahc6674762'
-//   }).pipe(process.stdout)
-
-
-
-
-// {
-//    host: 'NEXTcamera50.local', // 169.254.126.55  NEXTcamera50.local
-//    port: 22, // Normal is 22 port
-//    username: 'pi',
-//    password: 'ahc6674762'
-// };
-
-
-  // // Start an interactive shell session
-  // var conn = new Client();
-  // conn.on('ready', function() {
-  //   console.log('Client :: ready');
-  //   conn.shell(function(err, stream) {
-  //     if (err) throw err;
-
-
-  //     stream.on('close', function() {
-  //       console.log('1 :: close');
-  //       conn.end();
-  //     }).on('data', function(data) {
-  //       console.log('2: ' + data);
-  //     }).stderr.on('data', function(data) {
-  //       console.log('3: ' + data);
-  //     });
-
-  //     console.log('---- A ----');
-  //     stream.end('ls -l\nexit\n');
-
-
-  //   });
-  // }).connect(connSettings);
-
-
-  // createSettingsWindow();
-// });
 
 // function to be called by 'New Todo' menu button
 function createSettingsWindow() {
@@ -411,8 +273,6 @@ ipcMain.on('addTask:btn', (event, todo) => {
 });
 
 
-// Trash?
-// var cmd = require('node-cmd');
 
 var Client = require('ssh2').Client;
 var connection = new Client();
