@@ -222,15 +222,11 @@ ipcMain.on('sendText:btn', (event, todo) => {
     body: "Initial Test",
     mediaUrl: imgurl,
   }, function(err, message) { 
-
       if(err){
         console.log(err);
       } else {
         console.log(message.sid);
       }
-
-      // console.log(message);
-      // console.log(message.sid); 
   });
 
 });
