@@ -12,7 +12,6 @@ let mainWindow;
 let addWindow;
 
 
-
 // when the app is ready:
 app.on('ready', () => {
   // assign window to variable
@@ -331,9 +330,6 @@ ipcMain.on('phone:btn', (event, todo) => {
     console.log(this);  
 
 });
-
-
-
 
 
 
