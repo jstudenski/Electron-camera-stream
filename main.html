@@ -26,8 +26,6 @@
   <img src="test.jpg">
 </div>
 
-
-
 <!-- 
   <form class="center">
     <label>Enter Phone</label><br>
@@ -41,10 +39,34 @@
 
   <form class="center">
   <label>Phone Number Example
-    <input id="phone-number" type="text"/>
+    <input id="phone-number" type="text" autofocus>
   </label>
   <button id="submit" type="submit">Submit</button>
   </form>
+
+
+<div id="calculator" class="calculator">
+<!--   <button id="clear" class="clear">C</button> -->
+<!--   <div id="viewer" class="viewer">0</div> -->
+  <button class="num" data-num="1">1</button>
+  <button class="num" data-num="2">2</button>
+  <button class="num" data-num="3">3</button>
+  <button class="num" data-num="4">4</button>
+  <button class="num" data-num="5">5</button>
+  <button class="num" data-num="6">6</button>
+  <button class="num" data-num="7">7</button>
+  <button class="num" data-num="8">8</button>
+  <button class="num" data-num="9">9</button>
+  <button class="num" data-num="0">0</button>
+<!--   <button class="num" data-num=".">.</button>
+  <button id="equals" class="equals" data-result="">=</button>
+  <button data-ops="divided by" class="ops">/</button> -->
+</div>
+
+<!-- <button id="reset" class="reset">Reset Universe?</button> -->
+
+
+
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
@@ -55,6 +77,14 @@
   <script>
 
     $('#phone-number').mask('(000) 000-0000');
+
+    $('button').click( function(){
+      console.log(this.attr("data-num"));
+
+    });
+
+
+    
 
     $('form').submit(function(event) {
       event.preventDefault();

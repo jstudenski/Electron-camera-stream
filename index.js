@@ -271,7 +271,7 @@ ipcMain.on('addTask:btn', (event, todo) => {
 
 var Client = require('ssh2').Client;
 var connection = new Client();
-// connection settings
+
 var connSettings = {
    host: 'NEXTcamera50.local', // 169.254.126.55  NEXTcamera50.local
    port: 22, // Normal is 22 port
@@ -287,11 +287,8 @@ conn.on('ready', function() {
   conn.sftp(function(err, sftp) {
   if (err) throw err;
 
-    // try .unlink or chmod
     sftp.readdir(remotePathToList, function(err, list) {
       if (err) throw err;
-      // List the directory in the console
-      // console.dir(list);
       myfile = list;
 
       conn.end(); // close the connection
