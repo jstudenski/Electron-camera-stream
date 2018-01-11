@@ -269,14 +269,15 @@ ipcMain.on('addTask:btn', (event, todo) => {
 
 
 
+
 var Client = require('ssh2').Client;
 var connection = new Client();
 
 var connSettings = {
-   host: 'NEXTcamera50.local', // 169.254.126.55  NEXTcamera50.local
-   port: 22, // Normal is 22 port
-   username: 'pi',
-   password: 'ahc6674762'
+  host: process.env.host,
+  port: 22, // Normal is 22 port 
+  username: process.env.username,
+  password: process.env.password
 };
 
 var remotePathToList = '/home/pi';
