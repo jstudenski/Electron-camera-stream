@@ -18,9 +18,9 @@
   <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div>
 
 <br>
-  <h2></h2>
+<!--   <h2></h2>
   <ul>
-  </ul>
+  </ul> -->
 
 <div id="myimg">
   <img src="test.jpg">
@@ -44,9 +44,10 @@
     <li class="number" value="6">6</li>
     <li class="number" value="7">7</li>
     <li class="number" value="8">8</li>
-    <li class="number" value="9">9</li>
-    <li class="number" value="0">0</li>
+    <li class="number" value="9">9</li>    
     <li class="delete">del</li>
+    <li class="number" value="0">0</li>
+
   </ul>
 </div>
 
@@ -58,14 +59,41 @@
 
   <script>
 
+
+    function showSendBtn() {
+      if (phonenumber.length === 10) {
+        $('#submit').show();
+      } else {
+        $('#submit').hide();
+      }
+    }
+    var phonenumber = '';  
+    showSendBtn();
+
     $('#phone-number').mask('(000) 000-0000');
-    var phonenumber = '';
+
+
+    $( "#phone-number" ).keyup(function() {
+     // console.log();
+      phonenumber = $("#phone-number").cleanVal()
+      console.log(phonenumber);  
+      showSendBtn();
+    });
 
     $('.number').click(function(){
-      console.log();
-      phonenumber += $(this).attr("value");
-      $('#phone-number').val(phonenumber);
-      $('#phone-number').trigger('input');
+      if (phonenumber.length < 10) {
+        phonenumber += $(this).attr("value");
+        $('#phone-number').val(phonenumber);
+        $('#phone-number').trigger('input');
+        console.log(phonenumber)
+        console.log(phonenumber.length)
+
+      } else {
+        console.log(phonenumber);  
+      }
+
+      showSendBtn();
+
     });
 
     $('.delete').click(function(){
@@ -73,7 +101,9 @@
       phonenumber = phonenumber.substring(0,phonenumber.length-1);
       $('#phone-number').val(phonenumber);
       $('#phone-number').trigger('input');
+      showSendBtn();
     });
+
 
     $('form').submit(function(event) {
       event.preventDefault();
