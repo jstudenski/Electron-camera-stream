@@ -133,7 +133,6 @@ http.createServer(function (req, res) {
 console.log("Server running at http://localhost:8080/");
 
 
-
 var ngrok = require('ngrok');
 
 var imgurl = '';
@@ -150,42 +149,32 @@ ngrok.connect(8080, function (err, url) {
 
 
 // listen for event (from add.html)
-ipcMain.on('phone:add', (event, phoneNumber) => {
+ipcMain.on('phone:add', (event, number) => {
 
-  console.log(phoneNumber);
-
+  console.log("phone number: " + number);
 
   // Twilio Credentials 
   var accountSid = process.env.accountSid;
   var authToken = process.env.authToken;
   var myNumber = process.env.myNumber;
- //  var destination = process.env.destination;
 
- //  console.log(accountSid);
- //  console.log(authToken);
- //  console.log(myNumber);
- //  console.log(destination);
-
+ // require the Twilio module and create a REST client 
+  var client = require('twilio')(accountSid, authToken); 
    
- // // require the Twilio module and create a REST client 
- //  var client = require('twilio')(accountSid, authToken); 
-   
- //  client.messages.create({ 
- //    to: phoneNumber,
- //    from: myNumber,
- //    body: "Test Image",
- //    mediaUrl: imgurl,
- //  }, function(err, message) { 
+  client.messages.create({ 
+    to: number,
+    from: myNumber,
+    body: "Test Image",
+    mediaUrl: imgurl,
+  }, function(err, message) { 
 
- //      if(err){
- //        console.log(err);
- //      } else {
- //        console.log(message.sid);
- //      }
+      if(err){
+        console.log(err);
+      } else {
+        console.log("sent: " + message.sid);
+      }
 
- //      // console.log(message);
- //      // console.log(message.sid); 
- //  });
+  });
 
 
 
@@ -270,34 +259,34 @@ ipcMain.on('addTask:btn', (event, todo) => {
 
 
 
-var Client = require('ssh2').Client;
-var connection = new Client();
+// var Client = require('ssh2').Client;
+// var connection = new Client();
 
-var connSettings = {
-  host: process.env.host,
-  port: 22, // Normal is 22 port 
-  username: process.env.username,
-  password: process.env.password
-};
+// var connSettings = {
+//   host: process.env.host,
+//   port: 22, // Normal is 22 port 
+//   username: 'pi',
+//   password: process.env.password
+// };
 
-var remotePathToList = '/home/pi';
-let myfile;
+// var remotePathToList = '/home/pi';
+// let myfile;
 
-var conn = new Client();
-conn.on('ready', function() {
-  conn.sftp(function(err, sftp) {
-  if (err) throw err;
+// var conn = new Client();
+// conn.on('ready', function() {
+//   conn.sftp(function(err, sftp) {
+//   if (err) throw err;
 
-    sftp.readdir(remotePathToList, function(err, list) {
-      if (err) throw err;
-      myfile = list;
+//     sftp.readdir(remotePathToList, function(err, list) {
+//       if (err) throw err;
+//       myfile = list;
 
-      conn.end(); // close the connection
-    });
+//       conn.end(); // close the connection
+//     });
 
-  });
+//   });
 
-}).connect(connSettings);
+// }).connect(connSettings);
 
 
 
