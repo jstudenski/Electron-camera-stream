@@ -3,7 +3,6 @@
 // --update env variables--
 // source app-env
 
-
 const electron = require('electron');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
@@ -262,12 +261,12 @@ ipcMain.on('addTask:btn', (event, todo) => {
 // var Client = require('ssh2').Client;
 // var connection = new Client();
 
-// var connSettings = {
-//   host: process.env.host,
-//   port: 22, // Normal is 22 port 
-//   username: 'pi',
-//   password: process.env.password
-// };
+var connSettings = {
+  host: process.env.host,
+  port: 22, // Normal is 22 port 
+  username: 'pi',
+  password: process.env.password
+};
 
 // var remotePathToList = '/home/pi';
 // let myfile;
@@ -288,9 +287,6 @@ ipcMain.on('addTask:btn', (event, todo) => {
 
 // }).connect(connSettings);
 
-
-
-
 var exec = require('node-ssh-exec');
 
 // when button is pressed
@@ -298,16 +294,139 @@ ipcMain.on('capture:btn', (event, todo) => {
    // execute 
     console.log("Taking picture..");
     var start = new Date().getTime(); // Timer
-
-    exec(connSettings, 'python3 TestTakePhoto.py', function (err, response) {
+    // 'python3 TestTakePhoto.py'
+    exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
       if (err) throw err
       var end = new Date().getTime(); // Timer
       // once photo is taken
       var time = end - start; // Timer
       console.log('Picture Taken! Execution time: ' + time); // Timer
+
     });
 
 });
+
+var folders;
+// when button is pressed
+ipcMain.on('sync:btn', (event, todo) => {
+   // execute
+   console.log("Syncing images folder..");
+   var start = new Date().getTime(); // Timer
+   exec(connSettings, 'ls /media/pi/1T/NEXCAP/Files/NEXTLAB', function (err, response) {
+      if (err) throw err
+      var end = new Date().getTime(); // Timer
+      // once photo is taken
+      var time = end - start; // Timer
+      console.log('Folders found.. Time: ' + time); // Timer
+
+      console.log(typeof(folders));
+      folders = response;
+      //myVar = response;
+      console.log(typeof(folders));
+
+});
+
+// when button is pressed
+ipcMain.on('test:btn', (event, todo) => {
+   // execute
+   console.log(folders);
+   console.log(typeof(folders)); 
+   console.log(folders.split('\n')); 
+});
+
+
+ipcMain.on('move:btn', (event, todo) => {
+   // execute
+   console.log("Move Btn..");
+   var start = new Date().getTime(); // Timer
+   exec(connSettings, 'ls /media/pi/1T/NEXCAP/Files/NEXTLAB', function (err, response) {
+      if (err) throw err
+      var end = new Date().getTime(); // Timer
+      // once photo is taken
+      var time = end - start; // Timer
+      console.log('Move Done.. Time: ' + time); // Timer
+
+      console.log(typeof(folders));
+      folders = response;
+      //myVar = response;
+      console.log(typeof(folders));
+
+});
+
+
+// when button is pressed
+// ipcMain.on('move:btn', (event, todo) => {
+//    folders = folders.split('\n');
+//    console.log(folders);
+  
+
+//    var start = new Date().getTime(); // Timer
+//    exec(connSettings, 'ls /media/pi/1T/NEXCAP/Files/NEXTLAB', function (err, response) {
+//       if (err) throw err
+//       var end = new Date().getTime(); // Timer
+//       // once photo is taken
+//       var time = end - start; // Timer
+//       console.log('Folders found.. Time: ' + time); // Timer
+
+//      // console.log(response);
+//       var myVar = response;
+
+
+
+        // conn.sftp(function(err, sftp) {
+        //     if (err) throw err;
+
+        //     var moveFrom = "/home/pi/testimg.jpg";
+        //     var moveTo = "./test.jpg";
+
+        //     sftp.fastGet(moveFrom, moveTo, {}, function(downloadError) {
+        //         if (downloadError) throw downloadError;
+        //         mainWindow.reload(); // refresh
+        //     });
+
+        // });
+
+
+   // var start = new Date().getTime(); // Timer
+   // exec(connSettings, 'ls /media/pi/1T/NEXCAP/Files/NEXTLAB', function (err, response) {
+   //    if (err) throw err
+   //    var end = new Date().getTime(); // Timer
+   //    // once photo is taken
+   //    var time = end - start; // Timer
+   //    console.log('Folders found.. Time: ' + time); // Timer
+
+   //   // console.log(response);
+   //    var myVar = response;
+// });
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    // var start = new Date().getTime(); // Timer
+    // // 'python3 TestTakePhoto.py'
+    // exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
+    //   if (err) throw err
+    //   var end = new Date().getTime(); // Timer
+    //   // once photo is taken
+    //   var time = end - start; // Timer
+    //   console.log('Picture Taken! Execution time: ' + time); // Timer
+
+    // });
+
+});
+
+
+
+
 
 
 // when button is pressed

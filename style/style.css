@@ -35,9 +35,33 @@ button p {
 #showfiles {
   background-color: salmon;
 }
+
+
 #capture {
-  background-color: blue;
+  margin: 20px 0px 0px 20px;
+  background-color: #444444;
+  color: #ffffff;
 }
+
+#sync {
+  margin: 20px 0px 0px 10px;
+  background-color: #444444;
+  color: #ffffff;
+}
+
+#test {
+  margin: 20px 0px 0px 10px;
+  background-color: #444444;
+  color: #ffffff;
+}
+
+#move {
+  margin: 20px 0px 0px 10px;
+  background-color: #444444;
+  color: #ffffff;
+}
+
+
 #transfer {
   background-color: orange;
 }
@@ -45,10 +69,7 @@ button p {
   background-color: #FF5733;
 }
 
-#test {
-  background-color: pink;
-  color: #666;
-}
+
 
 #download {
   background-color: tomato;
