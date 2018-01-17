@@ -16,6 +16,14 @@ div img {
   width: 24px;
 }
 
+.gallery-item {
+  width: 200px;
+  margin: 20px;
+}
+
+
+
+
 button p {
   width: 24px;
 }

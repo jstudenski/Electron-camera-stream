@@ -319,110 +319,80 @@ ipcMain.on('sync:btn', (event, todo) => {
       var time = end - start; // Timer
       console.log('Folders found.. Time: ' + time); // Timer
 
-      console.log(typeof(folders));
       folders = response;
-      //myVar = response;
-      console.log(typeof(folders));
+    });
+});   
 
-});
-
-// when button is pressed
-ipcMain.on('test:btn', (event, todo) => {
-   // execute
-   console.log(folders);
-   console.log(typeof(folders)); 
-   console.log(folders.split('\n')); 
-});
-
-
-ipcMain.on('move:btn', (event, todo) => {
-   // execute
-   console.log("Move Btn..");
-   var start = new Date().getTime(); // Timer
-   exec(connSettings, 'ls /media/pi/1T/NEXCAP/Files/NEXTLAB', function (err, response) {
-      if (err) throw err
-      var end = new Date().getTime(); // Timer
-      // once photo is taken
-      var time = end - start; // Timer
-      console.log('Move Done.. Time: ' + time); // Timer
-
-      console.log(typeof(folders));
-      folders = response;
-      //myVar = response;
-      console.log(typeof(folders));
-
-});
-
-
-// when button is pressed
-// ipcMain.on('move:btn', (event, todo) => {
-//    folders = folders.split('\n');
+// // when button is pressed
+// ipcMain.on('test:btn', (event, todo) => {
+//    // execute
 //    console.log(folders);
-  
-
-//    var start = new Date().getTime(); // Timer
-//    exec(connSettings, 'ls /media/pi/1T/NEXCAP/Files/NEXTLAB', function (err, response) {
-//       if (err) throw err
-//       var end = new Date().getTime(); // Timer
-//       // once photo is taken
-//       var time = end - start; // Timer
-//       console.log('Folders found.. Time: ' + time); // Timer
-
-//      // console.log(response);
-//       var myVar = response;
-
-
-
-        // conn.sftp(function(err, sftp) {
-        //     if (err) throw err;
-
-        //     var moveFrom = "/home/pi/testimg.jpg";
-        //     var moveTo = "./test.jpg";
-
-        //     sftp.fastGet(moveFrom, moveTo, {}, function(downloadError) {
-        //         if (downloadError) throw downloadError;
-        //         mainWindow.reload(); // refresh
-        //     });
-
-        // });
-
-
-   // var start = new Date().getTime(); // Timer
-   // exec(connSettings, 'ls /media/pi/1T/NEXCAP/Files/NEXTLAB', function (err, response) {
-   //    if (err) throw err
-   //    var end = new Date().getTime(); // Timer
-   //    // once photo is taken
-   //    var time = end - start; // Timer
-   //    console.log('Folders found.. Time: ' + time); // Timer
-
-   //   // console.log(response);
-   //    var myVar = response;
+//    console.log(typeof(folders)); 
+//    console.log(folders.split('\n')); 
 // });
 
 
 
+var client = require('scp2')
 
 
+ipcMain.on('move:btn', (event, todo) => {
 
+  exec(connSettings, 'cat /media/pi/1T/NEXCAP/Settings/lastgif.txt', function (err, response) {
+    if (err) throw err
+    var imgFilePath = response;
 
+    console.log(imgFilePath);
 
-
-
-    
-
-
-    // var start = new Date().getTime(); // Timer
-    // // 'python3 TestTakePhoto.py'
-    // exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
-    //   if (err) throw err
-    //   var end = new Date().getTime(); // Timer
-    //   // once photo is taken
-    //   var time = end - start; // Timer
-    //   console.log('Picture Taken! Execution time: ' + time); // Timer
-
-    // });
+    client.scp({
+      host: process.env.host,
+      username: 'pi',
+      password: process.env.password,
+      path: imgFilePath
+    }, './images/gifs/', function(err) {
+      if (err) throw err
+    })
+  });
 
 });
+
+
+
+var images = [];
+// get images
+fs.readdir('./images/gifs/', (err, files) => {
+  if (err) throw  err;
+
+  for (let file of files) {
+    // if the last 4 digits are gif
+    if (file.substr(-4) === '.gif') {
+      images.push(file)
+    }
+  }
+
+  console.log(images)
+  
+
+   //mainWindow.webContents.send('test');
+
+  //mainWindow.webContents = 'test';
+
+ // mainWindow.webContents.send('showfiles:btn');
+   // mainWindow.webContents.send('images:object', images);
+
+});
+
+
+ipcMain.on('test:btn', (event, list) => {
+  console.log('test');
+  // send to mainWindow
+  mainWindow.webContents.send('list-of-images', images);
+
+
+});
+
+
+
 
 
 
@@ -431,6 +401,8 @@ ipcMain.on('move:btn', (event, todo) => {
 
 // when button is pressed
 ipcMain.on('phone:btn', (event, todo) => {
+
+
 
     console.log("phoneBTN");
     console.log(this);  
@@ -515,19 +487,6 @@ ipcMain.on('upload:btn', (event, todo) => {
 });
 
 
-// c.on('ready', function() {
-//   c.exec('ls', function(err, stream) {
-//     if (err) throw err;
-//     stream.on('data', function(data, stderr) {
-//       if (stderr)
-//         console.log('STDERR: ' + data);
-//       else
-//         console.log('STDOUT: ' + data);
-//     }).on('exit', function(code, signal) {
-//       console.log('Exited with code ' + code);
-//     });
-//   });
-// });
 
 
 

@@ -23,13 +23,15 @@
   <div id="test" onclick="sendSignal('test:btn')">Test</div>
   <div id="move" onclick="sendSignal('move:btn')">Move</div>
 <br>
-<!--   <h2></h2>
-  <ul>
-  </ul> -->
 
-<div id="myimg">
-  <img src="test.jpg">
+
+<div id="gallery">
 </div>
+
+
+<!-- <div id="myimg">
+  <img src="images/gifs/test.jpg">
+</div> -->
 <br>
 <div id="container">
 
@@ -63,6 +65,7 @@
   <script src="javascript/keyboard.js"></script>
 
   <script>
+
 
 
     function showSendBtn() {
@@ -163,6 +166,34 @@
       }
 
     });
+
+
+
+
+    ipcRenderer.on('list-of-images', (event, list) => {
+
+      console.log("Hello");
+
+      $.each(list, function( index, url ) {
+        console.log(url);
+
+        var img = $('<img/>');
+        img.attr('src', 'images/gifs/'+url);
+        img.addClass('gallery-item');
+        img.appendTo($('#gallery'));
+
+
+        // img.url = ;
+        // $('#gallery').html('img');
+
+        //alert( index + ": " + value );
+      });
+
+
+    });
+
+
+
 
 
     // ipcRenderer.on('test:test', (event, todo) => {
