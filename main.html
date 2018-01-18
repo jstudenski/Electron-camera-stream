@@ -2,10 +2,10 @@
   <link href="style/style.css" rel="stylesheet">
 </head>
 <body>
-<!--   
-  <div id="refresh" onclick="sendSignal('refresh:btn')">Refresh<img src="./images/icons/cog.svg"></div> -->
 
-  <div id="devTools" onclick="sendSignal('devTools:btn')">Inspector<!-- <img src="images/wrench.png"> --></div>
+
+<div class="userButtons">
+
   <div id="addTask" onclick="sendSignal('addTask:btn')">Add Task<!-- <img src="images/plus.png"> --></div>
   <div id="clear" onclick="clearTodos()">Clear List<!-- <img src="images/eraser.png"> --></div>
   <div id="showfiles" onclick="sendSignal('showfiles:btn')">Show Files<!-- <p>files</p> --></div>
@@ -17,14 +17,15 @@
 
   <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div>
 
-<br>
+  <br>
 
 
   <div id="capture" onclick="sendSignal('capture:btn')">Capture</div>
   <div id="sync" onclick="sendSignal('sync:btn')">Sync images</div>
   <div id="test" onclick="sendSignal('test:btn')">Test</div>
   <div id="move" onclick="sendSignal('move:btn')">Move</div>
-<br>
+  <br>
+</div><!-- userButtons -->
 
 
 <div id="gallery">
@@ -60,10 +61,12 @@
 </div>
 
 
-  <div id="admin" onclick="sendSignal('admin:btn')"><img src="./images/icons/cog.svg"></div>
+<div id="admin" onclick="sendSignal('admin:btn')"><img src="./images/icons/cog.svg"></div>
+<div id="admin-panel">
+  <div id="refresh" onclick="sendSignal('refresh:btn')"><img src="./images/icons/refresh.svg"></div>
+  <div id="devTools" onclick="sendSignal('devTools:btn')"><img src="./images/icons/magic.svg"></div>
+</div>
 
-  <div id="admin-panel">HELLO</div>
-  
 
 
 
@@ -187,19 +190,25 @@ $("#admin").click(function() {
 
 
 
-
+    // generate gallery
     ipcRenderer.on('list-of-images', (event, list) => {
 
-      console.log("Hello");
-
       $.each(list, function( index, url ) {
-        console.log(url);
+        // container
+        var div = $('<div>');
 
+        div.addClass('gallery-item');
+        // image
         var img = $('<img/>');
         img.attr('src', 'images/gifs/'+url);
-        img.addClass('gallery-item');
-        img.appendTo($('#gallery'));
+       // img.addClass('gallery-item');
+        img.appendTo(div);
+        // image name
+        var p = $('<p>');
+        p.text(url);
+        p.appendTo(div);
 
+        div.appendTo($('#gallery'));
 
         // img.url = ;
         // $('#gallery').html('img');
