@@ -10,7 +10,6 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 let mainWindow;
 let addWindow;
 
-
 // when the app is ready:
 app.on('ready', () => {
   // assign window to variable
@@ -315,8 +314,6 @@ ipcMain.on('capture:btn', (event, todo) => {
               if (err) throw err
               // displayImage();
 
-
-
                   images = [];
                   // get images
                   fs.readdir('./images/gifs/', (err, files) => {
@@ -331,9 +328,6 @@ ipcMain.on('capture:btn', (event, todo) => {
                     console.log(images)
                     mainWindow.webContents.send('list-of-images', images);
                   });
-
-
-
 
 
 
@@ -368,6 +362,24 @@ function displayImage(){
 
 
 ipcMain.on('test:btn', (event, list) => {
+
+  images = [];
+  // get images
+  fs.readdir('./images/gifs/', (err, files) => {
+    if (err) throw  err;
+
+    for (let file of files) {
+      // if the last 4 digits are gif
+      if (file.substr(-4) === '.gif') {
+        images.push(file)
+      }
+    }
+    console.log(images)
+    mainWindow.webContents.send('list-of-images', images);
+  });
+
+
+
   //   // execute 
   // console.log("Taking picture..");
   // var start = new Date().getTime(); // Timer
@@ -593,8 +605,37 @@ const menuTemplate = [
       }
     }
   ]
-}
+},
+  {
+    label: 'Edit',
+    submenu: [
+      {role: 'undo'},
+      {role: 'redo'},
+      {type: 'separator'},
+      {role: 'cut'},
+      {role: 'copy'},
+      {role: 'paste'}
+    ]
+  },
+
+
+
+
 ];
+
+
+  // submenu: [
+  //   {role: 'undo'},
+  //   {role: 'redo'},
+  //   {type: 'separator'},
+  //   {role: 'cut'},
+  //   {role: 'copy'},
+  //   {role: 'paste'},
+  //   {role: 'pasteandmatchstyle'},
+  //   {role: 'delete'},
+  //   {role: 'selectall'}
+  // ]
+
 
  // if mac
 if (process.platform === 'darwin') {

@@ -4,8 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "electron": "electron ."
+    "electron": "electron .",
+    "build-css": "node-sass --include-path scss style/style.scss style/style.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\""
   },
+
+
+
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jstudenski/Electron-camera-stream.git"
@@ -29,5 +35,9 @@
     "ssh2": "^0.5.5",
     "twilio": "^3.11.0",
     "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "node-sass": "^4.7.2",
+    "nodemon": "^1.14.11"
   }
 }
