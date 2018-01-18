@@ -19,8 +19,7 @@ app.on('ready', () => {
   mainWindow.loadURL(`file://${__dirname}/main.html`);
   // when main window is closed, close everything
   mainWindow.on('closed', () => app.quit());
-
-
+  
   // buildFronTemplate helper
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   // create menu from build
@@ -96,22 +95,6 @@ ssh.connect({
 
 
 
-
-
-// var http = require('http');
-
-// http.createServer(function (req, res) {
-
-//   fs.readFile('demofile1.html', function(err, data) {
-//     res.writeHead(200, {'Content-Type': 'text/html'});
-//     res.write(data);
-//     res.end();
-//   });
-
-
-//   res.write('Hello World!');
-//   res.end();
-// }).listen(8080);
 
 var http = require('http'),
     fs = require('fs'),
@@ -287,24 +270,132 @@ var connSettings = {
 
 // }).connect(connSettings);
 
+
+
+
 var exec = require('node-ssh-exec');
+var images = [];
 
 // when button is pressed
 ipcMain.on('capture:btn', (event, todo) => {
-   // execute 
-    console.log("Taking picture..");
-    var start = new Date().getTime(); // Timer
-    // 'python3 TestTakePhoto.py'
-    exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
-      if (err) throw err
-      var end = new Date().getTime(); // Timer
-      // once photo is taken
-      var time = end - start; // Timer
-      console.log('Picture Taken! Execution time: ' + time); // Timer
+  // execute 
+  console.log("Taking picture..");
+  var start = new Date().getTime(); // Timer
+  // 'python3 TestTakePhoto.py'
+  exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
+    if (err) {
+      if (err.code === 'ECONNREFUSED') {
+        console.log("Pi not connected, try updating env variables with `source app-env`");
+      } else {
+        throw err
+      }
+    }
+    var end = new Date().getTime(); // Timer
+    // once photo is taken
+    var time = end - start; // Timer
+    console.log('Picture Taken! Execution time: ' + time); // Timer
 
-    });
+    //getFile(); // get file path
 
+
+
+
+          exec(connSettings, 'cat /media/pi/1T/NEXCAP/Settings/lastgif.txt', function (err, response) {
+            if (err) throw err
+            var imgFilePath = response;
+
+            console.log(imgFilePath);
+
+            client.scp({
+              host: process.env.host,
+              username: 'pi',
+              password: process.env.password,
+              path: imgFilePath
+            }, './images/gifs/', function(err) {
+              if (err) throw err
+              // displayImage();
+
+
+
+                  images = [];
+                  // get images
+                  fs.readdir('./images/gifs/', (err, files) => {
+                    if (err) throw  err;
+
+                    for (let file of files) {
+                      // if the last 4 digits are gif
+                      if (file.substr(-4) === '.gif') {
+                        images.push(file)
+                      }
+                    }
+                    console.log(images)
+                    mainWindow.webContents.send('list-of-images', images);
+                  });
+
+
+
+
+
+
+
+            })
+          });
+
+
+
+
+
+
+
+
+
+  });
 });
+
+
+// // get file path
+// function getFile(){
+
+// }
+
+
+
+function displayImage(){
+
+}
+
+
+
+
+ipcMain.on('test:btn', (event, list) => {
+  //   // execute 
+  // console.log("Taking picture..");
+  // var start = new Date().getTime(); // Timer
+  // // 'python3 TestTakePhoto.py'
+  // exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
+  //   if (err) {
+  //     if (err.code === 'ECONNREFUSED') {
+  //       console.log("Pi not connected, try updating env variables with `source app-env`");
+  //     } else {
+  //       throw err
+  //     }
+  //   }
+  //   var end = new Date().getTime(); // Timer
+  //   // once photo is taken
+  //   var time = end - start; // Timer
+  //   console.log('Picture Taken! Execution time: ' + time); // Timer
+
+  //   getFile(); // get file path
+  // });
+
+  displayImage();
+});
+
+
+
+
+
+
 
 var folders;
 // when button is pressed
@@ -358,38 +449,8 @@ ipcMain.on('move:btn', (event, todo) => {
 
 
 
-var images = [];
-// get images
-fs.readdir('./images/gifs/', (err, files) => {
-  if (err) throw  err;
-
-  for (let file of files) {
-    // if the last 4 digits are gif
-    if (file.substr(-4) === '.gif') {
-      images.push(file)
-    }
-  }
-
-  console.log(images)
-  
-
-   //mainWindow.webContents.send('test');
-
-  //mainWindow.webContents = 'test';
-
- // mainWindow.webContents.send('showfiles:btn');
-   // mainWindow.webContents.send('images:object', images);
-
-});
 
 
-ipcMain.on('test:btn', (event, list) => {
-  console.log('test');
-  // send to mainWindow
-  mainWindow.webContents.send('list-of-images', images);
-
-
-});
 
 
 
