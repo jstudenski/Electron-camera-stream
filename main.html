@@ -5,18 +5,15 @@
 
 <div class="userButtons">
 
-  <div id="addTask" onclick="sendSignal('addTask:btn')">Add Task<!-- <img src="images/plus.png"> --></div>
-  <div id="clear" onclick="clearTodos()">Clear List<!-- <img src="images/eraser.png"> --></div>
-  <div id="showfiles" onclick="sendSignal('showfiles:btn')">Show Files<!-- <p>files</p> --></div>
-<!--   <div id="capture" onclick="sendSignal('capture:btn')">Take Pic</div> -->
-  <div id="transfer" onclick="sendSignal('transfer:btn')">Transfer Pic<!-- <p>cam</p> --></div>
-<!--   <div id="test" onclick="sendSignal('test:btn')">TEST!</div> -->
+<!--   <div id="addTask" onclick="sendSignal('addTask:btn')">Add Task</div>
+  <div id="clear" onclick="clearTodos()">Clear List</div>
+  <div id="showfiles" onclick="sendSignal('showfiles:btn')">Show Files</div>
+  <div id="transfer" onclick="sendSignal('transfer:btn')">Transfer Pic</div>
   <div id="download" onclick="sendSignal('download:btn')">download</div>
   <div id="upload" onclick="sendSignal('upload:btn')">upload</div>
+  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
 
-  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div>
-
-  <br>
+<!--   <br> -->
 
   <div id="capture" onclick="sendSignal('capture:btn')">Capture</div>
   <div id="sync" onclick="sendSignal('sync:btn')">Sync images</div>
@@ -49,7 +46,11 @@
   <img src="images/gifs/test.jpg">
 </div> -->
 <br>
-<div id="container">
+
+<div id="keypad-row">
+  
+
+  <ul id="keypad">
 
   <form class="center">
   <label>Phone Number<br>
@@ -58,7 +59,7 @@
   <button id="submit" type="submit"></button>
   </form>
 
-  <ul id="keyboard">
+
     <li class="number" value="1">1</li>   
     <li class="number" value="2">2</li>
     <li class="number" value="3">3</li>
@@ -107,6 +108,8 @@
 var adminPanelOpen = false;
 $("#admin-panel").hide();
 $('.admin-show').hide();
+
+
 
 $("#admin").click(function() {
   if (adminPanelOpen === false) {
@@ -263,17 +266,30 @@ function start() {
        // img.addClass('gallery-item');
         img.appendTo(div);
         // image name
+
+        var btnBar = $('<div>');
+        btnBar.addClass('btnBar');
+          // remove button
+          var remove = $('<div>');
+          remove.addClass('remove-button');
+          remove.html('<img src="./images/icons/trash.svg">');
+          remove.click(removeGif);
+          remove.attr('data-url', 'images/gifs/'+url);
+          remove.appendTo(btnBar);
+          // send button
+          var send = $('<div>');
+          send.addClass('send-button');
+          send.html('Send');
+          send.appendTo(btnBar);
+
+        btnBar.appendTo(div);
+
         var p = $('<p>');
         p.text(url);
         p.addClass('admin-show');
         p.appendTo(div);
 
-        var remove = $('<div>');
-        remove.addClass('remove-button');
-        remove.html('<img src="./images/icons/trash.svg">');
-        remove.click(removeGif);
-        remove.attr('data-url', 'images/gifs/'+url);
-        remove.appendTo(div);
+
 
         div.appendTo($('#gallery'));
 
@@ -288,11 +304,10 @@ function start() {
       $(this).addClass("isActive");
     }
 
+
     function removeGif() {
       ipcRenderer.send('remove:image', $(this).attr('data-url'))
     }
-
-
 
 
 
