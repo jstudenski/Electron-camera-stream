@@ -42,7 +42,7 @@
   <label>Phone Number<br>
     <input id="phone-number" type="text" class="write" autofocus>
   </label>
-  <button id="submit" type="submit">></button>
+  <button id="submit" type="submit"></button>
   </form>
 
   <ul id="keyboard">
@@ -65,12 +65,22 @@
 <div id="admin-panel">
   <div id="refresh" onclick="sendSignal('refresh:btn')"><img src="./images/icons/refresh.svg"></div>
   <div id="devTools" onclick="sendSignal('devTools:btn')"><img src="./images/icons/magic.svg"></div>
+  <div id="manualAdd" onclick="sendSignal('manualAdd:btn')">
+        
+    <form>
+      MGIF<input type="text" name="number" placeholder="1000">.gif
+     <!--  <input type="submit" > -->
+      <input id="manualAdd-submit" type="submit" value="Add"></input>
+    </form> 
+
+
+  </div>
 </div>
 
 
 
 
-
+<footer></footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
@@ -80,9 +90,10 @@
 
   <script>
 
-
+  $("#admin-panel").hide();
 $("#admin").click(function() {
   $("#admin-panel").toggle();
+  $('.admin-show').toggle();
 });
 
 
@@ -206,6 +217,7 @@ $("#admin").click(function() {
         // image name
         var p = $('<p>');
         p.text(url);
+        p.addClass('admin-show');
         p.appendTo(div);
 
         div.appendTo($('#gallery'));

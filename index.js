@@ -2,6 +2,8 @@
 // npm run electron
 // --update env variables--
 // source app-env
+// --sass compiler--
+// npm run watch-css
 
 const electron = require('electron');
 const { app, BrowserWindow, Menu, ipcMain } = electron;

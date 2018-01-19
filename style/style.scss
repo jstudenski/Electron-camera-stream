@@ -4,7 +4,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: #eee;  
   font-size: 14px;
-  position:relative
+
 }
 
 
@@ -12,7 +12,6 @@ body {
 //   border: none;
 //   outline: none; 
 // }
-
 
 
 .userButtons div{
@@ -189,8 +188,6 @@ padding: 0;
 
 
 
-
-
 $adminsize: 46px;
 $borderradius: 8px;
 
@@ -198,7 +195,7 @@ $borderradius: 8px;
   width: $adminsize;
   height: $adminsize;
   background-color: #686868;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   border-radius: 0px $borderradius 0px 0px;
@@ -210,16 +207,10 @@ $borderradius: 8px;
   }
 }
 
-// div img {
-//   width: 24px;
-// }
-
-
 #admin-panel {
-  display: none; // hide on startup
   background-color: #686868;
   bottom: 0;
-  position: absolute;
+  position: fixed;
   left: $adminsize - $borderradius;
   height: $adminsize;
   box-sizing: border-box;
@@ -229,21 +220,51 @@ $borderradius: 8px;
     border-radius: $borderradius;
     background-color: #A9A9A9;
     padding: 8px;
-    display: inline-block;
+    //display: inline-block;
+    float: left;
+    margin-left: 3px;
+    height: 24px;
     img {
       width: 24px;
+    }
+    input {
+      height: 100%;
+      width: 40px;
+      border: none;
+      padding-left: 3px;
+      font-size: 14px;
+      border-radius: 3px;
+      margin: 0px 2px;
+    }
+    #manualAdd-submit {
+      background-color: #444;
+      color: #fff;
+      padding: 0px;
+      &:hover {
+        background-color: #666;
+      }
     }
   }
 }
 
 
 .gallery-item {
+  border: 1px solid #ccc;
   width: 200px;
   margin: 20px;
   background-color: #a9a9a9;
   display: inline-block;
+  p {
+    text-align: center;
+    display: nonel
+  }
 }
 
 .gallery-item img {
   width: 100%;
+}
+
+// hide on startup
+.admin-show {
+  display: none;
 }

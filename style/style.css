@@ -2,8 +2,7 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background: #eee;
-  font-size: 14px;
-  position: relative; }
+  font-size: 14px; }
 
 .userButtons div {
   display: inline-block;
@@ -149,7 +148,7 @@ button img {
   width: 46px;
   height: 46px;
   background-color: #686868;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   border-radius: 0px 8px 0px 0px;
@@ -160,10 +159,9 @@ button img {
     width: 100%; }
 
 #admin-panel {
-  display: none;
   background-color: #686868;
   bottom: 0;
-  position: absolute;
+  position: fixed;
   left: 38px;
   height: 46px;
   box-sizing: border-box;
@@ -173,15 +171,38 @@ button img {
     border-radius: 8px;
     background-color: #A9A9A9;
     padding: 8px;
-    display: inline-block; }
+    float: left;
+    margin-left: 3px;
+    height: 24px; }
     #admin-panel div img {
       width: 24px; }
+    #admin-panel div input {
+      height: 100%;
+      width: 40px;
+      border: none;
+      padding-left: 3px;
+      font-size: 14px;
+      border-radius: 3px;
+      margin: 0px 2px; }
+    #admin-panel div #manualAdd-submit {
+      background-color: #444;
+      color: #fff;
+      padding: 0px; }
+      #admin-panel div #manualAdd-submit:hover {
+        background-color: #666; }
 
 .gallery-item {
+  border: 1px solid #ccc;
   width: 200px;
   margin: 20px;
   background-color: #a9a9a9;
   display: inline-block; }
+  .gallery-item p {
+    text-align: center;
+    display: nonel; }
 
 .gallery-item img {
   width: 100%; }
+
+.admin-show {
+  display: none; }
