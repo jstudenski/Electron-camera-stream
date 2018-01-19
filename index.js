@@ -278,6 +278,9 @@ var images = [];
 
 // when button is pressed
 ipcMain.on('capture:btn', (event, todo) => {
+
+  mainWindow.webContents.send('start:stopwatch');
+
   // execute 
   console.log("Taking picture..");
   var start = new Date().getTime(); // Timer
@@ -347,7 +350,8 @@ function displayImage(){
 
 
 ipcMain.on('test:btn', (event, list) => {
-
+  console.log('test:btn');
+  mainWindow.webContents.send('start:stopwatch');
   images = [];
   // get images
   fs.readdir('./images/gifs/', (err, files) => {
@@ -365,29 +369,8 @@ ipcMain.on('test:btn', (event, list) => {
 
 
 
-  //   // execute 
-  // console.log("Taking picture..");
-  // var start = new Date().getTime(); // Timer
-  // // 'python3 TestTakePhoto.py'
-  // exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
-  //   if (err) {
-  //     if (err.code === 'ECONNREFUSED') {
-  //       console.log("Pi not connected, try updating env variables with `source app-env`");
-  //     } else {
-  //       throw err
-  //     }
-  //   }
-  //   var end = new Date().getTime(); // Timer
-  //   // once photo is taken
-  //   var time = end - start; // Timer
-  //   console.log('Picture Taken! Execution time: ' + time); // Timer
-
-  //   getFile(); // get file path
-  // });
-
-  displayImage();
+ // displayImage();
 });
-
 
 
 
@@ -448,34 +431,33 @@ ipcMain.on('move:btn', (event, todo) => {
 
 
 
-
 // manually add image
 ipcMain.on('get:image', (event, num) => {
 
-    console.log("get:image");
-    console.log(num); 
+  console.log("get:image");
+  console.log(num); 
 
-    var filePath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif' 
+  var filePath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif' 
 
-    console.log(filePath); 
+  console.log(filePath); 
 
-     exec(connSettings, '', function (err, response) { // better way of connecting??
-        if (err) throw err
+   exec(connSettings, '', function (err, response) { // better way of connecting??
+      if (err) throw err
 
-       client.scp({
-         host: process.env.host,
-         username: 'pi',
-         password: process.env.password,
-         path: filePath
-       }, './images/gifs/', function(err) {
-         if (err) throw err
-         // displayImage();
-          console.log("made it insiode!");
-          refreshImages();
-          
-       })
+     client.scp({
+       host: process.env.host,
+       username: 'pi',
+       password: process.env.password,
+       path: filePath
+     }, './images/gifs/', function(err) {
+       if (err) throw err
+       // displayImage();
+        console.log("made it insiode!");
+        refreshImages();
 
-     });
+     })
+
+   });
 });
 
 
