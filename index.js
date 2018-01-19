@@ -459,7 +459,6 @@ ipcMain.on('get:image', (event, num) => {
 
     console.log(filePath); 
 
-
      exec(connSettings, '', function (err, response) { // better way of connecting??
         if (err) throw err
 
@@ -472,21 +471,8 @@ ipcMain.on('get:image', (event, num) => {
          if (err) throw err
          // displayImage();
           console.log("made it insiode!");
-           images = [];
-           // get images
-           fs.readdir('./images/gifs/', (err, files) => {
-             if (err) throw  err;
-
-             for (let file of files) {
-               // if the last 4 digits are gif
-               if (file.substr(-4) === '.gif') {
-                 images.push(file)
-               }
-             }
-             console.log(images)
-             mainWindow.webContents.send('list-of-images', images);
-           });
-
+          refreshImages();
+          
        })
 
      });
@@ -494,15 +480,13 @@ ipcMain.on('get:image', (event, num) => {
 
 
 function refreshImages() {
-  // clear array
- images = [];
- // get images
+  
+ images = []; // clear array
+ // find what images exist
  fs.readdir('./images/gifs/', (err, files) => {
    if (err) throw  err;
-
    for (let file of files) {
-     // if the last 4 digits are gif
-     if (file.substr(-4) === '.gif') {
+     if (file.substr(-4) === '.gif') { // if the last 4 digits are gif
        images.push(file)
      }
    }
