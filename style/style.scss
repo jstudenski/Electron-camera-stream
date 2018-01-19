@@ -254,6 +254,7 @@ $borderradius: 8px;
   margin: 20px;
   background-color: #a9a9a9;
   display: inline-block;
+  position: relative;
   p {
     text-align: center;
   }
@@ -266,6 +267,24 @@ $borderradius: 8px;
 .isActive {
   border: 3px solid orange;
 }
+
+.remove-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #c51604;
+  color: #fff;
+  width: 25px;
+  height: 25px;
+  border-radius: 20px;
+  img {
+    width: 21px;
+    margin-left: 2px;
+    margin-top: 2px;
+  }
+}
+
+
 
 // hide on startup
 .admin-show {

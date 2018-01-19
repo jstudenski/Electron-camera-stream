@@ -222,6 +222,13 @@ $("#admin").click(function() {
         p.addClass('admin-show');
         p.appendTo(div);
 
+        var remove = $('<div>');
+        remove.addClass('remove-button');
+        remove.html('<img src="./images/icons/trash.svg">');
+        remove.click(removeGif);
+        remove.attr('data-url', 'images/gifs/'+url);
+        remove.appendTo(div);
+
         div.appendTo($('#gallery'));
 
       });
@@ -233,13 +240,10 @@ $("#admin").click(function() {
     function isActive() {
       $('.gallery-item').removeClass("isActive");
       $(this).addClass("isActive");
-      
-      var div = $('<div>');
-      div.addClass('remove-button');
-      div.text("HELLO");
+    }
 
-      div.appendTo($(this));
-
+    function removeGif() {
+      ipcRenderer.send('remove:image', $(this).attr('data-url'))
     }
 
 

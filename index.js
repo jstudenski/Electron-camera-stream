@@ -329,27 +329,13 @@ ipcMain.on('capture:btn', (event, todo) => {
                   });
 
 
-
-
             })
           });
-
-
-
-
-
-
-
-
 
   });
 });
 
 
-// // get file path
-// function getFile(){
-
-// }
 
 
 
@@ -504,60 +490,42 @@ ipcMain.on('get:image', (event, num) => {
        })
 
      });
-
-      
-
-
-
-     // exec(connSettings, 'cat /media/pi/1T/NEXCAP/Settings/lastgif.txt', function (err, response) {
-     //        if (err) throw err
-     //        var imgFilePath = response;
-
-     //        console.log(imgFilePath);
-
-     //        client.scp({
-     //          host: process.env.host,
-     //          username: 'pi',
-     //          password: process.env.password,
-     //          path: imgFilePath
-     //        }, './images/gifs/', function(err) {
-     //          if (err) throw err
-     //          // displayImage();
-
-     //              images = [];
-     //              // get images
-     //              fs.readdir('./images/gifs/', (err, files) => {
-     //                if (err) throw  err;
-
-     //                for (let file of files) {
-     //                  // if the last 4 digits are gif
-     //                  if (file.substr(-4) === '.gif') {
-     //                    images.push(file)
-     //                  }
-     //                }
-     //                console.log(images)
-     //                mainWindow.webContents.send('list-of-images', images);
-     //              });
-
-
-
-
-     //        })
-     //      });
-
-
-
-
-
-
 });
 
 
+function refreshImages() {
+  // clear array
+ images = [];
+ // get images
+ fs.readdir('./images/gifs/', (err, files) => {
+   if (err) throw  err;
+
+   for (let file of files) {
+     // if the last 4 digits are gif
+     if (file.substr(-4) === '.gif') {
+       images.push(file)
+     }
+   }
+   console.log(images)
+   mainWindow.webContents.send('list-of-images', images);
+ });
+}
 
 
 
+ipcMain.on('remove:image', (event, filePath) => {
 
+  fs.unlink('./' + filePath, function(error) {
+    if (error) {
+        throw error;
+    }
+    console.log('Deleted: ' + filePath);
 
+    refreshImages();
+
+  });
+
+});
 
 
 // when button is pressed

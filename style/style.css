@@ -196,7 +196,8 @@ button img {
   width: 200px;
   margin: 20px;
   background-color: #a9a9a9;
-  display: inline-block; }
+  display: inline-block;
+  position: relative; }
   .gallery-item p {
     text-align: center; }
 
@@ -205,6 +206,20 @@ button img {
 
 .isActive {
   border: 3px solid orange; }
+
+.remove-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #c51604;
+  color: #fff;
+  width: 25px;
+  height: 25px;
+  border-radius: 20px; }
+  .remove-button img {
+    width: 21px;
+    margin-left: 2px;
+    margin-top: 2px; }
 
 .admin-show {
   display: none; }
