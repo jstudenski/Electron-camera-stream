@@ -115,7 +115,6 @@ http.createServer(function (req, res) {
 }).listen(8080);
 console.log("Server running at http://localhost:8080/");
 
-
 var ngrok = require('ngrok');
 
 var imgurl = '';
@@ -299,8 +298,6 @@ ipcMain.on('capture:btn', (event, todo) => {
     //getFile(); // get file path
 
 
-
-
           exec(connSettings, 'cat /media/pi/1T/NEXCAP/Settings/lastgif.txt', function (err, response) {
             if (err) throw err
             var imgFilePath = response;
@@ -466,6 +463,95 @@ ipcMain.on('move:btn', (event, todo) => {
 
 
 
+// manually add image
+ipcMain.on('get:image', (event, num) => {
+
+    console.log("get:image");
+    console.log(num); 
+
+    var filePath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif' 
+
+    console.log(filePath); 
+
+
+     exec(connSettings, '', function (err, response) { // better way of connecting??
+        if (err) throw err
+
+       client.scp({
+         host: process.env.host,
+         username: 'pi',
+         password: process.env.password,
+         path: filePath
+       }, './images/gifs/', function(err) {
+         if (err) throw err
+         // displayImage();
+          console.log("made it insiode!");
+           images = [];
+           // get images
+           fs.readdir('./images/gifs/', (err, files) => {
+             if (err) throw  err;
+
+             for (let file of files) {
+               // if the last 4 digits are gif
+               if (file.substr(-4) === '.gif') {
+                 images.push(file)
+               }
+             }
+             console.log(images)
+             mainWindow.webContents.send('list-of-images', images);
+           });
+
+       })
+
+     });
+
+      
+
+
+
+     // exec(connSettings, 'cat /media/pi/1T/NEXCAP/Settings/lastgif.txt', function (err, response) {
+     //        if (err) throw err
+     //        var imgFilePath = response;
+
+     //        console.log(imgFilePath);
+
+     //        client.scp({
+     //          host: process.env.host,
+     //          username: 'pi',
+     //          password: process.env.password,
+     //          path: imgFilePath
+     //        }, './images/gifs/', function(err) {
+     //          if (err) throw err
+     //          // displayImage();
+
+     //              images = [];
+     //              // get images
+     //              fs.readdir('./images/gifs/', (err, files) => {
+     //                if (err) throw  err;
+
+     //                for (let file of files) {
+     //                  // if the last 4 digits are gif
+     //                  if (file.substr(-4) === '.gif') {
+     //                    images.push(file)
+     //                  }
+     //                }
+     //                console.log(images)
+     //                mainWindow.webContents.send('list-of-images', images);
+     //              });
+
+
+
+
+     //        })
+     //      });
+
+
+
+
+
+
+});
+
 
 
 
@@ -476,8 +562,6 @@ ipcMain.on('move:btn', (event, todo) => {
 
 // when button is pressed
 ipcMain.on('phone:btn', (event, todo) => {
-
-
 
     console.log("phoneBTN");
     console.log(this);  

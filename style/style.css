@@ -198,11 +198,13 @@ button img {
   background-color: #a9a9a9;
   display: inline-block; }
   .gallery-item p {
-    text-align: center;
-    display: nonel; }
+    text-align: center; }
 
 .gallery-item img {
   width: 100%; }
+
+.isActive {
+  border: 3px solid orange; }
 
 .admin-show {
   display: none; }

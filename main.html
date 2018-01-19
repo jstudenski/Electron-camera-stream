@@ -65,22 +65,17 @@
 <div id="admin-panel">
   <div id="refresh" onclick="sendSignal('refresh:btn')"><img src="./images/icons/refresh.svg"></div>
   <div id="devTools" onclick="sendSignal('devTools:btn')"><img src="./images/icons/magic.svg"></div>
-  <div id="manualAdd" onclick="sendSignal('manualAdd:btn')">
+  <div id="manualAdd">
         
     <form>
-      MGIF<input type="text" name="number" placeholder="1000">.gif
-     <!--  <input type="submit" > -->
-      <input id="manualAdd-submit" type="submit" value="Add"></input>
+      MGIF
+      <input id="manualAdd-number" type="text" name="number" placeholder="1000">.gif
+      <input id="manualAdd-submit" type="submit" value="get"></input>
     </form> 
-
 
   </div>
 </div>
 
-
-
-
-<footer></footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
@@ -90,13 +85,12 @@
 
   <script>
 
-  $("#admin-panel").hide();
+$("#admin-panel").hide();
+$(".admin-show").hide();
 $("#admin").click(function() {
   $("#admin-panel").toggle();
   $('.admin-show').toggle();
 });
-
-
 
 
 
@@ -145,7 +139,7 @@ $("#admin").click(function() {
     });
 
 
-    $('form').submit(function(event) {
+    $('#submit').click(function(event) {
       event.preventDefault();
 
       // const { value } = document.querySelector('input');
@@ -154,16 +148,21 @@ $("#admin").click(function() {
       // console.log($('input').cleanVal());
       $('#phone-number').val('');
 
-
-      // //const { value } = $('input').cleanVal();
-      // console.log("value: " + value);
-
       ipcRenderer.send('phone:add', value)
     });
 
 
+    $('#manualAdd-submit').click(function(){  
+      event.preventDefault();
+      var imgNumber = $('#manualAdd-number').val();
+      $('#manualAdd-number').val('');
+      console.log(imgNumber);
+
+      ipcRenderer.send('get:image', imgNumber)
+    });
 
 
+ 
 
 
     // require electron and ipcRenderer
@@ -203,12 +202,15 @@ $("#admin").click(function() {
 
     // generate gallery
     ipcRenderer.on('list-of-images', (event, list) => {
+      // clear gallery
+      $('#gallery').html('');
 
       $.each(list, function( index, url ) {
         // container
         var div = $('<div>');
 
         div.addClass('gallery-item');
+        div.click(isActive);
         // image
         var img = $('<img/>');
         img.attr('src', 'images/gifs/'+url);
@@ -222,28 +224,24 @@ $("#admin").click(function() {
 
         div.appendTo($('#gallery'));
 
-        // img.url = ;
-        // $('#gallery').html('img');
-
-        //alert( index + ": " + value );
       });
 
 
     });
 
 
-
-
-
-    // ipcRenderer.on('test:test', (event, todo) => {
-    //   // console.log("yolo");
-    //   // console.log(todo);
+    function isActive() {
+      $('.gallery-item').removeClass("isActive");
+      $(this).addClass("isActive");
       
-    //   // var img = document.createElement("img");
-    //   // img.src = "test.jpg";
-    //   // document.getElementById("myimg").innerHTML(img);
-    //   // document.getElementById("myimg").src="test.jpg";
-    // });
+      var div = $('<div>');
+      div.addClass('remove-button');
+
+    }
+
+
+
+
 
 
 

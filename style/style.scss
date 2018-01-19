@@ -256,12 +256,15 @@ $borderradius: 8px;
   display: inline-block;
   p {
     text-align: center;
-    display: nonel
   }
 }
 
 .gallery-item img {
   width: 100%;
+}
+
+.isActive {
+  border: 3px solid orange;
 }
 
 // hide on startup
