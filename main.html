@@ -94,6 +94,14 @@
 
 
 <script>
+  // require electron and ipcRenderer
+  const electron = require('electron');
+  const {ipcRenderer } = electron;
+
+
+  ipcRenderer.send('start:up');
+
+
 
   $('.timer').hide();
   $('#showTimer').click(function() {
@@ -199,9 +207,7 @@
  
 
 
-    // require electron and ipcRenderer
-    const electron = require('electron');
-    const {ipcRenderer } = electron;
+
     const list = document.querySelector('ul');
     // listen for todo:add from Electron App
     ipcRenderer.on('todo:add', (event, todo) => {

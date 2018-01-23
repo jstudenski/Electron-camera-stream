@@ -330,7 +330,7 @@ ipcMain.on('capture:btn', (event, todo) => {
                         images.push(file)
                       }
                     }
-                    console.log(images)
+                    //console.log(images)
                    // mainWindow.webContents.send('list-of-images', images);
                      mainWindow.webContents.send('stop:stopwatch');
                   });
@@ -344,18 +344,7 @@ ipcMain.on('capture:btn', (event, todo) => {
 
 
 
-
-
-function displayImage(){
-
-}
-
-
-
-
-ipcMain.on('test:btn', (event, list) => {
-  console.log('test:btn');
-  mainWindow.webContents.send('start:stopwatch');
+ipcMain.on('start:up', (event, list) => {
   images = [];
   // get images
   fs.readdir('./images/gifs/', (err, files) => {
@@ -367,14 +356,19 @@ ipcMain.on('test:btn', (event, list) => {
         images.push(file)
       }
     }
-    console.log(images)
+    // console.log(images)
     mainWindow.webContents.send('list-of-images', images);
   });
-
-
-
- // displayImage();
 });
+
+
+
+// ipcMain.on('test:btn', (event, list) => {
+
+//   mainWindow.webContents.send('start:stopwatch');
+
+
+// });
 
 
 
@@ -476,7 +470,7 @@ function refreshImages() {
        images.push(file)
      }
    }
-   console.log(images)
+   // console.log(images)
    mainWindow.webContents.send('list-of-images', images);
  });
 }

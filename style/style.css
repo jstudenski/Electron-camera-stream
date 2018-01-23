@@ -225,6 +225,15 @@ button img {
 .gallery-item img {
   width: 100%; }
 
+.gallery-item p {
+  text-align: center;
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 0 0 6px 0; }
+
 .btnBar {
   width: 100%;
   height: 30px;
@@ -232,7 +241,7 @@ button img {
   position: relative; }
 
 .isActive {
-  border: 3px solid orange; }
+  box-shadow: 0 0 10px 4px #c51604; }
 
 .remove-button {
   position: absolute;
