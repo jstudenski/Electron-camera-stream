@@ -97,16 +97,11 @@ ssh.connect({
 
 
 
-
-
-
 var http = require('http'),
     fs = require('fs'),
     url = require('url')
 var ngrok = require('ngrok');
 
-
-var gifFilePath = 'images/gifs/MGIF1201.gif'
 
 var num ='';
 
@@ -116,6 +111,7 @@ ipcMain.on('send:text', (event, number, path) => {
   console.log("image path: " + path);
   num = number;
 
+
   http.createServer(function (req, res) {
     fs.readFile(path, function (err, content) {
         if (err) {
@@ -123,11 +119,13 @@ ipcMain.on('send:text', (event, number, path) => {
           console.log(err);
           res.end("No such image");    
         } else {
-          res.writeHead(200,{'Content-type':'image/jpg'});
+          res.writeHead(200,{'Content-type':'image/gif'});
+          var img = fs.readFileSync(path);
           res.end(content);
         }
     });
   }).listen(8080);
+
 
   var imgurl = '';
   ngrok.connect(8080, function (err, url) {
@@ -135,33 +133,53 @@ ipcMain.on('send:text', (event, number, path) => {
       console.log(err);
     } else {
       console.log("connected");
-
-      // sendSMS(number, url);
-
-
-    //imgurl = url;
+      //sendSMS(number, url)
+      //imgurl = url;
     }
   });
-
 });
+
 
 ngrok.once('connect', function (url) {
-  console.log(url);
-  console.log(num);
-
-  
+  console.log("once conect..");
+  console.log(".. " + url);
+  console.log(".. " + num);
   sendSMS(num, url);
-
-
-//   setTimeout(function(){
-//       console.log('waited');
-
-
-//     //do what you need here
-// }, 2000);
-
-
 });
+
+
+// TEST //////////////////////
+
+// http.createServer(function (req, res) {
+//   fs.readFile('images/gifs/SmallGIF.gif', function (err, content) {
+//       if (err) {
+//         res.writeHead(400, {'Content-type':'text/html'})
+//         console.log(err);
+//         res.end("No such image");    
+//       } else {
+//         res.writeHead(200, {'Content-Type': 'image/gif' });
+//         var img = fs.readFileSync('images/gifs/SmallGIF.gif');
+//         res.end(img, 'binary');
+//       }
+//   });
+// }).listen(9000);
+
+// // ngrok.disconnect(); // stops all
+
+// var imgurl = '';
+// ngrok.connect(9000, function (err, url) {
+
+//   if(err){
+//     console.log(err);
+//   } else {
+//     console.log("URL: " + url );
+//     sendSMS(6127180553, url)
+//   }
+
+// });   
+
+//////////////////////
+
 
 
 // ngrok.disconnect();
@@ -181,26 +199,22 @@ function sendSMS(recipient, imageURL) {
  client.messages.create({ 
    to: recipient,
    from: myNumber,
-   body: "Test Image" + imageURL,
+   body: "Small Test",
+   // mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
    mediaUrl: imageURL,
- }, function(err, message) { 
 
-     if(err){
-       console.log(err);
-     } else {
-       console.log("sent: " + message.sid);
-     }
+ }, function(err, message) { 
+   if(err){
+     console.log(err);
+   } else {
+     console.log("sent: " + message.sid);
+   }
 
  });
 
 
 }
 
-// debug unhandledRejection error
-process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
-  // application specific logging, throwing an error, or other logic here
-});
 
 
 
@@ -211,74 +225,77 @@ process.on('unhandledRejection', (reason, p) => {
 
 
 
+// ipcMain.on('phone:add', (event, number) => {
 
+//   console.log("phone number: " + number);
 
+//   // Twilio Credentials 
+//   var accountSid = process.env.accountSid;
+//   var authToken = process.env.authToken;
+//   var myNumber = process.env.myNumber;
 
-ipcMain.on('phone:add', (event, number) => {
-
-  console.log("phone number: " + number);
-
-  // Twilio Credentials 
-  var accountSid = process.env.accountSid;
-  var authToken = process.env.authToken;
-  var myNumber = process.env.myNumber;
-
- // require the Twilio module and create a REST client 
-  var client = require('twilio')(accountSid, authToken); 
+//  // require the Twilio module and create a REST client 
+//   var client = require('twilio')(accountSid, authToken); 
    
-  client.messages.create({ 
-    to: number,
-    from: myNumber,
-    body: "Test Image",
-    mediaUrl: imgurl,
-  }, function(err, message) { 
+//   client.messages.create({ 
+//     to: number,
+//     from: myNumber,
+//     body: "Test Test",
+//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
+//    // mediaUrl: imgurl,
+//   }, function(err, message) { 
 
-      if(err){
-        console.log(err);
-      } else {
-        console.log("sent: " + message.sid);
-      }
+//       if(err){
+//         console.log(err);
+//       } else {
+//         console.log("sent: " + message.sid);
+//       }
 
-  });
-});
-
-
-
+//   });
+// });
 
 
 
-// listen for button clicks (from main.html): 
-ipcMain.on('sendText:btn', (event, todo) => {
 
-  // Twilio Credentials 
-  var accountSid = process.env.accountSid;
-  var authToken = process.env.authToken;
-  var myNumber = process.env.myNumber;
-  var destination = process.env.destination;
 
-  console.log(accountSid);
-  console.log(authToken);
-  console.log(myNumber);
-  console.log(destination);
 
+
+// //var imgurl = 
+// // listen for button clicks (from main.html): 
+// ipcMain.on('sendText:btn', (event, todo) => {
+
+//   // Twilio Credentials 
+//   var accountSid = process.env.accountSid;
+//   var authToken = process.env.authToken;
+//   var myNumber = process.env.myNumber;
+//   var destination = process.env.destination;
+
+//   console.log(accountSid);
+//   console.log(authToken);
+//   console.log(myNumber);
+//   console.log(destination);
+ 
+
+//   //var imgurl = 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif'
+//    // var imgurl = 'http://static1.businessinsider.com/image/58c6f8e35f3ca830008b4f3c-875/9577356756453472e419b.jpg'
+
+//  // require the Twilio module and create a REST client 
+//   var client = require('twilio')(accountSid, authToken); 
    
- // require the Twilio module and create a REST client 
-  var client = require('twilio')(accountSid, authToken); 
-   
-  client.messages.create({ 
-    to: destination,
-    from: myNumber,
-    body: "Initial Test",
-    mediaUrl: imgurl,
-  }, function(err, message) { 
-      if(err){
-        console.log(err);
-      } else {
-        console.log(message.sid);
-      }
-  });
+//   client.messages.create({ 
+//     to: destination,
+//     from: myNumber,
+//     body: "Gif Test",
+//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
+//   }, function(err, message) { 
+//       if(err){
+//         console.log(err);
+//       } else {
+//         console.log(message.sid);
+//       }
+//   });
 
-});
+// });
 
 
 
@@ -323,12 +340,7 @@ ipcMain.on('addTask:btn', (event, todo) => {
 // var Client = require('ssh2').Client;
 // var connection = new Client();
 
-var connSettings = {
-  host: process.env.host,
-  port: 22, // Normal is 22 port 
-  username: 'pi',
-  password: process.env.password
-};
+
 
 // var remotePathToList = '/home/pi';
 // let myfile;
@@ -350,6 +362,12 @@ var connSettings = {
 // }).connect(connSettings);
 
 
+var connSettings = {
+  host: process.env.host,
+  port: 22, // Normal is 22 port 
+  username: 'pi',
+  password: process.env.password
+};
 
 
 var exec = require('node-ssh-exec');
@@ -365,11 +383,13 @@ ipcMain.on('capture:btn', (event, todo) => {
   var start = new Date().getTime(); // Timer
   // 'python3 TestTakePhoto.py'   // TPsingle.py
   exec(connSettings, 'python3 /home/pi/touchscripts/TPgroup.py', function (err, response) {
+
     if (err) {
       if (err.code === 'ECONNREFUSED') {
         console.log("Pi not connected, try updating env variables with `source app-env`");
       } else {
         throw err
+        console.log(err);
       }
     }
     var end = new Date().getTime(); // Timer
@@ -511,7 +531,9 @@ ipcMain.on('get:image', (event, num) => {
   console.log("get:image");
   console.log(num); 
 
-  var filePath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif' 
+  var filePath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif'
+// SGIF
+
 
   console.log(filePath); 
 
