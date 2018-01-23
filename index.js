@@ -15,7 +15,10 @@ let addWindow;
 // when the app is ready:
 app.on('ready', () => {
   // assign window to variable
-  mainWindow = new BrowserWindow({}); // set window config here
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 950
+  }); // set window config here
   // load main.html file
   mainWindow.loadURL(`file://${__dirname}/main.html`);
   // when main window is closed, close everything
