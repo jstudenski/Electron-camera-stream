@@ -23,6 +23,9 @@ button p {
     background-color: #444444;
     color: #ffffff;
     margin-right: 15px;
+    &:hover {
+      background-color: #666666;
+    }
   }
 }
 
@@ -248,12 +251,13 @@ $borderradius: 8px;
 
 
 
-
 #gallery {
   background-color: #f9f9f9;
   overflow: auto;
-  height: 490px;
+  height: 100%;
+  margin-bottom: 338px;  // phone keypad goes here
 }
+
 
 .gallery-item {
   border: 1px solid #ccc;
@@ -284,12 +288,12 @@ $borderradius: 8px;
 
 
 .btnBar {
-  width: 100%;
-  height: 30px;
-  background-color: #fff;
-  position: relative;
+    width: 100%;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: 0;
 }
-
 
 .isActive {
   //border: 3px solid orange;

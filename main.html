@@ -272,7 +272,9 @@
           // remove button
           var remove = $('<div>');
           remove.addClass('remove-button');
-          remove.html('<img src="./images/icons/trash.svg">');
+            var trash = $('<img>').attr('src', './images/icons/trash.svg');
+          remove.html(trash);
+
           remove.click(removeGif);
           remove.attr('data-url', 'images/gifs/'+url);
           remove.appendTo(btnBar);
@@ -282,14 +284,14 @@
           send.html('Send');
           send.appendTo(btnBar);
 
+        btnBar.hide(); // hide when created
         btnBar.appendTo(div);
+
 
         var p = $('<p>');
         p.text(url);
         p.addClass('admin-show');
         p.appendTo(div);
-
-
 
         div.appendTo($('#gallery'));
 
@@ -298,15 +300,14 @@
 
     });
 
-
+    //$('.btnBar').hide(); // hide on start 
     function isActive() {
-      // remove from all gallery-item
-      $('.gallery-item').removeClass("isActive");
 
+      $('.gallery-item').removeClass("isActive");
+      $('.btnBar').hide();
 
       $(this).addClass("isActive");
-
-
+      $(this).find(".btnBar").show();
 
     }
 

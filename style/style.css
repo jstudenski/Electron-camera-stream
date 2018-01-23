@@ -16,6 +16,8 @@ button p {
     background-color: #444444;
     color: #ffffff;
     margin-right: 15px; }
+    .userButtons div:hover {
+      background-color: #666666; }
 
 #addTask {
   background-color: #2ecc71; }
@@ -195,7 +197,8 @@ button img {
 #gallery {
   background-color: #f9f9f9;
   overflow: auto;
-  height: 490px; }
+  height: 100%;
+  margin-bottom: 338px; }
 
 .gallery-item {
   border: 1px solid #ccc;
@@ -222,8 +225,9 @@ button img {
 .btnBar {
   width: 100%;
   height: 30px;
-  background-color: #fff;
-  position: relative; }
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 0; }
 
 .isActive {
   box-shadow: 0 0 10px 4px #c51604; }
