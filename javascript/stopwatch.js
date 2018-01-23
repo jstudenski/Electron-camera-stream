@@ -3,13 +3,17 @@ var timer = document.getElementById('timer');
 var toggleBtn = document.getElementById('toggle');
 var resetBtn = document.getElementById('reset');
 
+
 var watch = new Stopwatch(timer);
 
-
-
 function stop() {
-  toggleBtn.textContent = 'Start';
+  $('#toggleBtn').textContent = 'Start';
   watch.stop();
+}
+
+function start() {
+  $('#toggleBtn').textContent = 'Stop';
+  watch.start();
 }
 
 toggleBtn.addEventListener('click', function() {
