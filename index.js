@@ -284,8 +284,8 @@ ipcMain.on('capture:btn', (event, todo) => {
   // execute 
   console.log("Taking picture..");
   var start = new Date().getTime(); // Timer
-  // 'python3 TestTakePhoto.py'
-  exec(connSettings, 'python3 /home/pi/touchscripts/TPsingle.py', function (err, response) {
+  // 'python3 TestTakePhoto.py'   // TPsingle.py
+  exec(connSettings, 'python3 /home/pi/touchscripts/TPgroup.py', function (err, response) {
     if (err) {
       if (err.code === 'ECONNREFUSED') {
         console.log("Pi not connected, try updating env variables with `source app-env`");
@@ -328,7 +328,8 @@ ipcMain.on('capture:btn', (event, todo) => {
                       }
                     }
                     console.log(images)
-                    mainWindow.webContents.send('list-of-images', images);
+                   // mainWindow.webContents.send('list-of-images', images);
+                     mainWindow.webContents.send('stop:stopwatch');
                   });
 
 

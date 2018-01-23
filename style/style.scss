@@ -1,3 +1,5 @@
+// npm run watch-css
+
 body { 
   margin: 0;
   // font-family: Verdana, Sans-Serif;
@@ -7,11 +9,10 @@ body {
 
 }
 
+button p {
+  width: 24px;
+}
 
-// div {
-//   border: none;
-//   outline: none; 
-// }
 
 
 .userButtons div{
@@ -23,9 +24,7 @@ body {
 
 
 
-button p {
-  width: 24px;
-}
+
 
 
 #addTask {
@@ -238,6 +237,13 @@ $borderradius: 8px;
     img {
       width: 24px;
     }
+    p {
+      display: inline-block;
+      height: 100%;
+      padding: 4px;
+      box-sizing: border-box;
+      float: right;
+    }
     input {
       height: 100%;
       width: 40px;
@@ -258,6 +264,16 @@ $borderradius: 8px;
   }
 }
 
+
+
+
+
+#gallery {
+  background-color: #f9f9f9;
+  overflow: auto;
+  height: 550px;
+
+}
 
 .gallery-item {
   border: 1px solid #ccc;
@@ -317,8 +333,20 @@ $borderradius: 8px;
   display: none;
 }
 
+#toggle, #reset {
+  float: right;
+  height: 100%;
+  border-radius: 3px;
+  border: none;
+  margin-left: 5px;
+  padding: 0px 7px;
+  background-color: #444444;
+  color: #fff;
+}
 
 #timer {
-  font-size: 750px;
-
+  font-size: 450px;
+  opacity: .5;
+  z-index: 1;
+  position: absolute;
 }

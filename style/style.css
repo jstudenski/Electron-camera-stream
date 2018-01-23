@@ -4,13 +4,13 @@ body {
   background: #eee;
   font-size: 14px; }
 
+button p {
+  width: 24px; }
+
 .userButtons div {
   display: inline-block;
   padding: 8px;
   border-radius: 3px; }
-
-button p {
-  width: 24px; }
 
 #addTask {
   background-color: #2ecc71; }
@@ -186,6 +186,12 @@ button img {
     height: 24px; }
     #admin-panel div img {
       width: 24px; }
+    #admin-panel div p {
+      display: inline-block;
+      height: 100%;
+      padding: 4px;
+      box-sizing: border-box;
+      float: right; }
     #admin-panel div input {
       height: 100%;
       width: 40px;
@@ -200,6 +206,11 @@ button img {
       padding: 0px; }
       #admin-panel div #manualAdd-submit:hover {
         background-color: #666; }
+
+#gallery {
+  background-color: #f9f9f9;
+  overflow: auto;
+  height: 550px; }
 
 .gallery-item {
   border: 1px solid #ccc;
@@ -249,5 +260,18 @@ button img {
 .admin-show {
   display: none; }
 
+#toggle, #reset {
+  float: right;
+  height: 100%;
+  border-radius: 3px;
+  border: none;
+  margin-left: 5px;
+  padding: 0px 7px;
+  background-color: #444444;
+  color: #fff; }
+
 #timer {
-  font-size: 750px; }
+  font-size: 450px;
+  opacity: .5;
+  z-index: 1;
+  position: absolute; }

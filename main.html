@@ -24,27 +24,16 @@
 
 
 
-<!-- <br>
-<br>
-<h1 id="timer">00.000</h1>
-<div>
-  <button id="toggle">Start</button>
-  <button id="reset">Reset</button>
-</div>
 <br>
 <br>
- -->
+<h1 id="timer" class="timer">00.00</h1>
+<br>
+<br>
 
 
 
+<div id="gallery"></div>
 
-<div id="gallery">
-</div>
-
-
-<!-- <div id="myimg">
-  <img src="images/gifs/test.jpg">
-</div> -->
 <br>
 
 <div id="keypad-row">
@@ -80,14 +69,16 @@
   <div id="refresh" onclick="sendSignal('refresh:btn')"><img src="./images/icons/refresh.svg"></div>
   <div id="devTools" onclick="sendSignal('devTools:btn')"><img src="./images/icons/magic.svg"></div>
   <div id="manualAdd">
-        
-    <form>
-      MGIF
-      <input id="manualAdd-number" type="text" name="number" placeholder="1000">.gif
-      <input id="manualAdd-submit" type="submit" value="get"></input>
-    </form> 
-
+    <form>MGIF<input id="manualAdd-number" type="text" name="number" placeholder="1000">.gif
+    <input id="manualAdd-submit" type="submit" value="get"></input></form> 
   </div>
+  <div id="showTimer"><img src="./images/icons/clock.svg">
+    <p>Toggle Timer</p>
+  </div>
+
+    <div id="toggle" class="timer"><p>Start</p></div>
+    <div id="reset" class="timer"><p>Reset</p></div>
+
 </div>
 
 
@@ -104,30 +95,35 @@
 
 <script>
 
+  $('.timer').hide();
+  $('#showTimer').click(function() {
+    $('.timer').toggle();
+  });
 
-var adminPanelOpen = false;
-$("#admin-panel").hide();
-$('.admin-show').hide();
 
 
+  var adminPanelOpen = false;
+  $("#admin-panel").hide();
+  $('.admin-show').hide();
 
-$("#admin").click(function() {
-  if (adminPanelOpen === false) {
-    $("#admin-panel").show();
-    $('.admin-show').show();
-    adminPanelOpen = true;
-  } else if (adminPanelOpen === true) {    
-    $("#admin-panel").hide();
-    $('.admin-show').hide();
-    adminPanelOpen = false;
+
+  $("#admin").click(function() {
+    if (adminPanelOpen === false) {
+      $("#admin-panel").show();
+      $('.admin-show').show();
+      adminPanelOpen = true;
+    } else if (adminPanelOpen === true) {    
+      $("#admin-panel").hide();
+      $('.admin-show').hide();
+      adminPanelOpen = false;
+    }
+  });
+
+
+  function start() {
+    toggleBtn.textContent = 'Stop';
+    watch.start();
   }
-});
-
-
-function start() {
-  toggleBtn.textContent = 'Stop';
-  watch.start();
-}
 
 
 
@@ -221,8 +217,14 @@ function start() {
 
     // listen for todo:clear from Electron App
     ipcRenderer.on('start:stopwatch', (event, todo) => {
-     // toggleBtn.textContent = 'Stop';
-     // watch.start();
+     toggleBtn.textContent = 'Stop';
+     watch.start();
+    });
+
+    // listen for todo:clear from Electron App
+    ipcRenderer.on('stop:stopwatch', (event, todo) => {
+     toggleBtn.textContent = 'Start';
+     watch.stop();
     });
 
 
@@ -333,9 +335,9 @@ function start() {
     });
 
 
-    document.getElementById('clear').addEventListener ('click', (event) => {
-      clearTodos();
-    });
+    // document.getElementById('clear').addEventListener ('click', (event) => {
+    //   clearTodos();
+    // });
 
 
     function clearTodos() {
