@@ -102,65 +102,114 @@ ssh.connect({
 
 var http = require('http'),
     fs = require('fs'),
-    url = require('url');
-
-gifFilePath = 'images/gifs/MGIF1201.gif'
-
-http.createServer(function (req, res) {
-  fs.readFile(gifFilePath, function (err, content) {
-      if (err) {
-        res.writeHead(400, {'Content-type':'text/html'})
-        console.log(err);
-        res.end("No such image");    
-      } else {
-        res.writeHead(200,{'Content-type':'image/jpg'});
-        res.end(content);
-      }
-  });
-}).listen(8080);
-console.log("Server running at http://localhost:8080/");
-
+    url = require('url')
 var ngrok = require('ngrok');
 
-var imgurl = '';
-ngrok.connect(8080, function (err, url) {
-  if(err){
-    console.log(err);
-  } else {
-    console.log(url);
-    imgurl = url;
-  }
-});
 
+var gifFilePath = 'images/gifs/MGIF1201.gif'
+
+var num ='';
 
 ipcMain.on('send:text', (event, number, path) => {
 
   console.log("phone number: " + number);
   console.log("image path: " + path);
- //  // Twilio Credentials 
- //  var accountSid = process.env.accountSid;
- //  var authToken = process.env.authToken;
- //  var myNumber = process.env.myNumber;
+  num = number;
 
- // // require the Twilio module and create a REST client 
- //  var client = require('twilio')(accountSid, authToken); 
-   
- //  client.messages.create({ 
- //    to: number,
- //    from: myNumber,
- //    body: "Test Image",
- //    mediaUrl: imgurl,
- //  }, function(err, message) { 
+  http.createServer(function (req, res) {
+    fs.readFile(path, function (err, content) {
+        if (err) {
+          res.writeHead(400, {'Content-type':'text/html'})
+          console.log(err);
+          res.end("No such image");    
+        } else {
+          res.writeHead(200,{'Content-type':'image/jpg'});
+          res.end(content);
+        }
+    });
+  }).listen(8080);
 
- //      if(err){
- //        console.log(err);
- //      } else {
- //        console.log("sent: " + message.sid);
- //      }
+  var imgurl = '';
+  ngrok.connect(8080, function (err, url) {
+    if(err){
+      console.log(err);
+    } else {
+      console.log("connected");
 
- //  });
+      // sendSMS(number, url);
+
+
+    //imgurl = url;
+    }
+  });
 
 });
+
+ngrok.once('connect', function (url) {
+  console.log(url);
+  console.log(num);
+
+  
+  sendSMS(num, url);
+
+
+//   setTimeout(function(){
+//       console.log('waited');
+
+
+//     //do what you need here
+// }, 2000);
+
+
+});
+
+
+// ngrok.disconnect();
+  
+function sendSMS(recipient, imageURL) {
+
+  console.log(recipient + ' -- recipient');
+  console.log(imageURL + ' -- imageURL');
+  // Twilio Credentials 
+  var accountSid = process.env.accountSid;
+  var authToken = process.env.authToken;
+  var myNumber = process.env.myNumber;
+
+  // require the Twilio module and create a REST client 
+  var client = require('twilio')(accountSid, authToken); 
+
+ client.messages.create({ 
+   to: recipient,
+   from: myNumber,
+   body: "Test Image" + imageURL,
+   mediaUrl: imageURL,
+ }, function(err, message) { 
+
+     if(err){
+       console.log(err);
+     } else {
+       console.log("sent: " + message.sid);
+     }
+
+ });
+
+
+}
+
+// debug unhandledRejection error
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  // application specific logging, throwing an error, or other logic here
+});
+
+
+
+
+
+
+
+
+
 
 
 

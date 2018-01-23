@@ -146,22 +146,27 @@ function showSendBtn() {
 }
 
 function sendGif() {
+  showSendBtn();
+  console.log('Hello?');
+  //console.log();
+  var status = $(this).attr('status');
+  var imageUrl = $(this).attr('data-url')
+  var value = $('input').cleanVal();
 
-  console.log($(this).attr('data-url'));
+  $('#phone-number').val(''); // clear form
 
-  if ($(this).attr('status') === false) {
+
+  if (status === 'false') {
     console.log('Enter Phone Number');
-  } else if ($(this).attr('status') === true) {
+  } else if (status === 'true') {
     console.log('Send Text Message');
-    
-    value = $('input').cleanVal();
-    $('#phone-number').val(''); // clear form
-    ipcRenderer.send('send:text', value, 'meme')
+  
+
+    ipcRenderer.send('send:text', value, imageUrl)
 
     // reset values
     $('.send-button').css( 'background-color', '#404040'); // gray
     $('.send-button').attr('status',false);
-
 
   }
 
@@ -320,8 +325,9 @@ $('#submit').click(function(event) {
           //send.hide(); // hide by default
           send.html('Send');
 
-          send.click(sendGif);
+
           send.attr('data-url', 'images/gifs/'+url);
+          send.click(sendGif);
           send.appendTo(btnBar);
 
         btnBar.hide(); // hide by default
@@ -335,7 +341,7 @@ $('#submit').click(function(event) {
 
         div.appendTo($('#gallery'));
 
-        showSendBtn();
+
 
       });
 
