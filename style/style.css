@@ -79,6 +79,9 @@ button img {
   width: 160px;
   margin: 20px auto;
 }*/
+.disable {
+  background-color: #666; }
+
 #submit {
   width: 30px;
   height: 30px;
@@ -248,7 +251,7 @@ button img {
     margin-top: 2px; }
 
 .send-button {
-  background-color: #03bf53;
+  background-color: #404040;
   display: inline-block;
   color: #fff;
   height: 100%;

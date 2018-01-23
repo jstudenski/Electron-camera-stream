@@ -104,8 +104,10 @@ var http = require('http'),
     fs = require('fs'),
     url = require('url');
 
+gifFilePath = 'images/gifs/MGIF1201.gif'
+
 http.createServer(function (req, res) {
-  fs.readFile('test.jpg', function (err, content) {
+  fs.readFile(gifFilePath, function (err, content) {
       if (err) {
         res.writeHead(400, {'Content-type':'text/html'})
         console.log(err);
@@ -131,9 +133,38 @@ ngrok.connect(8080, function (err, url) {
 });
 
 
+ipcMain.on('send:text', (event, number, path) => {
+
+  console.log("phone number: " + number);
+  console.log("image path: " + path);
+ //  // Twilio Credentials 
+ //  var accountSid = process.env.accountSid;
+ //  var authToken = process.env.authToken;
+ //  var myNumber = process.env.myNumber;
+
+ // // require the Twilio module and create a REST client 
+ //  var client = require('twilio')(accountSid, authToken); 
+   
+ //  client.messages.create({ 
+ //    to: number,
+ //    from: myNumber,
+ //    body: "Test Image",
+ //    mediaUrl: imgurl,
+ //  }, function(err, message) { 
+
+ //      if(err){
+ //        console.log(err);
+ //      } else {
+ //        console.log("sent: " + message.sid);
+ //      }
+
+ //  });
+
+});
 
 
-// listen for event (from add.html)
+
+
 ipcMain.on('phone:add', (event, number) => {
 
   console.log("phone number: " + number);
@@ -160,10 +191,6 @@ ipcMain.on('phone:add', (event, number) => {
       }
 
   });
-
-
-
-
 });
 
 

@@ -127,22 +127,69 @@
 
 
 
+var phonenumber = ''; 
 
-    function showSendBtn() {
-      if (phonenumber.length === 10) {
-        $('#submit').show();
-      } else {
-        $('#submit').hide();
-      }
-    }
-    var phonenumber = '';  
-    showSendBtn();
+
+function showSendBtn() {
+  if (phonenumber.length === 10) {
+    $('#submit').show();
+
+    $('.send-button').css( 'background-color', '#2ecc71'); // green
+    $('.send-button').attr('status',true);
+
+  } else {
+    $('#submit').hide();
+
+    $('.send-button').css( 'background-color', '#404040'); // gray
+    $('.send-button').attr('status',false);
+  }
+}
+
+function sendGif() {
+
+  console.log($(this).attr('data-url'));
+
+  if ($(this).attr('status') === false) {
+    console.log('Enter Phone Number');
+  } else if ($(this).attr('status') === true) {
+    console.log('Send Text Message');
+    
+    value = $('input').cleanVal();
+    $('#phone-number').val(''); // clear form
+    ipcRenderer.send('send:text', value, 'meme')
+
+    // reset values
+    $('.send-button').css( 'background-color', '#404040'); // gray
+    $('.send-button').attr('status',false);
+
+
+  }
+
+
+}
+
+
+$('#submit').click(function(event) {
+  event.preventDefault();
+
+  // const { value } = document.querySelector('input');
+  value = $('input').cleanVal();
+
+  // console.log($('input').cleanVal());
+  $('#phone-number').val('');
+
+  ipcRenderer.send('phone:add', value)
+});
+
+
+ 
+
 
     $('#phone-number').mask('(000) 000-0000');
 
 
     $( "#phone-number" ).keyup(function() {
-     // console.log();
+      // remove mask
       phonenumber = $("#phone-number").cleanVal()
       console.log(phonenumber);  
       showSendBtn();
@@ -164,6 +211,8 @@
 
     });
 
+
+
     $('.delete').click(function(){
       console.log();
       phonenumber = phonenumber.substring(0,phonenumber.length-1);
@@ -173,17 +222,7 @@
     });
 
 
-    $('#submit').click(function(event) {
-      event.preventDefault();
 
-      // const { value } = document.querySelector('input');
-      value = $('input').cleanVal();
-
-      // console.log($('input').cleanVal());
-      $('#phone-number').val('');
-
-      ipcRenderer.send('phone:add', value)
-    });
 
 
     $('#manualAdd-submit').click(function(){  
@@ -278,10 +317,14 @@
           // send button
           var send = $('<div>');
           send.addClass('send-button');
+          //send.hide(); // hide by default
           send.html('Send');
+
+          send.click(sendGif);
+          send.attr('data-url', 'images/gifs/'+url);
           send.appendTo(btnBar);
 
-        btnBar.hide(); // hide when created
+        btnBar.hide(); // hide by default
         btnBar.appendTo(div);
 
 
@@ -292,6 +335,8 @@
 
         div.appendTo($('#gallery'));
 
+        showSendBtn();
+
       });
 
     });
@@ -299,10 +344,6 @@
     //$('.btnBar').hide(); // hide on start 
     function isActive() {
 
-
-// $('.gallery-item').fadeOut("slow", function() {
-//     $('.gallery-item').removeClass("isActive");
-// });
 
       $('.gallery-item').removeClass("isActive");
       $('.btnBar').hide();
