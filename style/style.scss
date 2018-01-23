@@ -14,14 +14,17 @@ button p {
 }
 
 
-
-.userButtons div{
-  display: inline-block;
-  padding: 8px;
-  border-radius: 3px;
+.userButtons {
+  padding: 15px;
+  div { 
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 3px;
+    background-color: #444444;
+    color: #ffffff;
+    margin-right: 15px;
+  }
 }
-
-
 
 
 
@@ -38,29 +41,7 @@ button p {
 }
 
 
-#capture {
-  margin: 20px 0px 0px 20px;
-  background-color: #444444;
-  color: #ffffff;
-}
 
-#sync {
-  margin: 20px 0px 0px 10px;
-  background-color: #444444;
-  color: #ffffff;
-}
-
-#test {
-  margin: 20px 0px 0px 10px;
-  background-color: #444444;
-  color: #ffffff;
-}
-
-#move {
-  margin: 20px 0px 0px 10px;
-  background-color: #444444;
-  color: #ffffff;
-}
 
 
 #transfer {

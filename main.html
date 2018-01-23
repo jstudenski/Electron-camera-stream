@@ -3,6 +3,8 @@
 </head>
 <body>
 
+<h1 id="timer" class="timer">00.00</h1>
+
 <div class="userButtons">
 
 <!--   <div id="addTask" onclick="sendSignal('addTask:btn')">Add Task</div>
@@ -13,22 +15,15 @@
   <div id="upload" onclick="sendSignal('upload:btn')">upload</div>
   <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
 
-<!--   <br> -->
-
   <div id="capture" onclick="sendSignal('capture:btn')">Capture</div>
   <div id="sync" onclick="sendSignal('sync:btn')">Sync images</div>
   <div id="test" onclick="sendSignal('test:btn')">Test</div>
   <div id="move" onclick="sendSignal('move:btn')">Move</div>
-  <br>
+
 </div><!-- userButtons -->
 
 
 
-<br>
-<br>
-<h1 id="timer" class="timer">00.00</h1>
-<br>
-<br>
 
 
 
@@ -305,8 +300,14 @@
 
 
     function isActive() {
+      // remove from all gallery-item
       $('.gallery-item').removeClass("isActive");
+
+
       $(this).addClass("isActive");
+
+
+
     }
 
 
