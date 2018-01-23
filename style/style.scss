@@ -296,6 +296,7 @@ $borderradius: 8px;
 
 .isActive {
   box-shadow: 6px 6px 0px 0px #4904c5;
+  transition: box-shadow .2s ease-in-out;
 }
 
 .remove-button {
