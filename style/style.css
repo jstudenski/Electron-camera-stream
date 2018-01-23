@@ -230,7 +230,7 @@ button img {
   bottom: 0; }
 
 .isActive {
-  box-shadow: 0 0 10px 4px #c51604; }
+  box-shadow: 6px 6px 0px 0px #4904c5; }
 
 .remove-button {
   position: absolute;

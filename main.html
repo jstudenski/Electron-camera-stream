@@ -24,9 +24,6 @@
 
 
 
-
-
-
 <div id="gallery"></div>
 
 <br>
@@ -297,7 +294,6 @@
 
       });
 
-
     });
 
     //$('.btnBar').hide(); // hide on start 
@@ -315,9 +311,6 @@
     function removeGif() {
       ipcRenderer.send('remove:image', $(this).attr('data-url'))
     }
-
-
-
 
 
     ipcRenderer.on('transfer:btn', (event, todo) => {
