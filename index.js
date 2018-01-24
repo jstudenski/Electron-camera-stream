@@ -4,6 +4,7 @@
 // source app-env
 // --sass compiler--
 // npm run watch-css
+console.log("App initiated");
 
 const electron = require('electron');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
@@ -32,6 +33,7 @@ app.on('ready', () => {
 });
 
 require('dotenv').config();
+
 
 
 // function to be called by 'New Todo' menu button
