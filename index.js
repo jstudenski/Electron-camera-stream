@@ -124,11 +124,11 @@ ipcMain.on('send:text', (event, number, path) => {
           res.end(content);
         }
     });
-  }).listen(8080);
+  }).listen(9000);
 
 
   var imgurl = '';
-  ngrok.connect(8080, function (err, url) {
+  ngrok.connect(9000, function (err, url) {
     if(err){
       console.log(err);
     } else {
