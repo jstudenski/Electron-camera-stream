@@ -12,6 +12,7 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 let mainWindow;
 let addWindow;
 
+
 // when the app is ready:
 app.on('ready', () => {
   // assign window to variable
@@ -30,6 +31,7 @@ app.on('ready', () => {
   Menu.setApplicationMenu(mainMenu);
 });
 
+require('dotenv').config();
 
 
 // function to be called by 'New Todo' menu button
@@ -66,9 +68,9 @@ ssh = new node_ssh()
     // node-ssh Error: getadderinfo ENOTFOUND
 
 ssh.connect({
-  host: process.env.host,
-  username: process.env.username,
-  password: process.env.password
+  host: process.env.HOST,
+  username: process.env.USERNAME,
+  password: process.env.PASSWORD
 }).then(function() {
 
       // console.log("Something's wrong")
@@ -183,15 +185,18 @@ ngrok.once('connect', function (url) {
 
 
 // ngrok.disconnect();
+
+
+
   
 function sendSMS(recipient, imageURL) {
 
   console.log(recipient + ' -- recipient');
   console.log(imageURL + ' -- imageURL');
   // Twilio Credentials 
-  var accountSid = process.env.accountSid;
-  var authToken = process.env.authToken;
-  var myNumber = process.env.myNumber;
+  var accountSid = process.env.ACCOUNTSID;
+  var authToken = process.env.AUTHTOKEN;
+  var myNumber = process.env.MYNUM;
 
   // require the Twilio module and create a REST client 
   var client = require('twilio')(accountSid, authToken); 
@@ -363,10 +368,10 @@ ipcMain.on('addTask:btn', (event, todo) => {
 
 
 var connSettings = {
-  host: process.env.host,
+  host: process.env.HOST,
   port: 22, // Normal is 22 port 
   username: 'pi',
-  password: process.env.password
+  password: process.env.PASSWORD
 };
 
 
@@ -407,9 +412,9 @@ ipcMain.on('capture:btn', (event, todo) => {
             console.log(imgFilePath);
 
             client.scp({
-              host: process.env.host,
+              host: process.env.HOST,
               username: 'pi',
-              password: process.env.password,
+              password: process.env.PASSWORD,
               path: imgFilePath
             }, './images/gifs/', function(err) {
               if (err) throw err
@@ -510,9 +515,9 @@ ipcMain.on('move:btn', (event, todo) => {
     console.log(imgFilePath);
 
     client.scp({
-      host: process.env.host,
-      username: 'pi',
-      password: process.env.password,
+      host: process.env.HOST,
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
       path: imgFilePath
     }, './images/gifs/', function(err) {
       if (err) throw err
@@ -541,9 +546,9 @@ ipcMain.on('get:image', (event, num) => {
       if (err) throw err
 
      client.scp({
-       host: process.env.host,
+       host: process.env.HOST,
        username: 'pi',
-       password: process.env.password,
+       password: process.env.PASSWORD,
        path: filePath
      }, './images/gifs/', function(err) {
        if (err) throw err

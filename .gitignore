@@ -3,3 +3,4 @@ resources
 app-env
 .DS_Store
 /images/gifs
+.env
