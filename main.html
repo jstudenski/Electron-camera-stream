@@ -1,50 +1,42 @@
 <head>
+<!-- modal style -->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
   <link href="style/style.css" rel="stylesheet">
+
 </head>
 <body>
 
-<h1 id="timer" class="timer">00.00</h1>
+  <span id="countdown"></span>
 
-<div class="userButtons">
-<!-- Test commit from PC -->
-<!--   <div id="addTask" onclick="sendSignal('addTask:btn')">Add Task</div>
-  <div id="clear" onclick="clearTodos()">Clear List</div>
-  <div id="showfiles" onclick="sendSignal('showfiles:btn')">Show Files</div>
-  <div id="transfer" onclick="sendSignal('transfer:btn')">Transfer Pic</div>
-  <div id="download" onclick="sendSignal('download:btn')">download</div>
-  <div id="upload" onclick="sendSignal('upload:btn')">upload</div>
-  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
+<header>
+  <img class="logo" src="./images/logo.svg">
 
 
-<!--  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
 
 
-  <div id="capture" onclick="sendSignal('capture:btn')">Capture</div>
-<!--   <div id="sync" onclick="sendSignal('sync:btn')">Sync images</div>
-  <div id="test" onclick="sendSignal('test:btn')">Test</div>
-  <div id="move" onclick="sendSignal('move:btn')">Move</div> -->
 
-</div><!-- userButtons -->
 
+</header>
+
+
+<div class="mainbtn-row">
+  <div id="mainbtn" onclick="sendSignal('capture:btn')"><div>START</div></div>
+</div>
 
 
 <div id="gallery"></div>
-
 <br>
 
-<div id="keypad-row">
-  
-
+<!-- <div id="keypad-row">
   <ul id="keypad">
-
+  <h1 id="timer" class="timer">00.00</h1>
   <form class="center">
   <label>Phone Number<br>
     <input id="phone-number" type="text" class="write" autofocus>
   </label>
-  <button id="submit" type="submit"></button>
   </form>
-
-
     <li class="number" value="1">1</li>   
     <li class="number" value="2">2</li>
     <li class="number" value="3">3</li>
@@ -58,6 +50,37 @@
     <li class="number" value="0">0</li>
   </ul>
 </div>
+ -->
+
+  <!-- Modal HTML embedded directly into document -->
+<div id="ex1" class="modal">
+
+  <ul id="keypad">
+    <h1 id="timer" class="timer">00.00</h1>
+    <form class="center">
+    <label>Phone Number<br>
+      <input id="phone-number" type="text" class="write" autofocus>
+    </label>
+  <!--   <button id="submit" type="submit"></button> -->
+    </form>
+      <li class="number" value="1">1</li>   
+      <li class="number" value="2">2</li>
+      <li class="number" value="3">3</li>
+      <li class="number" value="4">4</li>
+      <li class="number" value="5">5</li>
+      <li class="number" value="6">6</li>
+      <li class="number" value="7">7</li>
+      <li class="number" value="8">8</li>
+      <li class="number" value="9">9</li>    
+      <li class="delete">del</li>
+      <li class="number" value="0">0</li>
+    </ul>
+
+</div>
+
+
+
+
 
 
 <div id="admin" onclick="sendSignal('admin:btn')"><img src="./images/icons/cog.svg"></div>
@@ -80,12 +103,47 @@
 
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
-  <script src="javascript/keyboard.js"></script>
-  <script src="javascript/stopwatch.js"></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
+
+<script src="javascript/keyboard.js"></script>
+<script src="javascript/stopwatch.js"></script>
+
+
+
+<!-- <div class="userButtons"> -->
+
+<!--   <div id="capture" onclick="sendSignal('capture:btn')">Capture</div> -->
+
+  
+<!-- Test commit from PC -->
+<!--   <div id="addTask" onclick="sendSignal('addTask:btn')">Add Task</div>
+  <div id="clear" onclick="clearTodos()">Clear List</div>
+  <div id="showfiles" onclick="sendSignal('showfiles:btn')">Show Files</div>
+  <div id="transfer" onclick="sendSignal('transfer:btn')">Transfer Pic</div>
+  <div id="download" onclick="sendSignal('download:btn')">download</div>
+  <div id="upload" onclick="sendSignal('upload:btn')">upload</div>
+  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
+
+
+<!--  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
+
+<!--   <div id="sync" onclick="sendSignal('sync:btn')">Sync images</div>
+  <div id="test" onclick="sendSignal('test:btn')">Test</div>
+  <div id="move" onclick="sendSignal('move:btn')">Move</div> -->
+
+<!-- </div> --><!-- userButtons -->
+
 
 
 
@@ -103,6 +161,46 @@
   $('#showTimer').click(function() {
     $('.timer').toggle();
   });
+
+
+
+
+
+function countdown() {
+  $('#countdown').show();
+  $('.logo').hide();
+
+
+  count=count-1;
+  if (count <= 0)
+  {
+     clearInterval(counter);
+     //counter ended, do something here
+     $('.logo').show();
+     $('#countdown').hide();
+     return;
+
+  }
+  $('#countdown').text(count);
+
+  //console.log(count);
+  //Do code for showing the number of seconds here
+}
+
+var count;
+var counter;
+
+ipcRenderer.on('start:stopwatch', (event, todo) => {
+ toggleBtn.textContent = 'Stop';
+ watch.start();
+
+  //countdown
+  count=11;
+  counter=setInterval(countdown, 1000); //1000 will  run it every 1 second
+
+});
+
+
 
 
 
@@ -131,13 +229,13 @@ var phonenumber = '';
 
 function showSendBtn() {
   if (phonenumber.length === 10) {
-    $('#submit').show();
+   // $('#submit').show();
 
-    $('.send-button').css( 'background-color', '#2ecc71'); // green
+    $('.send-button').css( 'background-color', '#8dc440'); // green
     $('.send-button').attr('status',true);
 
   } else {
-    $('#submit').hide();
+  //  $('#submit').hide();
 
     $('.send-button').css( 'background-color', '#404040'); // gray
     $('.send-button').attr('status',false);
@@ -152,14 +250,18 @@ function sendGif() {
   var imageUrl = $(this).attr('data-url')
   var value = $('input').cleanVal();
 
-  $('#phone-number').val(''); // clear form
+  // clear form
+  $('#phone-number').val(''); 
 
+  // set back
+  $('.send-button').css( 'background-color', '#404040'); // gray
+  $('.send-button').attr('status',false);
 
   if (status === 'false') {
     console.log('Enter Phone Number');
   } else if (status === 'true') {
     console.log('Send Text Message');
-  
+
 
     ipcRenderer.send('send:text', value, imageUrl)
 
@@ -169,24 +271,13 @@ function sendGif() {
 
   }
 
-
 }
 
 
-$('#submit').click(function(event) {
-  event.preventDefault();
-
-  // const { value } = document.querySelector('input');
-  value = $('input').cleanVal();
-
-  // console.log($('input').cleanVal());
-  $('#phone-number').val('');
-
-  ipcRenderer.send('phone:add', value)
-});
 
 
- 
+
+
 
 
     $('#phone-number').mask('(000) 000-0000');
@@ -216,7 +307,6 @@ $('#submit').click(function(event) {
     });
 
 
-
     $('.delete').click(function(){
       console.log();
       phonenumber = phonenumber.substring(0,phonenumber.length-1);
@@ -224,8 +314,6 @@ $('#submit').click(function(event) {
       $('#phone-number').trigger('input');
       showSendBtn();
     });
-
-
 
 
 
@@ -239,9 +327,6 @@ $('#submit').click(function(event) {
     });
 
 
- 
-
-
 
     const list = document.querySelector('ul');
     // listen for todo:add from Electron App
@@ -253,13 +338,8 @@ $('#submit').click(function(event) {
     });
 
 
-    // listen for todo:clear from Electron App
-    ipcRenderer.on('start:stopwatch', (event, todo) => {
-     toggleBtn.textContent = 'Stop';
-     watch.start();
-    });
 
-    // listen for todo:clear from Electron App
+
     ipcRenderer.on('stop:stopwatch', (event, todo) => {
      toggleBtn.textContent = 'Start';
      watch.stop();
@@ -302,7 +382,7 @@ $('#submit').click(function(event) {
         div.click(isActive);
         // image
         var img = $('<img/>');
-        img.attr('src', 'images/gifs/'+url);
+        img.attr('src', 'images/gifs/medium/'+url);
        // img.addClass('gallery-item');
         img.appendTo(div);
         // image name
@@ -316,16 +396,40 @@ $('#submit').click(function(event) {
           remove.html(trash);
 
           remove.click(removeGif);
-          remove.attr('data-url', 'images/gifs/'+url);
+          remove.attr('data-url', 'images/gifs/medium/'+url);
           remove.appendTo(btnBar);
           // send button
           var send = $('<div>');
           send.addClass('send-button');
           //send.hide(); // hide by default
-          send.html('Send');
+
+         // send.html('Send');
 
 
-          send.attr('data-url', 'images/gifs/'+url);
+
+          // button text
+         // send.html('send');
+
+          // remove M
+          var small = url.substr(1);
+          // add S
+          var small = 'S' + small;
+          // url of image to send
+          send.attr('data-url', 'images/gifs/small/'+small);
+
+
+
+          // modal
+          var a = $('<a>');
+          // <!-- Link to open the modal -->
+          // <p><a href="#ex1" rel="modal:open">send</a></p>
+          a.attr("href", "#ex1");
+          a.attr("rel", "modal:open");
+          a.text("SEND");
+
+          send.html(a);
+
+
           send.click(sendGif);
           send.appendTo(btnBar);
 
@@ -339,7 +443,6 @@ $('#submit').click(function(event) {
         p.appendTo(div);
 
         div.appendTo($('#gallery'));
-
 
 
       });
@@ -371,7 +474,6 @@ $('#submit').click(function(event) {
       document.getElementById("myimg").src="test.jpg";
     });
 
-
     // listen for transfer:btn from Electron App
     ipcRenderer.on('transfer:btn', (event, todo) => {
 
@@ -396,6 +498,20 @@ $('#submit').click(function(event) {
     function sendSignal(signal) {
       ipcRenderer.send(signal)
     }
+
+
+// $('#submit').click(function(event) {
+//   event.preventDefault();
+
+//   // const { value } = document.querySelector('input');
+//   value = $('input').cleanVal();
+
+//   // console.log($('input').cleanVal());
+//   $('#phone-number').val('');
+
+//   ipcRenderer.send('phone:add', value)
+// });
+
 
 
 

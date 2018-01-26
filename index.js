@@ -6,6 +6,10 @@
 // npm run watch-css
 console.log("App initiated");
 
+// hidden .env variables
+require('dotenv').config();
+
+
 const electron = require('electron');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
@@ -31,9 +35,6 @@ app.on('ready', () => {
   // create menu from build
   Menu.setApplicationMenu(mainMenu);
 });
-
-require('dotenv').config();
-
 
 
 // function to be called by 'New Todo' menu button
@@ -67,40 +68,6 @@ path = require('path')
 node_ssh = require('node-ssh')
 ssh = new node_ssh()
  
-    // node-ssh Error: getadderinfo ENOTFOUND
-
-ssh.connect({
-  host: process.env.HOST,
-  username: process.env.USERNAME,
-  password: process.env.PASSWORD
-}).then(function() {
-
-      // console.log("Something's wrong")
-      // console.log(error)
-
-  ipcMain.on('download:btn', (event, todo) => { 
-    ssh.getFile('./temp/TestTakePhoto.py', '/home/pi/TestTakePhoto.py').then(function() {
-      console.log("The File TestTakePhoto.py downloaded")
-    }, function(error) {
-      console.log("Something's wrong")
-      console.log(error)
-    })
-  });
-
-  ipcMain.on('upload:btn', (event, todo) => { 
-    ssh.putFiles([{ local: './temp/TestTakePhoto.py', remote: '/home/pi/TestTakePhoto.py'}]).then(function() {
-      console.log("The File TestTakePhoto.py uploaded")
-    }, function(error) {
-      console.log("Something's wrong")
-      console.log(error)
-    })
-  });
-
-});
-
-
-
-
 var http = require('http'),
     fs = require('fs'),
     url = require('url')
@@ -108,8 +75,12 @@ var ngrok = require('ngrok');
 
 
 var num ='';
+// var port = 8080;
 
 ipcMain.on('send:text', (event, number, path) => {
+
+
+  ngrok.disconnect();
 
   console.log("phone number: " + number);
   console.log("image path: " + path);
@@ -126,12 +97,18 @@ ipcMain.on('send:text', (event, number, path) => {
           res.writeHead(200,{'Content-type':'image/gif'});
           var img = fs.readFileSync(path);
           res.end(content);
+
         }
     });
   }).listen(9000);
 
 
-  var imgurl = '';
+  // var imgurl = '';
+
+  // disconnect ngrok ... did nothing 
+  //ngrok.disconnect();
+
+
   ngrok.connect(9000, function (err, url) {
     if(err){
       console.log(err);
@@ -141,56 +118,27 @@ ipcMain.on('send:text', (event, number, path) => {
       //imgurl = url;
     }
   });
+
+
 });
 
 
 ngrok.once('connect', function (url) {
-  console.log("once conect..");
-  console.log(".. " + url);
-  console.log(".. " + num);
-  sendSMS(num, url);
+  console.log("ngrok connected..");
+  console.log("at .. " + url);
+  console.log("phone number.. " + num);
+
+  setTimeout(function () {
+    console.log("waited 1 second.. ");
+
+    sendSMS(num, url);
+
+  }, 1000);
+
+
 });
 
 
-// TEST //////////////////////
-
-// http.createServer(function (req, res) {
-//   fs.readFile('images/gifs/SmallGIF.gif', function (err, content) {
-//       if (err) {
-//         res.writeHead(400, {'Content-type':'text/html'})
-//         console.log(err);
-//         res.end("No such image");    
-//       } else {
-//         res.writeHead(200, {'Content-Type': 'image/gif' });
-//         var img = fs.readFileSync('images/gifs/SmallGIF.gif');
-//         res.end(img, 'binary');
-//       }
-//   });
-// }).listen(9000);
-
-// // ngrok.disconnect(); // stops all
-
-// var imgurl = '';
-// ngrok.connect(9000, function (err, url) {
-
-//   if(err){
-//     console.log(err);
-//   } else {
-//     console.log("URL: " + url );
-//     sendSMS(6127180553, url)
-//   }
-
-// });   
-
-//////////////////////
-
-
-
-// ngrok.disconnect();
-
-
-
-  
 function sendSMS(recipient, imageURL) {
 
   console.log(recipient + ' -- recipient');
@@ -206,7 +154,7 @@ function sendSMS(recipient, imageURL) {
  client.messages.create({ 
    to: recipient,
    from: myNumber,
-   body: "Small Test",
+   body: "Studio NEXT",
    // mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
    mediaUrl: imageURL,
 
@@ -214,99 +162,24 @@ function sendSMS(recipient, imageURL) {
    if(err){
      console.log(err);
    } else {
-     console.log("sent: " + message.sid);
+    console.log("API request send: " + message.sid);
+
+     // wait 5 seconds and disconnect 
+    // setTimeout(function () {
+    //   // ngrok.disconnect();
+    //   console.log("Port before increase "+ port);
+    //   port++
+    //   console.log("Port after increase "+ port);
+
+    // }, 5000);
+
+
    }
 
  });
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-// ipcMain.on('phone:add', (event, number) => {
-
-//   console.log("phone number: " + number);
-
-//   // Twilio Credentials 
-//   var accountSid = process.env.accountSid;
-//   var authToken = process.env.authToken;
-//   var myNumber = process.env.myNumber;
-
-//  // require the Twilio module and create a REST client 
-//   var client = require('twilio')(accountSid, authToken); 
-   
-//   client.messages.create({ 
-//     to: number,
-//     from: myNumber,
-//     body: "Test Test",
-//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
-//    // mediaUrl: imgurl,
-//   }, function(err, message) { 
-
-//       if(err){
-//         console.log(err);
-//       } else {
-//         console.log("sent: " + message.sid);
-//       }
-
-//   });
-// });
-
-
-
-
-
-
-
-// //var imgurl = 
-// // listen for button clicks (from main.html): 
-// ipcMain.on('sendText:btn', (event, todo) => {
-
-//   // Twilio Credentials 
-//   var accountSid = process.env.accountSid;
-//   var authToken = process.env.authToken;
-//   var myNumber = process.env.myNumber;
-//   var destination = process.env.destination;
-
-//   console.log(accountSid);
-//   console.log(authToken);
-//   console.log(myNumber);
-//   console.log(destination);
- 
-
-//   //var imgurl = 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif'
-//    // var imgurl = 'http://static1.businessinsider.com/image/58c6f8e35f3ca830008b4f3c-875/9577356756453472e419b.jpg'
-
-//  // require the Twilio module and create a REST client 
-//   var client = require('twilio')(accountSid, authToken); 
-   
-//   client.messages.create({ 
-//     to: destination,
-//     from: myNumber,
-//     body: "Gif Test",
-//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
-//   }, function(err, message) { 
-//       if(err){
-//         console.log(err);
-//       } else {
-//         console.log(message.sid);
-//       }
-//   });
-
-// });
-
-
-
-
 
 
 
@@ -348,7 +221,6 @@ ipcMain.on('addTask:btn', (event, todo) => {
 // var connection = new Client();
 
 
-
 // var remotePathToList = '/home/pi';
 // let myfile;
 
@@ -369,13 +241,43 @@ ipcMain.on('addTask:btn', (event, todo) => {
 // }).connect(connSettings);
 
 
+
+
+
+function copy(path, folder){
+   client.scp({
+     host: process.env.HOST,
+     username: 'pi',
+     password: process.env.PASSWORD,
+     path: path
+   }, './images/gifs/' + folder + '/', function(err) {
+     if (err) throw err
+     // displayImage();
+      console.log("worked!");
+   })
+}
+
+  // var mediumPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif';
+  // var smallPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/SGIF' + num + '.gif';
+
+  //  exec(connSettings, '', function (err, response) { // better way of connecting??
+    
+  //   console.log('Copying images..');
+
+  //   console.log(err);
+  //   if (err) throw err
+  //     copy(smallPath, 'small');
+  //     copy(mediumPath, 'medium');
+
+
+
+
 var connSettings = {
   host: process.env.HOST,
   port: 22, // Normal is 22 port 
   username: 'pi',
   password: process.env.PASSWORD
 };
-
 
 var exec = require('node-ssh-exec');
 var images = [];
@@ -406,25 +308,41 @@ ipcMain.on('capture:btn', (event, todo) => {
 
     //getFile(); // get file path
 
-
           exec(connSettings, 'cat /media/pi/1T/NEXCAP/Settings/lastgif.txt', function (err, response) {
             if (err) throw err
-            var imgFilePath = response;
+            //var imgFilePath = response;
+            var imgNumber = response;
 
-            console.log(imgFilePath);
+            // console.log("LAST IMAGE PATH: " + imgFilePath);
+            console.log("LAST IMAGE NUMBER: " + imgNumber);
+
+            var smallPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + imgNumber + '/Media/SGIF' + imgNumber + '.gif';
+            var mediumPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + imgNumber + '/Media/MGIF' + imgNumber + '.gif';
+
+             client.scp({
+               host: process.env.HOST,
+               username: 'pi',
+               password: process.env.PASSWORD,
+               path: smallPath
+             }, './images/gifs/' + 'small' + '/', function(err) {
+               if (err) throw err
+               // displayImage();
+                console.log("worked!");
+             })
+
 
             client.scp({
               host: process.env.HOST,
               username: 'pi',
               password: process.env.PASSWORD,
-              path: imgFilePath
-            }, './images/gifs/', function(err) {
+              path: mediumPath
+            }, './images/gifs/medium/', function(err) {
               if (err) throw err
               // displayImage();
 
                   images = [];
                   // get images
-                  fs.readdir('./images/gifs/', (err, files) => {
+                  fs.readdir('./images/gifs/medium/', (err, files) => {
                     if (err) throw  err;
 
                     for (let file of files) {
@@ -433,11 +351,14 @@ ipcMain.on('capture:btn', (event, todo) => {
                         images.push(file)
                       }
                     }
-                    //console.log(images)
-                   // mainWindow.webContents.send('list-of-images', images);
-                     mainWindow.webContents.send('stop:stopwatch');
-                  });
 
+                    //console.log(images)
+
+                    // generate images
+                    mainWindow.webContents.send('list-of-images', images);
+
+                    mainWindow.webContents.send('stop:stopwatch');
+                  });
 
             })
           });
@@ -450,11 +371,11 @@ ipcMain.on('capture:btn', (event, todo) => {
 ipcMain.on('start:up', (event, list) => {
   images = [];
   // get images
-  fs.readdir('./images/gifs/', (err, files) => {
+  fs.readdir('./images/gifs/medium/', (err, files) => {
     if (err) throw  err;
 
     for (let file of files) {
-      // if the last 4 digits are gif
+      // if the last 4 digits are .gif
       if (file.substr(-4) === '.gif') {
         images.push(file)
       }
@@ -465,15 +386,11 @@ ipcMain.on('start:up', (event, list) => {
 });
 
 
-
 // ipcMain.on('test:btn', (event, list) => {
 
 //   mainWindow.webContents.send('start:stopwatch');
 
-
 // });
-
-
 
 
 
@@ -521,14 +438,12 @@ ipcMain.on('move:btn', (event, todo) => {
       username: process.env.USERNAME,
       password: process.env.PASSWORD,
       path: imgFilePath
-    }, './images/gifs/', function(err) {
+    }, './images/gifs/medium/', function(err) {
       if (err) throw err
     })
   });
 
 });
-
-
 
 
 
@@ -538,37 +453,30 @@ ipcMain.on('get:image', (event, num) => {
   console.log("get:image");
   console.log(num); 
 
-  var filePath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif'
-// SGIF
-
-
-  console.log(filePath); 
+  var mediumPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif';
+  var smallPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/SGIF' + num + '.gif';
 
    exec(connSettings, '', function (err, response) { // better way of connecting??
-      if (err) throw err
+    
+    console.log('Copying images..');
 
-     client.scp({
-       host: process.env.HOST,
-       username: 'pi',
-       password: process.env.PASSWORD,
-       path: filePath
-     }, './images/gifs/', function(err) {
-       if (err) throw err
-       // displayImage();
-        console.log("made it insiode!");
-        refreshImages();
-
-     })
-
+    console.log(err);
+    if (err) throw err
+      copy(smallPath, 'small');
+      copy(mediumPath, 'medium');
+      refreshImages();
    });
+
 });
+
+
 
 
 function refreshImages() {
   
  images = []; // clear array
  // find what images exist
- fs.readdir('./images/gifs/', (err, files) => {
+ fs.readdir('./images/gifs/medium/', (err, files) => {
    if (err) throw  err;
    for (let file of files) {
      if (file.substr(-4) === '.gif') { // if the last 4 digits are gif
@@ -702,6 +610,149 @@ ipcMain.on('showfiles:btn', (event, todo) => {
 
 
 
+    // node-ssh Error: getadderinfo ENOTFOUND
+
+// ssh.connect({
+//   host: process.env.HOST,
+//   username: process.env.USERNAME,
+//   password: process.env.PASSWORD
+// }).then(function() {
+
+//       // console.log("Something's wrong")
+//       // console.log(error)
+
+//   ipcMain.on('download:btn', (event, todo) => { 
+//     ssh.getFile('./temp/TestTakePhoto.py', '/home/pi/TestTakePhoto.py').then(function() {
+//       console.log("The File TestTakePhoto.py downloaded")
+//     }, function(error) {
+//       console.log("Something's wrong")
+//       console.log(error)
+//     })
+//   });
+
+//   ipcMain.on('upload:btn', (event, todo) => { 
+//     ssh.putFiles([{ local: './temp/TestTakePhoto.py', remote: '/home/pi/TestTakePhoto.py'}]).then(function() {
+//       console.log("The File TestTakePhoto.py uploaded")
+//     }, function(error) {
+//       console.log("Something's wrong")
+//       console.log(error)
+//     })
+//   });
+
+// });
+
+
+
+
+
+// TEST //////////////////////
+
+// http.createServer(function (req, res) {
+//   fs.readFile('images/gifs/SmallGIF.gif', function (err, content) {
+//       if (err) {
+//         res.writeHead(400, {'Content-type':'text/html'})
+//         console.log(err);
+//         res.end("No such image");    
+//       } else {
+//         res.writeHead(200, {'Content-Type': 'image/gif' });
+//         var img = fs.readFileSync('images/gifs/SmallGIF.gif');
+//         res.end(img, 'binary');
+//       }
+//   });
+// }).listen(9000);
+
+// // ngrok.disconnect(); // stops all
+
+// var imgurl = '';
+// ngrok.connect(9000, function (err, url) {
+
+//   if(err){
+//     console.log(err);
+//   } else {
+//     console.log("URL: " + url );
+//     sendSMS(6127180553, url)
+//   }
+
+// });   
+
+//////////////////////
+
+// ngrok.disconnect();
+
+
+
+
+// ipcMain.on('phone:add', (event, number) => {
+
+//   console.log("phone number: " + number);
+
+//   // Twilio Credentials 
+//   var accountSid = process.env.accountSid;
+//   var authToken = process.env.authToken;
+//   var myNumber = process.env.myNumber;
+
+//  // require the Twilio module and create a REST client 
+//   var client = require('twilio')(accountSid, authToken); 
+   
+//   client.messages.create({ 
+//     to: number,
+//     from: myNumber,
+//     body: "Test Test",
+//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
+//    // mediaUrl: imgurl,
+//   }, function(err, message) { 
+
+//       if(err){
+//         console.log(err);
+//       } else {
+//         console.log("sent: " + message.sid);
+//       }
+
+//   });
+// });
+
+
+
+// //var imgurl = 
+// // listen for button clicks (from main.html): 
+// ipcMain.on('sendText:btn', (event, todo) => {
+
+//   // Twilio Credentials 
+//   var accountSid = process.env.accountSid;
+//   var authToken = process.env.authToken;
+//   var myNumber = process.env.myNumber;
+//   var destination = process.env.destination;
+
+//   console.log(accountSid);
+//   console.log(authToken);
+//   console.log(myNumber);
+//   console.log(destination);
+ 
+
+//   //var imgurl = 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif'
+//    // var imgurl = 'http://static1.businessinsider.com/image/58c6f8e35f3ca830008b4f3c-875/9577356756453472e419b.jpg'
+
+//  // require the Twilio module and create a REST client 
+//   var client = require('twilio')(accountSid, authToken); 
+   
+//   client.messages.create({ 
+//     to: destination,
+//     from: myNumber,
+//     body: "Gif Test",
+//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
+//   }, function(err, message) { 
+//       if(err){
+//         console.log(err);
+//       } else {
+//         console.log(message.sid);
+//       }
+//   });
+
+// });
+
+
+
+
 
 // menu template
 const menuTemplate = [
@@ -786,13 +837,3 @@ if (process.env.NODE_ENV !== 'production') {
 // 'development'
 // 'staging'
 // 'test'
-
-
-
-
-
-
-
-
-
-
