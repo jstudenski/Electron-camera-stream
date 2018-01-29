@@ -1,9 +1,9 @@
 // --start up app--
 // npm run electron
-// --update env variables--
-// source app-env
+
 // --sass compiler--
 // npm run watch-css
+
 console.log("App initiated");
 
 // hidden .env variables

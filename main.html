@@ -3,21 +3,32 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
+  <link rel="stylesheet" type="text/css" href="pietimer/pietimer.css">
+
   <link href="style/style.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="pietimer/pietimer.css">
 
 
 </head>
 <body>
 
-<div id="test">test</div>
-  
+<!-- <div>test</div> -->
+
+
+<a href="#countdown-modal" rel="modal:open" id="test">HELLO</a>
+
+<form id="countdown-modal" class="modal">
+
+  <div id="timer" class="pietimer"></div>
+  <span id="countdown">10</span>
+
+</form>
+
+
 
 <header>
   <img class="logo" src="./images/logo.svg">
 </header>
-
 
 <div class="mainbtn-row">
   <div id="mainbtn" onclick="sendSignal('capture:btn')"><div>START</div></div>
@@ -25,20 +36,26 @@
 
 
 
-<div id="timer" class="pietimer"></div>
-<span id="countdown">10</span>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div id="gallery"></div>
 
 
-
-
-
 <div id="ex1" class="modal">
   <ul id="keypad">
-    <h1 id="timer" class="timer">00.00</h1>
+<!--     <h1 id="timer" class="timer">00.00</h1> -->
     <form class="center">
       <label>Phone Number<br>
         <input id="phone-number" type="text" class="write" autofocus>
@@ -83,7 +100,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
-
 <!-- jQuery Modal -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
@@ -92,6 +108,7 @@
 
 
 <script type="text/javascript" src="pietimer/pietimer.js"></script>
+
 
 
 
@@ -126,32 +143,19 @@
 
 
 <script>
-  // require electron and ipcRenderer
-  const electron = require('electron');
-  const {ipcRenderer } = electron;
+// require electron and ipcRenderer
+const electron = require('electron');
+const {ipcRenderer } = electron;
 
 
-  ipcRenderer.send('start:up');
+ipcRenderer.send('start:up');
 
 
-
-  $('.timer').hide();
-  $('#showTimer').click(function() {
-    $('.timer').toggle();
-  });
-
-
-
-
-// $(function() {
-//   $('#timer').pietimer({
-//       color: '#404040',
-//       fill: false,        
-//       timer: null,
-//   });
-// });
-  //countdown
-
+// admin settings
+$('.timer').hide();
+$('#showTimer').click(function() {
+  $('.timer').toggle();
+});
 
 
 
@@ -160,31 +164,20 @@ var counter;
 
 function countdown() {
   $('#countdown').show();
-  $('.logo').hide();
+  // $('.logo').hide();
+  count--
 
-
-  count=count-1;
-  if (count <= 0)
-  {
+  if (count <= 0) {
      clearInterval(counter);
      //counter ended, do something here
-     $('.logo').show();
+     // $('.logo').show();
      $('#countdown').hide();
      return;
 
   }
-  $('#countdown').text(count);
 
-  //console.log(count);
-  //Do code for showing the number of seconds here
-}
-
-
-
-  $('#test').click(function() {
+  if (count === 3) {
     $('#timer').pietimer('start');
-    count=11;
-    counter=setInterval(countdown, 500); //1000 will  run it every 1 second
 
     $(function() {
       $('#timer').pietimer({
@@ -199,7 +192,20 @@ function countdown() {
     });
 
 
-  });
+  }
+
+  $('#countdown').text(count);
+
+  //console.log(count);
+  //Do code for showing the number of seconds here
+}
+
+
+$('#test').click(function() {
+
+  count=6; // when to start countdown
+  counter=setInterval(countdown, 1000); //1000 will  run it every .1 second
+});
 
 // setTimeout(function () {
 

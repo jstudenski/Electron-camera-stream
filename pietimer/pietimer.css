@@ -1,13 +1,8 @@
 #timer {
-    margin: 20px;
-    width: 600px;
-    border-radius: 50%;
-    background-color: #fff;
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-size: 600px;
-    z-index: 1;
+  width: 600px;
+  border-radius: 50%;
+  background-color: #777;
+  font-size: 600px;
 }
 
 .pietimer {
