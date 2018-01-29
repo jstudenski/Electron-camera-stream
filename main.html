@@ -5,10 +5,14 @@
 
   <link href="style/style.css" rel="stylesheet">
 
+<link rel="stylesheet" type="text/css" href="pietimer/pietimer.css">
+
+
 </head>
 <body>
 
-  <span id="countdown"></span>
+<div id="test">test</div>
+  
 
 <header>
   <img class="logo" src="./images/logo.svg">
@@ -20,7 +24,15 @@
 </div>
 
 
+
+<div id="timer" class="pietimer"></div>
+<span id="countdown">10</span>
+
+
+
 <div id="gallery"></div>
+
+
 
 
 
@@ -78,6 +90,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
+
+<script type="text/javascript" src="pietimer/pietimer.js"></script>
+
+
+
 <script src="javascript/keyboard.js"></script>
 <script src="javascript/stopwatch.js"></script>
 
@@ -126,6 +143,20 @@
 
 
 
+// $(function() {
+//   $('#timer').pietimer({
+//       color: '#404040',
+//       fill: false,        
+//       timer: null,
+//   });
+// });
+  //countdown
+
+
+
+
+var count;
+var counter;
 
 function countdown() {
   $('#countdown').show();
@@ -148,20 +179,45 @@ function countdown() {
   //Do code for showing the number of seconds here
 }
 
-var count;
-var counter;
+
+
+  $('#test').click(function() {
+    $('#timer').pietimer('start');
+    count=11;
+    counter=setInterval(countdown, 500); //1000 will  run it every 1 second
+
+    $(function() {
+      $('#timer').pietimer({
+          timerSeconds: 3,
+          color: '#66318c',
+          fill: false,
+          //showPercentage: true,
+          callback: function() {
+            $('#timer').pietimer('reset');
+          }
+      });
+    });
+
+
+  });
+
+// setTimeout(function () {
+
+
+
+// }, 2000);
+
+
+
+
+
 
 ipcRenderer.on('start:stopwatch', (event, todo) => {
  toggleBtn.textContent = 'Stop';
  watch.start();
 
-  //countdown
-  count=11;
-  counter=setInterval(countdown, 1000); //1000 will  run it every 1 second
 
 });
-
-
 
 
 
@@ -188,24 +244,24 @@ ipcRenderer.on('start:stopwatch', (event, todo) => {
 var phonenumber = ''; 
 
 
-function showSendBtn() {
-  if (phonenumber.length === 10) {
-   // $('#submit').show();
+// function showSendBtn() {
+//   if (phonenumber.length === 10) {
+//    // $('#submit').show();
 
-    $('.send-button').css( 'background-color', '#8dc440'); // green
-    $('.send-button').attr('status',true);
+//     $('.send-button').css( 'background-color', '#8dc440'); // green
+//     $('.send-button').attr('status',true);
 
-  } else {
-  //  $('#submit').hide();
+//   } else {
+//   //  $('#submit').hide();
 
-    $('.send-button').css( 'background-color', '#404040'); // gray
-    $('.send-button').attr('status',false);
-  }
-}
+//     $('.send-button').css( 'background-color', '#404040'); // gray
+//     $('.send-button').attr('status',false);
+//   }
+// }
 
 function sendGif() {
-  showSendBtn();
-  console.log('Hello?');
+  // showSendBtn();
+  // console.log('Hello?');
   //console.log();
   var status = $(this).attr('status');
   var imageUrl = $(this).attr('data-url')
@@ -215,8 +271,8 @@ function sendGif() {
   $('#phone-number').val(''); 
 
   // set back
-  $('.send-button').css( 'background-color', '#404040'); // gray
-  $('.send-button').attr('status',false);
+  //$('.send-button').css( 'background-color', '#404040'); // gray
+  //$('.send-button').attr('status',false);
 
   if (status === 'false') {
     console.log('Enter Phone Number');
@@ -227,8 +283,8 @@ function sendGif() {
     ipcRenderer.send('send:text', value, imageUrl)
 
     // reset values
-    $('.send-button').css( 'background-color', '#404040'); // gray
-    $('.send-button').attr('status',false);
+   // $('.send-button').css( 'background-color', '#404040'); // gray
+   // $('.send-button').attr('status',false);
 
   }
 
@@ -248,7 +304,7 @@ function sendGif() {
       // remove mask
       phonenumber = $("#phone-number").cleanVal()
       console.log(phonenumber);  
-      showSendBtn();
+      // showSendBtn();
     });
 
     $('.number').click(function(){
@@ -263,7 +319,7 @@ function sendGif() {
         console.log(phonenumber);  
       }
 
-      showSendBtn();
+      // showSendBtn();
 
     });
 
@@ -273,7 +329,7 @@ function sendGif() {
       phonenumber = phonenumber.substring(0,phonenumber.length-1);
       $('#phone-number').val(phonenumber);
       $('#phone-number').trigger('input');
-      showSendBtn();
+      // showSendBtn();
     });
 
 
@@ -359,17 +415,12 @@ function sendGif() {
           remove.click(removeGif);
           remove.attr('data-url', 'images/gifs/medium/'+url);
           remove.appendTo(btnBar);
+
+
+
           // send button
           var send = $('<div>');
           send.addClass('send-button');
-          //send.hide(); // hide by default
-
-         // send.html('Send');
-
-
-
-          // button text
-         // send.html('send');
 
           // remove M
           var small = url.substr(1);
@@ -378,15 +429,19 @@ function sendGif() {
           // url of image to send
           send.attr('data-url', 'images/gifs/small/'+small);
 
-
-
           // modal
           var a = $('<a>');
           // <!-- Link to open the modal -->
           // <p><a href="#ex1" rel="modal:open">send</a></p>
           a.attr("href", "#ex1");
           a.attr("rel", "modal:open");
-          a.text("SEND");
+          // a.text("SEND");
+
+          var plane = $('<img>').attr('src', './images/icons/plane.svg');
+          a.html(plane);
+
+
+
 
           send.html(a);
 

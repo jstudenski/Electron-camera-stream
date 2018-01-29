@@ -2,6 +2,15 @@
 $purple: #66318c;
 $darkPurple: #3b1358;
 
+
+#test {
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  position: absolute;
+  background-color: salmon;
+}
+
 body { 
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -309,14 +318,13 @@ $borderradius: 8px;
   }
 }
 
-
 #countdown {
   font-size: 390px;
   z-index: 2;
   position: absolute;
-  /* left: 50%; */
-  right: 40%;
-  color: $purple;
+  top: 0;
+  left: 0;
+  color: #66318c;
 }
 
 
@@ -326,14 +334,14 @@ $borderradius: 8px;
     left: 4px;
     background-color: #2cb100;
     color: #fff;
-    padding: 8px 10px;
+    // padding: 8px 10px;
     box-sizing: border-box;
-    width: 52px;
+    width: 32px;
     height: 32px;
     border-radius: 20px;
     box-shadow: 1px 1px 0px 0px #292929;
   img {
-    width: 23px;
+    width: 18px;
     margin: 3px auto;
     display: block;
     position: relative;
@@ -356,14 +364,40 @@ $borderradius: 8px;
   color: #fff;
 }
 
-#timer {
-  font-size: 10px;
-  opacity: 1;
-  bottom: 0;
-  right: 0;
-  z-index: 1;
-  position: absolute;
-}
+// #timer {
+//   font-size: 10px;
+//   opacity: 1;
+//   bottom: 0;
+//   right: 0;
+//   z-index: 1;
+//   position: absolute;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // .send-button {
 //   background-color: #404040;

@@ -2,7 +2,12 @@
     margin: 20px;
     width: 600px;
     border-radius: 50%;
-    background-color: salmon;
+    background-color: #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 600px;
+    z-index: 1;
 }
 
 .pietimer {
