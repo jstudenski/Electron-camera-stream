@@ -1,6 +1,6 @@
+*.gif
 node_modules
 resources
 app-env
 .DS_Store
 .env
-images/gifs/
