@@ -12,12 +12,6 @@
 
 <header>
   <img class="logo" src="./images/logo.svg">
-
-
-
-
-
-
 </header>
 
 
@@ -27,16 +21,17 @@
 
 
 <div id="gallery"></div>
-<br>
 
-<!-- <div id="keypad-row">
+
+
+<div id="ex1" class="modal">
   <ul id="keypad">
-  <h1 id="timer" class="timer">00.00</h1>
-  <form class="center">
-  <label>Phone Number<br>
-    <input id="phone-number" type="text" class="write" autofocus>
-  </label>
-  </form>
+    <h1 id="timer" class="timer">00.00</h1>
+    <form class="center">
+      <label>Phone Number<br>
+        <input id="phone-number" type="text" class="write" autofocus>
+      </label>
+    </form> 
     <li class="number" value="1">1</li>   
     <li class="number" value="2">2</li>
     <li class="number" value="3">3</li>
@@ -50,35 +45,6 @@
     <li class="number" value="0">0</li>
   </ul>
 </div>
- -->
-
-  <!-- Modal HTML embedded directly into document -->
-<div id="ex1" class="modal">
-
-  <ul id="keypad">
-    <h1 id="timer" class="timer">00.00</h1>
-    <form class="center">
-    <label>Phone Number<br>
-      <input id="phone-number" type="text" class="write" autofocus>
-    </label>
-  <!--   <button id="submit" type="submit"></button> -->
-    </form>
-      <li class="number" value="1">1</li>   
-      <li class="number" value="2">2</li>
-      <li class="number" value="3">3</li>
-      <li class="number" value="4">4</li>
-      <li class="number" value="5">5</li>
-      <li class="number" value="6">6</li>
-      <li class="number" value="7">7</li>
-      <li class="number" value="8">8</li>
-      <li class="number" value="9">9</li>    
-      <li class="delete">del</li>
-      <li class="number" value="0">0</li>
-    </ul>
-
-</div>
-
-
 
 
 
@@ -103,15 +69,11 @@
 
 
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
 
 <!-- jQuery Modal -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-
-
-
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
@@ -134,7 +96,6 @@
   <div id="download" onclick="sendSignal('download:btn')">download</div>
   <div id="upload" onclick="sendSignal('upload:btn')">upload</div>
   <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
-
 
 <!--  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
 

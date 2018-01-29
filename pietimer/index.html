@@ -7,27 +7,24 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="jquery.pietimer.js"></script>
 
-
 <script type="text/javascript">
 
+$(function() {
+  $('#timer').pietimer({
+      timerSeconds: 3,
+      color: '#234',
+      fill: false,
+      //showPercentage: true,
+      callback: function() {
+        //alert("yahoo, timer is done!");
+        $('#timer').pietimer('reset');
+        // $('#timer').pietimer('start');
+      }
+  });
+});
 
 
-    $(function() {
-      $('#timer').pietimer({
-          timerSeconds: 4,
-          color: '#234',
-          fill: false,
-          //showPercentage: true,
-          callback: function() {
-            //alert("yahoo, timer is done!");
-            $('#timer').pietimer('reset');
-            // $('#timer').pietimer('start');
-          }
-      });
-    });
-
-
-  </script>
+</script>
 </head>
 <body>
 
