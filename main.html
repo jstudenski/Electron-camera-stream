@@ -9,7 +9,7 @@
 <body>
 
 
-<h3 style='margin-top:20px;'>Example 1 - Stopwatch (counts ups)</h3>
+<!-- <h3 style='margin-top:20px;'>Example 1 - Stopwatch (counts ups)</h3>
     <span id="stopwatch">00:00:00</span>
     <p>
         <input class='btn btn-primary' type='button' value='Play/Pause' onclick='Example1.Timer.toggle();' />
@@ -22,21 +22,17 @@
     <form id="example2form">
         <input class='btn btn-primary' type='button' value='Play/Pause' onclick='Example2.Timer.toggle();' />
         <input class='btn btn-primary' type='button' value='Stop/Reset' onclick='Example2.resetCountdown();' />
-        <input type='text' name='startTime' value='800' style='width:30px;' /><!--  -->
+        <input type='text' name='startTime' value='800' style='width:30px;' />
     </form>
+ -->
 
-
-
-<a href="#countdown-modal" rel="modal:open" id="test" onclick='Example2.Timer.toggle()'>Open Modal</a>
+<span id="stopwatch">00:00:00</span>
 
 <form id="countdown-modal" class="modal">
 
-
   <div id="timer" class="pietimer"></div>
-  <span id="mycountdown">A</span><br>
-
+  <span id="mycountdown">0</span><br>
   <span id="countdown">00:10:00</span>
-
 
 </form>
 
@@ -45,6 +41,9 @@
 <header>
   <img class="logo" src="./images/logo.svg">
 </header>
+
+<!-- <a href="#countdown-modal" rel="modal:open" id="test" onclick='Example2.Timer.toggle()'>Open Modal</a> -->
+
 
 <div class="mainbtn-row">
   <div id="mainbtn" onclick="sendSignal('capture:btn')"><div>START</div></div>
@@ -104,50 +103,22 @@
 <!-- jQuery Mask -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
-
 <script type="text/javascript" src="pietimer/pietimer.js"></script>
 
-<!-- <script src="javascript/newcount.js"></script>
- -->
 <script src="javascript/timer.js"></script>
 
 <script src="javascript/keyboard.js"></script>
-<!-- <script src="javascript/stopwatch.js"></script> -->
-
-
-<!-- <div class="userButtons"> -->
-
-<!--   <div id="capture" onclick="sendSignal('capture:btn')">Capture</div> -->
-
-  
-<!-- Test commit from PC -->
-<!--   <div id="addTask" onclick="sendSignal('addTask:btn')">Add Task</div>
-  <div id="clear" onclick="clearTodos()">Clear List</div>
-  <div id="showfiles" onclick="sendSignal('showfiles:btn')">Show Files</div>
-  <div id="transfer" onclick="sendSignal('transfer:btn')">Transfer Pic</div>
-  <div id="download" onclick="sendSignal('download:btn')">download</div>
-  <div id="upload" onclick="sendSignal('upload:btn')">upload</div>
-  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
-
-<!--  <div id="sendText" onclick="sendSignal('sendText:btn')">Send Jeff gif</div> -->
-
-<!--   <div id="sync" onclick="sendSignal('sync:btn')">Sync images</div>
-  <div id="test" onclick="sendSignal('test:btn')">Test</div>
-  <div id="move" onclick="sendSignal('move:btn')">Move</div> -->
-
-<!-- </div> --><!-- userButtons -->
-
-
 
 
 <script>
 
+var startCountdown = 1000 //milleseconds 
 
 var pieDone = false;
 function startPie() {
   if(!pieDone) {
     pieDone = true;
-    
+
     $('#timer').pietimer('start');
 
     $(function() {
@@ -162,31 +133,30 @@ function startPie() {
 }
 
 
-
-  var Example1 = new (function() {
-    var $stopwatch, // Stopwatch element on the page
-        incrementTime = 70, // Timer speed in milliseconds
-        currentTime = 0, // Current time in hundredths of a second
-        updateTimer = function() {
-            $stopwatch.html(formatTime(currentTime));
-            currentTime += incrementTime / 10;
-        },
-        init = function() {
-            $stopwatch = $('#stopwatch');
-            Example1.Timer = $.timer(updateTimer, incrementTime, false);
-        };
-    this.resetStopwatch = function() {
-        currentTime = 0;
-        this.Timer.stop().once();
+var Example1 = new (function() {
+  var $stopwatch, // Stopwatch element on the page
+    incrementTime = 70, // Timer speed in milliseconds
+    currentTime = 0, // Current time in hundredths of a second
+    updateTimer = function() {
+      $stopwatch.html(formatTime(currentTime));
+      currentTime += incrementTime / 10;
+    },
+    init = function() {
+      $stopwatch = $('#stopwatch');
+      Example1.Timer = $.timer(updateTimer, incrementTime, false);
     };
-    $(init);
+  this.resetStopwatch = function() {
+    currentTime = 0;
+    this.Timer.stop().once();
+  };
+  $(init);
 });
 
 var Example2 = new (function() {
     var $countdown,
         $form, // Form used to change the countdown time
         incrementTime = 70,
-        currentTime = 800, // 100 = 1 second
+        currentTime = startCountdown,
         updateTimer = function() {
           $countdown.html(formatTime(currentTime));
 
@@ -223,7 +193,8 @@ var Example2 = new (function() {
             });
         };
     this.resetCountdown = function() {
-        var newTime = parseInt($form.find('input[type=text]').val()) * 1;
+        var newTime = startCountdown;
+       // parseInt($form.find('input[type=text]').val()) * 1;
         if (newTime > 0) {currentTime = newTime;}
         this.Timer.stop().once();
     };
@@ -256,77 +227,23 @@ const {ipcRenderer } = electron;
 
 ipcRenderer.send('start:up');
 
+ipcRenderer.on('start:countdown', (event, todo) => {
+  $('#countdown-modal').modal(); // open modal
+  Example2.Timer.toggle(); // start countdown
+  Example1.Timer.toggle() // start stopwatch
+});
+
+ipcRenderer.on('stop:stopwatch', (event, todo) => {
+  Example1.Timer.toggle() // start stopwatch
+});
+
+
 
 // // admin settings
 // $('.timer').hide();
 // $('#showTimer').click(function() {
 //   $('.timer').toggle();
 // });
-
-
-
-// var count;
-// var counter;
-
-// function countdown() {
-//   $('#mycountdown').show();
-//   // $('.logo').hide();
-//   count--
-
-//   if (count <= 0) {
-//      clearInterval(counter);
-//      //counter ended, do something here
-//      // $('.logo').show();
-//      $('#mycountdown').hide();
-//      return;
-
-//   }
-
-//   if (count === 3) {
-//     $('#timer').pietimer('start');
-
-//     $(function() {
-//       $('#timer').pietimer({
-//           timerSeconds: 3,
-//           color: '#66318c',
-//           fill: false,
-//           //showPercentage: true,
-//           callback: function() {
-//             $('#timer').pietimer('reset');
-//             $.modal.close();
-//           }
-//       });
-//     });
-
-//   }
-
-//   $('#mycountdown').text(count);
-
-// }
-
-
-// $('#test').click(function(event) {
-
-//   count=10; // when to start countdown
-//   counter=setInterval(countdown, 1000); //1000 will  run it every 1 second
-
-//   $(this).modal({
-//     fadeDuration: 100
-//   });
-//   return false;
-// });
-
-
-
-
-
-
-ipcRenderer.on('start:stopwatch', (event, todo) => {
- toggleBtn.textContent = 'Stop';
- watch.start();
-
-});
-
 
 
   var adminPanelOpen = false;

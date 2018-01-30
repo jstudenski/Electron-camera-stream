@@ -47,7 +47,8 @@ header {
 .logo {
   width: 300px;
   display: block;
-  margin: auto; }
+  margin: auto;
+  filter: drop-shadow(2px 2px 0px #3b1358); }
 
 .mainbtn-row {
   background-color: #d4d4d4;

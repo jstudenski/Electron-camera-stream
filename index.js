@@ -285,7 +285,7 @@ var images = [];
 // when button is pressed
 ipcMain.on('capture:btn', (event, todo) => {
 
-  mainWindow.webContents.send('start:stopwatch');
+  mainWindow.webContents.send('start:countdown');
 
   // execute 
   console.log("Taking picture..");
@@ -295,7 +295,7 @@ ipcMain.on('capture:btn', (event, todo) => {
 
     if (err) {
       if (err.code === 'ECONNREFUSED') {
-        console.log("Pi not connected, try updating env variables with `source app-env`");
+        console.log("Pi not connected");
       } else {
         throw err
         console.log(err);
