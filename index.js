@@ -6,9 +6,8 @@
 
 console.log("App initiated");
 
-// hidden .env variables
+// bring in .env variables
 require('dotenv').config();
-
 
 const electron = require('electron');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
@@ -245,29 +244,18 @@ ipcMain.on('addTask:btn', (event, todo) => {
 
 
 function copy(path, folder){
-   client.scp({
-     host: process.env.HOST,
-     username: 'pi',
-     password: process.env.PASSWORD,
-     path: path
-   }, './images/gifs/' + folder + '/', function(err) {
-     if (err) throw err
-     // displayImage();
-      console.log("worked!");
-   })
+  client.scp({
+    host: process.env.HOST,
+    username: 'pi',
+    password: process.env.PASSWORD,
+    path: path
+  }, './images/gifs/' + folder + '/', function(err) {
+    if (err) throw err
+    // displayImage();
+    console.log("photo copied!");
+  })
 }
 
-  // var mediumPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif';
-  // var smallPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/SGIF' + num + '.gif';
-
-  //  exec(connSettings, '', function (err, response) { // better way of connecting??
-    
-  //   console.log('Copying images..');
-
-  //   console.log(err);
-  //   if (err) throw err
-  //     copy(smallPath, 'small');
-  //     copy(mediumPath, 'medium');
 
 
 
