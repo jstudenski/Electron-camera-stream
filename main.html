@@ -1,26 +1,42 @@
 <head>
-<!-- modal style -->
-
+  <!-- modal style -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-
+  <!-- pie timer style -->
   <link rel="stylesheet" type="text/css" href="pietimer/pietimer.css">
-
+  <!-- style -->
   <link href="style/style.css" rel="stylesheet">
-
-
-
 </head>
 <body>
 
-<!-- <div>test</div> -->
+
+<h3 style='margin-top:20px;'>Example 1 - Stopwatch (counts ups)</h3>
+    <span id="stopwatch">00:00:00</span>
+    <p>
+        <input class='btn btn-primary' type='button' value='Play/Pause' onclick='Example1.Timer.toggle();' />
+        <input class='btn btn-primary' type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />
+    </p>
+<br>
+
+    <h3>Example 2 - Countdown Timer</h3>
+
+    <form id="example2form">
+        <input class='btn btn-primary' type='button' value='Play/Pause' onclick='Example2.Timer.toggle();' />
+        <input class='btn btn-primary' type='button' value='Stop/Reset' onclick='Example2.resetCountdown();' />
+        <input type='text' name='startTime' value='800' style='width:30px;' /><!--  -->
+    </form>
 
 
-<a href="#countdown-modal" rel="modal:open" id="test">HELLO</a>
+
+<a href="#countdown-modal" rel="modal:open" id="test" onclick='Example2.Timer.toggle()'>Open Modal</a>
 
 <form id="countdown-modal" class="modal">
 
+
   <div id="timer" class="pietimer"></div>
-  <span id="countdown">10</span>
+  <span id="mycountdown">A</span><br>
+
+  <span id="countdown">00:10:00</span>
+
 
 </form>
 
@@ -35,47 +51,30 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div id="gallery"></div>
 
 
-<div id="ex1" class="modal">
-  <ul id="keypad">
-<!--     <h1 id="timer" class="timer">00.00</h1> -->
-    <form class="center">
-      <label>Phone Number<br>
-        <input id="phone-number" type="text" class="write" autofocus>
-      </label>
-    </form> 
-    <li class="number" value="1">1</li>   
-    <li class="number" value="2">2</li>
-    <li class="number" value="3">3</li>
-    <li class="number" value="4">4</li>
-    <li class="number" value="5">5</li>
-    <li class="number" value="6">6</li>
-    <li class="number" value="7">7</li>
-    <li class="number" value="8">8</li>
-    <li class="number" value="9">9</li>    
-    <li class="delete">del</li>
-    <li class="number" value="0">0</li>
-  </ul>
-</div>
+  <div id="ex1" class="modal">
+    <ul id="keypad">
 
-
+      <form class="center">
+        <label>Phone Number<br>
+          <input id="phone-number" type="text" class="write" autofocus>
+        </label>
+      </form> 
+      <li class="number" value="1">1</li>   
+      <li class="number" value="2">2</li>
+      <li class="number" value="3">3</li>
+      <li class="number" value="4">4</li>
+      <li class="number" value="5">5</li>
+      <li class="number" value="6">6</li>
+      <li class="number" value="7">7</li>
+      <li class="number" value="8">8</li>
+      <li class="number" value="9">9</li>    
+      <li class="delete">del</li>
+      <li class="number" value="0">0</li>
+    </ul>
+  </div>
 
 
 <div id="admin" onclick="sendSignal('admin:btn')"><img src="./images/icons/cog.svg"></div>
@@ -97,24 +96,23 @@
 
 
 
-
+<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
 <!-- jQuery Modal -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-
-
+<!-- jQuery Mask -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" onload="window.$ = window.jQuery = module.exports;"></script>
 
 
 <script type="text/javascript" src="pietimer/pietimer.js"></script>
 
-
-
+<!-- <script src="javascript/newcount.js"></script>
+ -->
+<script src="javascript/timer.js"></script>
 
 <script src="javascript/keyboard.js"></script>
-<script src="javascript/stopwatch.js"></script>
-
+<!-- <script src="javascript/stopwatch.js"></script> -->
 
 
 <!-- <div class="userButtons"> -->
@@ -143,6 +141,114 @@
 
 
 <script>
+
+
+var pieDone = false;
+function startPie() {
+  if(!pieDone) {
+    pieDone = true;
+    
+    $('#timer').pietimer('start');
+
+    $(function() {
+      $('#timer').pietimer({
+      timerSeconds: 3,
+      color: '#66318c',
+      fill: false,
+      });
+    });
+
+  }
+}
+
+
+
+  var Example1 = new (function() {
+    var $stopwatch, // Stopwatch element on the page
+        incrementTime = 70, // Timer speed in milliseconds
+        currentTime = 0, // Current time in hundredths of a second
+        updateTimer = function() {
+            $stopwatch.html(formatTime(currentTime));
+            currentTime += incrementTime / 10;
+        },
+        init = function() {
+            $stopwatch = $('#stopwatch');
+            Example1.Timer = $.timer(updateTimer, incrementTime, false);
+        };
+    this.resetStopwatch = function() {
+        currentTime = 0;
+        this.Timer.stop().once();
+    };
+    $(init);
+});
+
+var Example2 = new (function() {
+    var $countdown,
+        $form, // Form used to change the countdown time
+        incrementTime = 70,
+        currentTime = 800, // 100 = 1 second
+        updateTimer = function() {
+          $countdown.html(formatTime(currentTime));
+
+            // --- addition --- //
+            $('#mycountdown').text(parseInt(currentTime / 100)+1);
+            if (currentTime <= 300) { // start pie timer at 3 seconds
+              startPie();
+              console.log(currentTime);
+            }
+           //  --- /addition --- //
+
+            if (currentTime == 0) {
+                Example2.Timer.stop();
+                timerComplete();
+                Example2.resetCountdown();
+                return;
+            }
+            currentTime -= incrementTime / 10;
+            if (currentTime < 0) currentTime = 0;
+        },
+        timerComplete = function() {
+            $('#timer').pietimer('reset');
+            pieDone = false;
+            $.modal.close();
+            //alert('Example 2: Countdown timer complete!');
+        },
+        init = function() {
+            $countdown = $('#countdown');
+            Example2.Timer = $.timer(updateTimer, incrementTime, false);
+            $form = $('#example2form');
+            $form.bind('submit', function() {
+                Example2.resetCountdown();
+                return false;
+            });
+        };
+    this.resetCountdown = function() {
+        var newTime = parseInt($form.find('input[type=text]').val()) * 1;
+        if (newTime > 0) {currentTime = newTime;}
+        this.Timer.stop().once();
+    };
+    $(init);
+});
+
+
+
+
+function pad(number, length) {
+    var str = '' + number;
+    while (str.length < length) {str = '0' + str;}
+    return str;
+}
+
+function formatTime(time) {
+    var min = parseInt(time / 6000),
+        sec = parseInt(time / 100) - (min * 60),
+        hundredths = pad(time - (sec * 100) - (min * 6000), 2);
+    return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+}
+
+
+
+
 // require electron and ipcRenderer
 const electron = require('electron');
 const {ipcRenderer } = electron;
@@ -151,67 +257,64 @@ const {ipcRenderer } = electron;
 ipcRenderer.send('start:up');
 
 
-// admin settings
-$('.timer').hide();
-$('#showTimer').click(function() {
-  $('.timer').toggle();
-});
+// // admin settings
+// $('.timer').hide();
+// $('#showTimer').click(function() {
+//   $('.timer').toggle();
+// });
 
 
 
-var count;
-var counter;
+// var count;
+// var counter;
 
-function countdown() {
-  $('#countdown').show();
-  // $('.logo').hide();
-  count--
+// function countdown() {
+//   $('#mycountdown').show();
+//   // $('.logo').hide();
+//   count--
 
-  if (count <= 0) {
-     clearInterval(counter);
-     //counter ended, do something here
-     // $('.logo').show();
-     $('#countdown').hide();
-     return;
+//   if (count <= 0) {
+//      clearInterval(counter);
+//      //counter ended, do something here
+//      // $('.logo').show();
+//      $('#mycountdown').hide();
+//      return;
 
-  }
+//   }
 
-  if (count === 3) {
-    $('#timer').pietimer('start');
+//   if (count === 3) {
+//     $('#timer').pietimer('start');
 
-    $(function() {
-      $('#timer').pietimer({
-          timerSeconds: 3,
-          color: '#66318c',
-          fill: false,
-          //showPercentage: true,
-          callback: function() {
-            $('#timer').pietimer('reset');
-          }
-      });
-    });
+//     $(function() {
+//       $('#timer').pietimer({
+//           timerSeconds: 3,
+//           color: '#66318c',
+//           fill: false,
+//           //showPercentage: true,
+//           callback: function() {
+//             $('#timer').pietimer('reset');
+//             $.modal.close();
+//           }
+//       });
+//     });
 
+//   }
 
-  }
+//   $('#mycountdown').text(count);
 
-  $('#countdown').text(count);
-
-  //console.log(count);
-  //Do code for showing the number of seconds here
-}
+// }
 
 
-$('#test').click(function() {
+// $('#test').click(function(event) {
 
-  count=6; // when to start countdown
-  counter=setInterval(countdown, 1000); //1000 will  run it every .1 second
-});
+//   count=10; // when to start countdown
+//   counter=setInterval(countdown, 1000); //1000 will  run it every 1 second
 
-// setTimeout(function () {
-
-
-
-// }, 2000);
+//   $(this).modal({
+//     fadeDuration: 100
+//   });
+//   return false;
+// });
 
 
 
@@ -221,7 +324,6 @@ $('#test').click(function() {
 ipcRenderer.on('start:stopwatch', (event, todo) => {
  toggleBtn.textContent = 'Stop';
  watch.start();
-
 
 });
 

@@ -5,6 +5,13 @@
   position: absolute;
   background-color: salmon; }
 
+.countdown-test {
+  background-color: #00ff6c;
+  padding: 10px;
+  width: auto;
+  display: inline-block;
+  border-radius: 25px; }
+
 .modal {
   width: auto;
   padding: 0px; }
@@ -255,13 +262,23 @@ header {
     display: block;
     position: relative; }
 
-#countdown {
-  font-size: 390px;
+#mycountdown {
+  font-size: 350px;
   z-index: 2;
   position: absolute;
-  top: 0;
-  left: 0;
-  color: #66318c; }
+  color: #66318c;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%); }
+
+#countdown {
+  font-size: 25px;
+  z-index: 2;
+  position: absolute;
+  color: black;
+  left: 50%;
+  top: 80%;
+  transform: translateX(-50%) translateY(-50%); }
 
 .send-button {
   position: absolute;
@@ -292,3 +309,18 @@ header {
   padding: 0px 7px;
   background-color: #444444;
   color: #fff; }
+
+#stopwatch {
+  font-size: 150px;
+  opacity: 1;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  position: absolute; }
+
+#stopwatch {
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  margin: 20px;
+  font-size: 300px; }
