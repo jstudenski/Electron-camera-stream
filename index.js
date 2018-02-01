@@ -12,6 +12,16 @@ require('dotenv').config();
 const electron = require('electron');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
+const http = require('http');
+const fs = require('fs');
+const url = require('url');
+const ngrok = require('ngrok');
+const path = require('path');
+const node_ssh = require('node-ssh');
+const ssh = new node_ssh();
+const exec = require('node-ssh-exec');
+const client = require('scp2')
+
 //initialize variables
 let mainWindow;
 let addWindow;
@@ -60,21 +70,10 @@ ipcMain.on('todo:add', (event, todo) => {
 
 
 
-var path, node_ssh, ssh, fs
- 
-fs = require('fs')
-path = require('path')
-node_ssh = require('node-ssh')
-ssh = new node_ssh()
- 
-var http = require('http'),
-    fs = require('fs'),
-    url = require('url')
-var ngrok = require('ngrok');
-
 
 var num ='';
 // var port = 8080;
+
 
 ipcMain.on('send:text', (event, number, path) => {
 
@@ -267,7 +266,7 @@ var connSettings = {
   password: process.env.PASSWORD
 };
 
-var exec = require('node-ssh-exec');
+
 var images = [];
 
 // when button is pressed
@@ -410,7 +409,7 @@ ipcMain.on('sync:btn', (event, todo) => {
 
 
 
-var client = require('scp2')
+
 
 
 ipcMain.on('move:btn', (event, todo) => {
