@@ -1,4 +1,4 @@
-<img src="images/nextcaplogo.png" alt="NEXTCAP logo" style="width: 200px;"/>
+<img src="images/nextcaplogo.png" alt="NEXTCAP logo" style="width: 25%;"/>
 
 NEXT Capture Booth
 
