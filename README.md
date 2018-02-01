@@ -4,4 +4,4 @@ npm install
 
 npm run electron
 
-<!-- ![NEXTCAP logo](images/nextcaplogo.png?raw=true "Logo") -->
+![NEXTCAP logo](images/nextcaplogo.png?raw=true "Logo")
