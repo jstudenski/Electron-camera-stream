@@ -100,13 +100,6 @@ ipcMain.on('send:text', (event, number, path) => {
     });
   }).listen(9000);
 
-
-  // var imgurl = '';
-
-  // disconnect ngrok ... did nothing 
-  //ngrok.disconnect();
-
-
   ngrok.connect(9000, function (err, url) {
     if(err){
       console.log(err);
@@ -116,7 +109,6 @@ ipcMain.on('send:text', (event, number, path) => {
       //imgurl = url;
     }
   });
-
 
 });
 
@@ -597,7 +589,7 @@ ipcMain.on('showfiles:btn', (event, todo) => {
 
 
 
-    // node-ssh Error: getadderinfo ENOTFOUND
+// node-ssh Error: getadderinfo ENOTFOUND
 
 // ssh.connect({
 //   host: process.env.HOST,
@@ -778,24 +770,8 @@ const menuTemplate = [
       {role: 'paste'}
     ]
   },
-
-
-
-
 ];
 
-
-  // submenu: [
-  //   {role: 'undo'},
-  //   {role: 'redo'},
-  //   {type: 'separator'},
-  //   {role: 'cut'},
-  //   {role: 'copy'},
-  //   {role: 'paste'},
-  //   {role: 'pasteandmatchstyle'},
-  //   {role: 'delete'},
-  //   {role: 'selectall'}
-  // ]
 
 
  // if mac
