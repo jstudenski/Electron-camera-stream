@@ -20,7 +20,7 @@
   "homepage": "https://github.com/jstudenski/Electron-camera-stream#readme",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "electron": "^1.8.1",
+    "electron": "^1.8.2-beta.4",
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "jquery-mask-plugin": "^1.14.13",
