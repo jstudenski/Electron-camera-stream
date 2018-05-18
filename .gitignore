@@ -1,4 +1,3 @@
-*.gif
 node_modules
 resources
 app-env
