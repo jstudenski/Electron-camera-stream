@@ -26,7 +26,6 @@ const client = require('scp2')
 let mainWindow;
 let addWindow;
 
-
 // when the app is ready:
 app.on('ready', () => {
   // assign window to variable
@@ -38,13 +37,12 @@ app.on('ready', () => {
   mainWindow.loadURL(`file://${__dirname}/main.html`);
   // when main window is closed, close everything
   mainWindow.on('closed', () => app.quit());
-  
+
   // buildFronTemplate helper
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   // create menu from build
   Menu.setApplicationMenu(mainMenu);
 });
-
 
 // function to be called by 'New Todo' menu button
 function createAddWindow() {
@@ -68,12 +66,8 @@ ipcMain.on('todo:add', (event, todo) => {
   addWindow.close();
 });
 
-
-
-
 var num ='';
 // var port = 8080;
-
 
 ipcMain.on('send:text', (event, number, path) => {
 
@@ -90,7 +84,7 @@ ipcMain.on('send:text', (event, number, path) => {
         if (err) {
           res.writeHead(400, {'Content-type':'text/html'})
           console.log(err);
-          res.end("No such image");    
+          res.end("No such image");
         } else {
           res.writeHead(200,{'Content-type':'image/gif'});
           var img = fs.readFileSync(path);
@@ -133,49 +127,30 @@ function sendSMS(recipient, imageURL) {
 
   console.log(recipient + ' -- recipient');
   console.log(imageURL + ' -- imageURL');
-  // Twilio Credentials 
+  // Twilio Credentials
   var accountSid = process.env.ACCOUNTSID;
   var authToken = process.env.AUTHTOKEN;
   var myNumber = process.env.MYNUM;
 
-  // require the Twilio module and create a REST client 
-  var client = require('twilio')(accountSid, authToken); 
+  // require the Twilio module and create a REST client
+  var client = require('twilio')(accountSid, authToken);
 
- client.messages.create({ 
+ client.messages.create({
    to: recipient,
    from: myNumber,
    body: "Studio NEXT",
    // mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
    mediaUrl: imageURL,
 
- }, function(err, message) { 
+ }, function(err, message) {
    if(err){
      console.log(err);
    } else {
     console.log("API request send: " + message.sid);
-
-     // wait 5 seconds and disconnect 
-    // setTimeout(function () {
-    //   // ngrok.disconnect();
-    //   console.log("Port before increase "+ port);
-    //   port++
-    //   console.log("Port after increase "+ port);
-
-    // }, 5000);
-
-
    }
-
  });
 
-
 }
-
-
-
-
-
-
 
 // function to be called by 'New Todo' menu button
 function createSettingsWindow() {
@@ -193,7 +168,7 @@ function createSettingsWindow() {
 
 
 
-// listen for button clicks (from main.html): 
+// listen for button clicks (from main.html):
 ipcMain.on('refresh:btn', (event, todo) => {
   mainWindow.reload();
 });
@@ -203,35 +178,6 @@ ipcMain.on('devTools:btn', (event, todo) => {
 ipcMain.on('addTask:btn', (event, todo) => {
   createAddWindow();
 });
-
-
-
-
-// var Client = require('ssh2').Client;
-// var connection = new Client();
-
-
-// var remotePathToList = '/home/pi';
-// let myfile;
-
-// var conn = new Client();
-// conn.on('ready', function() {
-//   conn.sftp(function(err, sftp) {
-//   if (err) throw err;
-
-//     sftp.readdir(remotePathToList, function(err, list) {
-//       if (err) throw err;
-//       myfile = list;
-
-//       conn.end(); // close the connection
-//     });
-
-//   });
-
-// }).connect(connSettings);
-
-
-
 
 
 function copy(path, folder){
@@ -247,17 +193,12 @@ function copy(path, folder){
   })
 }
 
-
-
-
-
 var connSettings = {
   host: process.env.HOST,
-  port: 22, // Normal is 22 port 
+  port: 22, // Normal is 22 port
   username: 'pi',
   password: process.env.PASSWORD
 };
-
 
 var images = [];
 
@@ -266,7 +207,7 @@ ipcMain.on('capture:btn', (event, todo) => {
 
   mainWindow.webContents.send('start:countdown');
 
-  // execute 
+  // execute
   console.log("Taking picture..");
   var start = new Date().getTime(); // Timer
   // 'python3 TestTakePhoto.py'   // TPsingle.py
@@ -332,10 +273,8 @@ ipcMain.on('capture:btn', (event, todo) => {
                     }
 
                     //console.log(images)
-
                     // generate images
                     mainWindow.webContents.send('list-of-images', images);
-
                     mainWindow.webContents.send('stop:stopwatch');
                   });
 
@@ -364,16 +303,6 @@ ipcMain.on('start:up', (event, list) => {
   });
 });
 
-
-// ipcMain.on('test:btn', (event, list) => {
-
-//   mainWindow.webContents.send('start:stopwatch');
-
-// });
-
-
-
-
 var folders;
 // when button is pressed
 ipcMain.on('sync:btn', (event, todo) => {
@@ -389,20 +318,7 @@ ipcMain.on('sync:btn', (event, todo) => {
 
       folders = response;
     });
-});   
-
-// // when button is pressed
-// ipcMain.on('test:btn', (event, todo) => {
-//    // execute
-//    console.log(folders);
-//    console.log(typeof(folders)); 
-//    console.log(folders.split('\n')); 
-// });
-
-
-
-
-
+});
 
 ipcMain.on('move:btn', (event, todo) => {
 
@@ -430,13 +346,13 @@ ipcMain.on('move:btn', (event, todo) => {
 ipcMain.on('get:image', (event, num) => {
 
   console.log("get:image");
-  console.log(num); 
+  console.log(num);
 
   var mediumPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/MGIF' + num + '.gif';
   var smallPath = '/media/pi/1T/NEXCAP/Files/NEXTLAB/MediaGroup' + num + '/Media/SGIF' + num + '.gif';
 
    exec(connSettings, '', function (err, response) { // better way of connecting??
-    
+
     console.log('Copying images..');
 
     console.log(err);
@@ -452,7 +368,7 @@ ipcMain.on('get:image', (event, num) => {
 
 
 function refreshImages() {
-  
+
  images = []; // clear array
  // find what images exist
  fs.readdir('./images/gifs/medium/', (err, files) => {
@@ -488,11 +404,9 @@ ipcMain.on('remove:image', (event, filePath) => {
 ipcMain.on('phone:btn', (event, todo) => {
 
     console.log("phoneBTN");
-    console.log(this);  
+    console.log(this);
 
 });
-
-
 
 
 var moveFrom;
@@ -569,10 +483,6 @@ ipcMain.on('upload:btn', (event, todo) => {
     }).connect(connSettings);
 });
 
-
-
-
-
 ipcMain.on('showfiles:btn', (event, todo) => {
   conn.end();
   // send to mainWindow
@@ -585,172 +495,24 @@ ipcMain.on('showfiles:btn', (event, todo) => {
    //  });
 });
 
-
-
-
-
-// node-ssh Error: getadderinfo ENOTFOUND
-
-// ssh.connect({
-//   host: process.env.HOST,
-//   username: process.env.USERNAME,
-//   password: process.env.PASSWORD
-// }).then(function() {
-
-//       // console.log("Something's wrong")
-//       // console.log(error)
-
-//   ipcMain.on('download:btn', (event, todo) => { 
-//     ssh.getFile('./temp/TestTakePhoto.py', '/home/pi/TestTakePhoto.py').then(function() {
-//       console.log("The File TestTakePhoto.py downloaded")
-//     }, function(error) {
-//       console.log("Something's wrong")
-//       console.log(error)
-//     })
-//   });
-
-//   ipcMain.on('upload:btn', (event, todo) => { 
-//     ssh.putFiles([{ local: './temp/TestTakePhoto.py', remote: '/home/pi/TestTakePhoto.py'}]).then(function() {
-//       console.log("The File TestTakePhoto.py uploaded")
-//     }, function(error) {
-//       console.log("Something's wrong")
-//       console.log(error)
-//     })
-//   });
-
-// });
-
-
-
-
-
-// TEST //////////////////////
-
-// http.createServer(function (req, res) {
-//   fs.readFile('images/gifs/SmallGIF.gif', function (err, content) {
-//       if (err) {
-//         res.writeHead(400, {'Content-type':'text/html'})
-//         console.log(err);
-//         res.end("No such image");    
-//       } else {
-//         res.writeHead(200, {'Content-Type': 'image/gif' });
-//         var img = fs.readFileSync('images/gifs/SmallGIF.gif');
-//         res.end(img, 'binary');
-//       }
-//   });
-// }).listen(9000);
-
-// // ngrok.disconnect(); // stops all
-
-// var imgurl = '';
-// ngrok.connect(9000, function (err, url) {
-
-//   if(err){
-//     console.log(err);
-//   } else {
-//     console.log("URL: " + url );
-//     sendSMS(6127180553, url)
-//   }
-
-// });   
-
-//////////////////////
-
-// ngrok.disconnect();
-
-
-
-
-// ipcMain.on('phone:add', (event, number) => {
-
-//   console.log("phone number: " + number);
-
-//   // Twilio Credentials 
-//   var accountSid = process.env.accountSid;
-//   var authToken = process.env.authToken;
-//   var myNumber = process.env.myNumber;
-
-//  // require the Twilio module and create a REST client 
-//   var client = require('twilio')(accountSid, authToken); 
-   
-//   client.messages.create({ 
-//     to: number,
-//     from: myNumber,
-//     body: "Test Test",
-//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
-//    // mediaUrl: imgurl,
-//   }, function(err, message) { 
-
-//       if(err){
-//         console.log(err);
-//       } else {
-//         console.log("sent: " + message.sid);
-//       }
-
-//   });
-// });
-
-
-
-// //var imgurl = 
-// // listen for button clicks (from main.html): 
-// ipcMain.on('sendText:btn', (event, todo) => {
-
-//   // Twilio Credentials 
-//   var accountSid = process.env.accountSid;
-//   var authToken = process.env.authToken;
-//   var myNumber = process.env.myNumber;
-//   var destination = process.env.destination;
-
-//   console.log(accountSid);
-//   console.log(authToken);
-//   console.log(myNumber);
-//   console.log(destination);
- 
-
-//   //var imgurl = 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif'
-//    // var imgurl = 'http://static1.businessinsider.com/image/58c6f8e35f3ca830008b4f3c-875/9577356756453472e419b.jpg'
-
-//  // require the Twilio module and create a REST client 
-//   var client = require('twilio')(accountSid, authToken); 
-   
-//   client.messages.create({ 
-//     to: destination,
-//     from: myNumber,
-//     body: "Gif Test",
-//     mediaUrl: 'https://tctechcrunch2011.files.wordpress.com/2018/01/giphy1.gif',
-//   }, function(err, message) { 
-//       if(err){
-//         console.log(err);
-//       } else {
-//         console.log(message.sid);
-//       }
-//   });
-
-// });
-
-
-
-
-
 // menu template
 const menuTemplate = [
 {
   label: 'File', // single menu bar drop down item
   submenu: [
-    { 
+    {
       label: 'New Todo',
       accelerator: process.platform === 'darwin' ? 'Command+N' : 'Ctrl+N', // Hot Keys: if mac, else pc
       click() { createAddWindow(); }
     },
-    { 
+    {
       label: 'Clear Todos',
       click() {
         mainWindow.webContents.send('todo:clear');
       }
     },
 
-    {  
+    {
       label: 'Quit',
       accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Ctrl+Q', // Hot Keys: if mac, else pc
       click() {
@@ -785,7 +547,7 @@ if (process.env.NODE_ENV !== 'production') {
     label: 'Developer',
       submenu: [
         { role: 'reload'}, // electron preset role
-        { 
+        {
           label: 'Toggle Developer Tools',
           accelerator: process.platform === 'darwin' ? 'Command+Alt+I' : 'Ctrl+Shift+I',
           click(item, focusedWindow) { // currently selected window
