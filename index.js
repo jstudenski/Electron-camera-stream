@@ -14,11 +14,11 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 
 const http = require('http');
 const fs = require('fs');
-const url = require('url');
+// const url = require('url');
 const ngrok = require('ngrok');
-const path = require('path');
-const node_ssh = require('node-ssh');
-const ssh = new node_ssh();
+// const path = require('path');
+// const node_ssh = require('node-ssh');
+// const ssh = new node_ssh();
 const exec = require('node-ssh-exec');
 const client = require('scp2')
 
