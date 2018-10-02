@@ -1,12 +1,10 @@
-// --start up app--
+// start up:
 // npm run electron
 
-// --sass compiler--
+// compile sass:
 // npm run watch-css
 
-console.log("App initiated");
-
-// bring in .env variables
+// get .env variables:
 require('dotenv').config();
 
 const electron = require('electron');
@@ -14,15 +12,10 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 
 const http = require('http');
 const fs = require('fs');
-// const url = require('url');
 const ngrok = require('ngrok');
-// const path = require('path');
-// const node_ssh = require('node-ssh');
-// const ssh = new node_ssh();
 const exec = require('node-ssh-exec');
-const client = require('scp2')
+const client = require('scp2');
 
-//initialize variables
 let mainWindow;
 let addWindow;
 

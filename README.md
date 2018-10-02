@@ -1,4 +1,5 @@
 <img src="images/nextcap.svg" alt="logo" width="200">
+------
 <img src="images/example1.gif" alt="example gif" width="250">
 <img src="images/example2.gif" alt="example gif" width="250">
 <img src="images/example3.gif" alt="example gif" width="250">
