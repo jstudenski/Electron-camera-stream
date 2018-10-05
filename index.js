@@ -104,14 +104,10 @@ ngrok.once('connect', function (url) {
   console.log("ngrok connected..");
   console.log("at .. " + url);
   console.log("phone number.. " + num);
-
   setTimeout(function () {
     console.log("waited 1 second.. ");
-
     sendSMS(num, url);
-
   }, 1000);
-
 
 });
 
@@ -160,7 +156,6 @@ function createSettingsWindow() {
 }
 
 
-
 // listen for button clicks (from main.html):
 ipcMain.on('refresh:btn', (event, todo) => {
   mainWindow.reload();
@@ -171,7 +166,6 @@ ipcMain.on('devTools:btn', (event, todo) => {
 ipcMain.on('addTask:btn', (event, todo) => {
   createAddWindow();
 });
-
 
 function copy(path, folder){
   client.scp({
@@ -210,7 +204,7 @@ ipcMain.on('capture:btn', (event, todo) => {
       if (err.code === 'ECONNREFUSED') {
         console.log("Pi not connected");
       } else {
-        throw err
+        throw err;
         console.log(err);
       }
     }
@@ -222,7 +216,7 @@ ipcMain.on('capture:btn', (event, todo) => {
     //getFile(); // get file path
 
           exec(connSettings, 'cat /media/pi/1T/NEXCAP/Settings/lastgif.txt', function (err, response) {
-            if (err) throw err
+            if (err) throw err;
             //var imgFilePath = response;
             var imgNumber = response;
 
@@ -238,7 +232,7 @@ ipcMain.on('capture:btn', (event, todo) => {
                password: process.env.PASSWORD,
                path: smallPath
              }, './images/gifs/' + 'small' + '/', function(err) {
-               if (err) throw err
+               if (err) throw err;
                // displayImage();
                 console.log("worked!");
              })
@@ -250,7 +244,7 @@ ipcMain.on('capture:btn', (event, todo) => {
               password: process.env.PASSWORD,
               path: mediumPath
             }, './images/gifs/medium/', function(err) {
-              if (err) throw err
+              if (err) throw err;
               // displayImage();
 
                   images = [];
